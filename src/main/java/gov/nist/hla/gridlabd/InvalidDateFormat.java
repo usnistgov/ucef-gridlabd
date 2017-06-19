@@ -1,6 +1,6 @@
-package gldfederate.exception;
+package gov.nist.hla.gridlabd;
 
-public class InvalidDateFormat extends Exception {
+public class InvalidDateFormat extends RuntimeException {
     public InvalidDateFormat(String message) {
         super(message);
     }

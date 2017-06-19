@@ -1,4 +1,4 @@
-package gldfederate.exception;
+package gov.nist.hla.util;
 
 public class StatusCodeException extends HTTPClientException {
     private int statusCode; // default 0 if connection failed or aborted

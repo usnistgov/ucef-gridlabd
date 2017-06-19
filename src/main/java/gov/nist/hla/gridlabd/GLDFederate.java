@@ -1,7 +1,6 @@
-package gldfederate;
+package gov.nist.hla.gridlabd;
 
-import gldfederate.exception.HTTPClientException;
-import gldfederate.exception.InvalidDateFormat;
+import gov.nist.hla.util.HTTPClient;
 
 import java.io.File;
 import java.io.IOException;

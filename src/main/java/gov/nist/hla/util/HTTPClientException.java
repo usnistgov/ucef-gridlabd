@@ -1,4 +1,4 @@
-package gldfederate.exception;
+package gov.nist.hla.util;
 
 public class HTTPClientException extends Exception {
     public HTTPClientException(String message) {

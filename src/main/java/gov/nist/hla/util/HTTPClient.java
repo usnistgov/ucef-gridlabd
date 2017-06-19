@@ -1,4 +1,4 @@
-package gldfederate;
+package gov.nist.hla.util;
 
 import java.io.IOException;
 
@@ -17,9 +17,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import gldfederate.exception.HTTPClientException;
-import gldfederate.exception.StatusCodeException;
 
 public class HTTPClient {
     private static final Logger logger = LogManager.getLogger();
@@ -108,4 +105,3 @@ public class HTTPClient {
         return response;
     }
 }
-
