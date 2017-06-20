@@ -26,7 +26,7 @@ public class GLDClient {
         }
     }
     
-    public void advanceTime(int unixTime)
+    public void advanceTime(long unixTime)
             throws GLDClientException {
         String date = unixTimeToDate(unixTime);
         try {
@@ -99,11 +99,11 @@ public class GLDClient {
         return stringToDouble(value);
     }
     
-    private String unixTimeToDate(long unixTime) {
+    public String unixTimeToDate(long unixTime) {
         return dateFormat.format(new Date(unixTime*1000));
     }
     
-    private long dateToUnixTime(String date) {
+    public long dateToUnixTime(String date) {
         try {
             return dateFormat.parse(date).getTime()/1000;
         } catch (ParseException e) {
