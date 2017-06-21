@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -17,13 +18,17 @@ import hla.rti.AttributeHandleSet;
 import hla.rti.EnableTimeConstrainedPending;
 import hla.rti.EnableTimeRegulationPending;
 import hla.rti.FederationExecutionDoesNotExist;
+import hla.rti.LogicalTime;
 import hla.rti.RTIambassador;
 import hla.rti.RTIexception;
 import hla.rti.ResignAction;
 import hla.rti.RestoreInProgress;
 import hla.rti.SaveInProgress;
+import hla.rti.SuppliedAttributes;
+import hla.rti.SuppliedParameters;
 import hla.rti.TimeConstrainedAlreadyEnabled;
 import hla.rti.TimeRegulationAlreadyEnabled;
+import hla.rti.jlc.EncodingHelpers;
 import hla.rti.jlc.RtiFactoryFactory;
 
 import org.apache.logging.log4j.LogManager;
@@ -53,6 +58,8 @@ public class GLDFederate {
     private RTIambassador rtiAmb;
     private FederateAmbassador fedAmb;
     private SOMQuery objectModel;
+    
+    private HashMap<String, Integer> objectInstances = new HashMap<String, Integer>();
     
     private boolean receivedSimEnd = false;
     private boolean receivedSimTime = false;
@@ -110,6 +117,7 @@ public class GLDFederate {
             enableTimeConstrained();
             enableTimeRegulation();
             publishAndSubscribe();
+            createObjectInstances();
 
             synchronize(READY_TO_POPULATE);
             if (configuration.getUnixTimeStart() < 0) {
@@ -175,8 +183,84 @@ public class GLDFederate {
         }
     }
     
-    private void sendPublications() {
-        // TODO: poll GLD as necessary
+    private void createObjectInstances() {
+        try {
+            for (String objectClassName : objectModel.getPublishedObjects()) {
+                int objectClassHandle = rtiAmb.getObjectClassHandle(objectClassName);
+                int objectInstanceHandle = rtiAmb.registerObjectInstance(objectClassHandle);
+                objectInstances.put(objectClassName, objectInstanceHandle);
+                logger.info("registered instance for " + objectClassName + " with handle " + objectInstanceHandle);
+            }
+        } catch (RTIexception e) {
+            throw new RTIAmbassadorException(e);
+        }
+    }
+    
+    private void sendPublications()
+            throws GLDException {
+        LogicalTime timestamp = new DoubleTime(fedAmb.getLogicalTime() + configuration.getLookahead());
+        
+        try {
+            for (String interactionName : objectModel.getPublishedInteractions()) {
+                int interactionHandle = rtiAmb.getInteractionClassHandle(interactionName);
+                
+                SuppliedParameters suppliedParameters = RtiFactoryFactory.getRtiFactory().createSuppliedParameters();
+                for (String parameterName : objectModel.getParameterSet(interactionName)) {
+                    String object = interactionName;
+                    String property = parameterName;
+                    String value;
+                    
+                    String dataType = objectModel.getParameterType(interactionName, parameterName);
+                    if (dataType.contains("integer")) {
+                        // required to strip the units from the returned value
+                        value = Integer.toString(client.getObjectPropertyAsInteger(object, property));
+                    } else if (dataType.contains("float")) {
+                        // required to strip the units from the returned value
+                        value = Double.toString(client.getObjectPropertyAsDouble(object, property));
+                    } else {
+                        value = client.getObjectProperty(object, property);
+                    }
+                    
+                    int parameterHandle = rtiAmb.getParameterHandle(parameterName, interactionHandle);
+                    byte[] parameterValue = EncodingHelpers.encodeString(value);
+                    suppliedParameters.add(parameterHandle, parameterValue);
+                }
+                
+                rtiAmb.sendInteraction(interactionHandle, suppliedParameters, null, timestamp);
+            }
+            
+            for (String objectClassName : objectModel.getPublishedObjects()) {
+                int classHandle = rtiAmb.getObjectClassHandle(objectClassName);
+                int objectHandle = objectInstances.get(objectClassName);
+                
+                SuppliedAttributes suppliedAttributes = RtiFactoryFactory.getRtiFactory().createSuppliedAttributes();
+                for (String attributeName : objectModel.getPublishedAttributes(objectClassName)) {
+                    String object = objectClassName;
+                    String property = attributeName;
+                    String value;
+                    
+                    String dataType = objectModel.getAttributeType(objectClassName, attributeName);
+                    if (dataType.contains("integer")) {
+                        // required to strip the units from the returned value
+                        value = Integer.toString(client.getObjectPropertyAsInteger(object, property));
+                    } else if (dataType.contains("float")) {
+                        // required to strip the units from the returned value
+                        value = Double.toString(client.getObjectPropertyAsDouble(object, property));
+                    } else {
+                        value = client.getObjectProperty(object, property);
+                    }
+                    
+                    int attributeHandle = rtiAmb.getAttributeHandle(attributeName, classHandle);
+                    byte[] attributeValue = EncodingHelpers.encodeString(value);
+                    suppliedAttributes.add(attributeHandle, attributeValue);
+                }
+                
+                rtiAmb.updateAttributeValues(objectHandle, suppliedAttributes, null, timestamp);
+            }
+        } catch (RTIexception e) {
+            // might want to separate this out into recoverable cases
+            throw new RTIAmbassadorException(e);
+        }
     }
 
     private void handleSubscriptions() {
@@ -244,11 +328,33 @@ public class GLDFederate {
     }
 
     private void handleInteraction(String interactionName, HashMap<String, String> parameters) {
-        // TODO: send to GLD
+        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            String object = interactionName;
+            String property = entry.getKey();
+            String value = entry.getValue();
+            try {
+                // this cannot be more efficient due to the limitations of GridLAB-D
+                client.setObjectProperty(object, property, value);
+                logger.debug("set " + object + ":" + property + "=" + value);
+            } catch (GLDException e) {
+                logger.error("could not set " + object + ":" + property + "=" + value);
+            }
+        }
     }
     
     private void handleObjectReflection(String objectName, String objectClassName, HashMap<String, String> attributes) {
-        // TODO: send to GLD
+        for (Map.Entry<String, String> entry : attributes.entrySet()) {
+            String object = objectClassName;
+            String property = entry.getKey();
+            String value = entry.getValue();
+            try {
+                // this cannot be more efficient due to the limitations of GridLAB-D
+                client.setObjectProperty(object, property, value);
+                logger.debug("set " + object + ":" + property + "=" + value);
+            } catch (GLDException e) {
+                logger.error("could not set " + object + ":" + property + "=" + value);
+            }
+        }
     }
     
     private void tick() {
