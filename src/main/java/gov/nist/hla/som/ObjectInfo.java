@@ -104,4 +104,17 @@ public class ObjectInfo {
     public Set<String> getSubscribedAttributes() {
         return Collections.unmodifiableSet(subscribedAttributes);
     }
+    
+    @Override
+    public String toString() {
+        String result = "(name : " + name + ")(sharing : " + sharing.toString() + ")";
+        if (!attributes.isEmpty()) {
+            result += "(attributes : [";
+            for (AttributeInfo attr : attributes.values()) {
+                result += attr.toString();
+            }
+            result += "])";
+        }
+        return result;
+    }
 }

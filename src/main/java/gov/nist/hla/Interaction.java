@@ -63,4 +63,13 @@ public class Interaction {
         // see InteractionRoot::createDatamemberHandleValuePairSet and InteractionRoot::setParameters
         return new String(buffer);
     }
+    
+    @Override
+    public String toString() {
+        String result = "(class : " + classHandle + ")";
+        for (Parameter param : parameters) {
+            result = result + "(" + param.getHandle() + " : " + param.getValue() + ")";
+        }
+        return result;
+    }
 }

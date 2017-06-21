@@ -48,4 +48,10 @@ public class AttributeInfo{
     public boolean isSubscribed() {
         return sharing.isSubscribed();
     }
+    
+    @Override
+    public String toString() {
+        String result = "(name : " + name + ")(dataType : " + dataType + ")(sharing : " + sharing.toString() + ")";
+        return result;
+    }
 }

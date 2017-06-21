@@ -72,4 +72,17 @@ public class InteractionInfo {
     public ParameterInfo getParameter(String parameter) {
         return parameters.get(parameter);
     }
+    
+    @Override
+    public String toString() {
+        String result = "(name : " + name + ")(sharing : " + sharing.toString() + ")";
+        if (!parameters.isEmpty()) {
+            result += "(parameters : [";
+            for (ParameterInfo param : parameters.values()) {
+                result += param.toString();
+            }
+            result += "])";
+        }
+        return result;
+    }
 }

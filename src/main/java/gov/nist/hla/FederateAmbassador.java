@@ -94,7 +94,7 @@ public class FederateAmbassador extends NullFederateAmbassador {
                    FederateInternalError {
         isTimeRegulating = true;
         logicalTime = convertTime(theFederateTime);
-        logger.info("time regulation enabled: t=" + logicalTime);
+        logger.info("time regulation enabled: t = " + logicalTime);
     }
   
     public void timeConstrainedEnabled(LogicalTime theFederateTime)
@@ -103,7 +103,7 @@ public class FederateAmbassador extends NullFederateAmbassador {
                    FederateInternalError{
         isTimeConstrained = true;
         logicalTime = convertTime(theFederateTime);
-        logger.info("time constrained enabled: t=" + logicalTime);
+        logger.info("time constrained enabled: t = " + logicalTime);
     }
   
     public void timeAdvanceGrant(LogicalTime theTime)
@@ -112,7 +112,7 @@ public class FederateAmbassador extends NullFederateAmbassador {
                    FederateInternalError {
         isTimeAdvancing = false;
         logicalTime = convertTime(theTime);
-        logger.info("time advance granted: t=" + logicalTime);
+        logger.info("time advance granted: t = " + logicalTime);
     }
   
     public void receiveInteraction(int interactionClass, ReceivedInteraction theInteraction, byte[] userSuppliedTag)
@@ -132,16 +132,20 @@ public class FederateAmbassador extends NullFederateAmbassador {
                    InteractionParameterNotKnown,
                    InvalidFederationTime,
                    FederateInternalError {
-        logger.info("received interaction: handle=" + interactionClass);
-        receivedInteractions.add(new Interaction(interactionClass, theInteraction));
+        logger.info("received interaction with handle " + interactionClass);
+        Interaction newInteraction = new Interaction(interactionClass, theInteraction);
+        receivedInteractions.add(newInteraction);
+        logger.debug(newInteraction.toString());
     }
   
     public void discoverObjectInstance(int theObject, int theObjectClass, String objectName)
             throws CouldNotDiscover,
                    ObjectClassNotKnown,
                    FederateInternalError {
-        logger.info("discovered new object instance: (handle, class, name)="
-                + "(" + theObject + ", " + theObjectClass + ", " + objectName + ")");
+        logger.info("discovered new object instance "
+                + "(class : " + theObjectClass + ")"
+                + "(instance : " + theObject + ")"
+                + "(name : " + objectName + ")");
         if (objectInstances.put(theObject, new ObjectDetails(theObject, theObjectClass, objectName)) != null) {
             throw new FederateInternalError("discovered multiple object instances with handle " + theObject);
         }
@@ -172,8 +176,11 @@ public class FederateAmbassador extends NullFederateAmbassador {
         }
         int theObjectClass = details.getObjectClass();
         String objectName = details.getObjectName();
-        receivedObjectReflections.add(new ObjectReflection(theObjectClass, objectName, theAttributes));
+        
         logger.info("received object reflection for the object instance " + objectName);
+        ObjectReflection newReflection = new ObjectReflection(theObjectClass, objectName, theAttributes);
+        receivedObjectReflections.add(newReflection);
+        logger.debug(newReflection.toString());
     }
   
     public void removeObjectInstance(int theObject, byte[] userSuppliedTag)
@@ -195,9 +202,14 @@ public class FederateAmbassador extends NullFederateAmbassador {
         if (details == null) {
             throw new ObjectNotKnown("no discovered object instance with handle " + theObject);
         }
+        int theObjectClass = details.getObjectClass();
         String objectName = details.getObjectName();
+        
+        logger.info("received notice to remove object instance "
+                + "(class : " + theObjectClass + ")"
+                + "(instance : " + theObject + ")"
+                + "(name : " + objectName + ")");
         removedObjectNames.add(objectName);
-        logger.info("received notice to remove object instance with handle=" + theObject + " and name=" + objectName);
     }
 
     public boolean isSynchronizationPointPending(String label) {

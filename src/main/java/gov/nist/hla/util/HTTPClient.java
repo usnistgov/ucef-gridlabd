@@ -30,6 +30,10 @@ public class HTTPClient {
         this.authority = authority;
         this.client = HttpClients.createDefault();
     }
+    
+    public String getAuthority() {
+        return authority;
+    }
 
     public String get(String path)
             throws StatusCodeException,
@@ -81,17 +85,16 @@ public class HTTPClient {
     private HttpResponse sendRequest(HttpUriRequest request)
             throws StatusCodeException,
                    HTTPClientException {
-        logger.debug(request.getMethod() + " request for URI=" + request.getURI());
+        logger.debug(request.getMethod() + " request for URI: " + request.getURI());
 
         HttpResponse response;
-
         try {
             response = client.execute(request); // can this return null?
         } catch (IOException e) {
             throw new HTTPClientException(e);
         }
+        
         StatusLine status = response.getStatusLine();
-
         if (status == null) {
             throw new StatusCodeException("HTTP response omitted status line");
         }

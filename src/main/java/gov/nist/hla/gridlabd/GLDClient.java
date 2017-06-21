@@ -4,10 +4,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import gov.nist.hla.util.HTTPClient;
 import gov.nist.hla.util.HTTPClientException;
 
 public class GLDClient {
+    private static final Logger logger = LogManager.getLogger();
+    
     private HTTPClient client;
     
     private SimpleDateFormat dateFormat;
@@ -18,96 +23,93 @@ public class GLDClient {
     }
     
     public void shutdown()
-            throws GLDClientException {
+            throws GLDException {
         try {
             client.get("/control/shutdown");
+            logger.info(client.getAuthority() + " : sent shutdown command");
         } catch (HTTPClientException e) {
-            throw new GLDClientException(e);
+            throw new GLDException(e);
         }
     }
     
-    public void advanceTime(long unixTime)
-            throws GLDClientException {
+    public void pauseat(long unixTime)
+            throws GLDException {
         String date = unixTimeToDate(unixTime);
         try {
             // URLEncoder.encode(date, "UTF-8") produces characters GLD does not recognize
             client.get("/control/pauseat=" + date.replaceAll(" ", "%20"));
+            logger.info(client.getAuthority() + " : sent pauseat command for " + date);
         } catch (HTTPClientException e) {
-            throw new GLDClientException(e);
+            throw new GLDException(e);
         }
     }
     
-    public void setObjectProperty(String object, String property, String value)
-            throws GLDClientException {
+    public long getUnixTime()
+            throws GLDException {
         try {
-            client.get("/raw/" + object + "/" + property + "=" + value);
+            return dateToUnixTime(client.get("/raw/clock"));
         } catch (HTTPClientException e) {
-            throw new GLDClientException(e);
+            throw new GLDException(e);
         }
-    }
-    
-    public long getClockValue()
-            throws GLDClientException {
-        String currentDate;
-        try {
-            currentDate = client.get("/raw/clock");
-        } catch (HTTPClientException e) {
-            throw new GLDClientException(e);
-        }
-        return dateToUnixTime(currentDate);
     }
     
     public String getGlobalVariable(String variable)
-            throws GLDClientException {
+            throws GLDException {
         try {
             return client.get("/raw/" + variable);
         } catch (HTTPClientException e) {
-            throw new GLDClientException(e);
+            throw new GLDException(e);
         }
     }
     
     public int getGlobalVariableAsInteger(String variable)
-            throws GLDClientException {
-        String value = getGlobalVariable(variable);
-        return stringToInteger(value);
+            throws GLDException {
+        return stringToInteger(getGlobalVariable(variable));
     }
     
     public double getGlobalVariableAsDouble(String variable)
-            throws GLDClientException {
-        String value = getGlobalVariable(variable);
-        return stringToDouble(value);
+            throws GLDException {
+        return stringToDouble(getGlobalVariable(variable));
     }
     
     public String getObjectProperty(String object, String property)
-            throws GLDClientException {
+            throws GLDException {
         try {
             return client.get("/raw/" + object + "/" + property);
         } catch (HTTPClientException e) {
-            throw new GLDClientException(e);
+            throw new GLDException(e);
         }
     }
     
     public int getObjectPropertyAsInteger(String object, String property)
-            throws GLDClientException {
-        String value = getObjectProperty(object, property);
-        return stringToInteger(value);
+            throws GLDException {
+        return stringToInteger(getObjectProperty(object, property));
     }
     
     public double getObjectPropertyAsDouble(String object, String property)
-            throws GLDClientException {
-        String value = getObjectProperty(object, property);
-        return stringToDouble(value);
+            throws GLDException {
+        return stringToDouble(getObjectProperty(object, property));
+    }
+    
+    public void setObjectProperty(String object, String property, String value)
+            throws GLDException {
+        try {
+            client.get("/raw/" + object + "/" + property + "=" + value);
+        } catch (HTTPClientException e) {
+            throw new GLDException(e);
+        }
     }
     
     public String unixTimeToDate(long unixTime) {
         return dateFormat.format(new Date(unixTime*1000));
     }
     
-    public long dateToUnixTime(String date) {
+    public long dateToUnixTime(String date)
+            throws GLDException {
         try {
             return dateFormat.parse(date).getTime()/1000;
         } catch (ParseException e) {
-            throw new InvalidDateFormat(e);
+            throw new GLDException(e);
         }
     }
     

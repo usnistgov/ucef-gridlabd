@@ -69,4 +69,13 @@ public class ObjectReflection {
         // see ObjectRoot::createDatamemberHandleValuePairSet and ObjectRoot::setAttributes
         return new String(buffer);
     }
+    
+    @Override
+    public String toString() {
+        String result = "(class : " + classHandle + ")(instance : " + instanceName + ")";
+        for (Attribute attr : attributes) {
+            result = result + "(" + attr.getHandle() + " : " + attr.getValue() + ")";
+        }
+        return result;
+    }
 }

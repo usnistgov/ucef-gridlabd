@@ -33,4 +33,10 @@ public class ParameterInfo {
     public String getDataType() {
         return dataType;
     }
+    
+    @Override
+    public String toString() {
+        String result = "(name : " + name + ")(dataType : " + dataType + ")";
+        return result;
+    }
 }

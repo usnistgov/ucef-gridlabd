@@ -88,6 +88,9 @@ public class Configuration {
     }
     
     public void setServerPortNumber(int portNumber) {
+        if (portNumber < 0 || portNumber > 65535) {
+            throw new RuntimeException("invalid port number " + portNumber);
+        }
         this.serverPortNumber = portNumber;
     }
     
@@ -96,6 +99,9 @@ public class Configuration {
     }
     
     public void setSimulationTimeScale(double scale) {
+        if (scale <= 0) {
+            throw new RuntimeException("invalid time scale " + scale);
+        }
         this.simulationTimeScale = scale;
         this.simulationTimeScaleSet = true;
     }
@@ -124,6 +130,9 @@ public class Configuration {
     }
     
     public void setMaxConnectionAttempts(int max) {
+        if (max < 1) {
+            throw new RuntimeException("invalid max connection attempts " + max);
+        }
         this.maxConnectionAttempts = max;
     }
     
@@ -132,6 +141,9 @@ public class Configuration {
     }
     
     public void setWaitReconnectMs(int wait) {
+        if (wait < 0) {
+            throw new RuntimeException("invalid reconnection wait time " + wait);
+        }
         this.waitReconnectMs = wait;
     }
     
@@ -140,6 +152,9 @@ public class Configuration {
     }
     
     public void setLogicalTimeStep(double timestep) {
+        if (timestep <= 0) {
+            throw new RuntimeException("invalid logical timestep " + timestep);
+        }
         this.logicalTimeStep = timestep;
     }
     
@@ -148,7 +163,9 @@ public class Configuration {
     }
     
     public void setLookahead(double lookahead) {
-        // should check if lookahead < timestep
+        if (lookahead < 0) { // does not check if lookahead < logical time step
+            throw new RuntimeException("invalid lookahead time " + lookahead);
+        }
         this.lookahead = lookahead;
     }
     
@@ -157,6 +174,9 @@ public class Configuration {
     }
     
     public void setWaitAdvanceTimeMs(int wait) {
+        if (wait < 0) {
+            throw new RuntimeException("invalid time advance wait time " + wait);
+        }
         this.waitAdvanceTimeMs = wait;
     }
     

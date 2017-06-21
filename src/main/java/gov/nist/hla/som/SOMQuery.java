@@ -3,10 +3,14 @@ package gov.nist.hla.som;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class SOMQuery {
+    private static final Logger logger = LogManager.getLogger();
+    
     private SOMReader simulationObjectModel;
     
     private HashMap<String, ObjectInfo> objectClasses = new HashMap<String, ObjectInfo>();
@@ -20,18 +24,9 @@ public class SOMQuery {
     public SOMQuery(SOMReader simulationObjectModel) {
         this.simulationObjectModel = simulationObjectModel;
         
-        for (ObjectInfo object : this.simulationObjectModel.getObjectClasses()) {
-            String objectName = object.getName();
-            objectClasses.put(objectName, object);
-            if (object.isPublished()) {
-                publishedObjects.add(objectName);
-            }
-            if (object.isSubscribed()) {
-                subscribedObjects.add(objectName);
-            }
-        }
         for (InteractionInfo interaction : this.simulationObjectModel.getInteractionClasses()) {
             String interactionName = interaction.getName();
+            
             interactionClasses.put(interactionName, interaction);
             if (interaction.isPublished()) {
                 publishedInteractions.add(interactionName);
@@ -40,26 +35,22 @@ public class SOMQuery {
                 subscribedInteractions.add(interactionName);
             }
         }
-    }
-    
-    public String getAttributeType(String objectClass, String attributeName) {
-        if (objectClasses.containsKey(objectClass)) {
-            AttributeInfo attribute = objectClasses.get(objectClass).getAttribute(attributeName);
-            if (attribute != null) {
-                return attribute.getDataType();
+        logger.info("published interactions: " + publishedInteractions.toString());
+        logger.info("subscribed interactions: " + subscribedInteractions.toString());
+        
+        for (ObjectInfo object : this.simulationObjectModel.getObjectClasses()) {
+            String objectName = object.getName();
+            
+            objectClasses.put(objectName, object);
+            if (object.isPublished()) {
+                publishedObjects.add(objectName);
+            }
+            if (object.isSubscribed()) {
+                subscribedObjects.add(objectName);
             }
         }
-        return null;
-    }
-    
-    public String getParameterType(String interactionClass, String parameterName) {
-        if (interactionClasses.containsKey(interactionClass)) {
-            ParameterInfo parameter = interactionClasses.get(interactionClass).getParameter(parameterName);
-            if (parameter != null) {
-                return parameter.getDataType();
-            }
-        }
-        return null;
+        logger.info("published object classes: " + publishedObjects.toString());
+        logger.info("subscribed object classes: " + subscribedObjects.toString());
     }
     
     public Set<String> getPublishedInteractions() {
@@ -73,6 +64,16 @@ public class SOMQuery {
     public Set<String> getParameterSet(String interactionClass) {
         if (interactionClasses.containsKey(interactionClass)) {
             return interactionClasses.get(interactionClass).getParameterSet();
+        }
+        return null;
+    }
+    
+    public String getParameterType(String interactionClass, String parameterName) {
+        if (interactionClasses.containsKey(interactionClass)) {
+            ParameterInfo parameter = interactionClasses.get(interactionClass).getParameter(parameterName);
+            if (parameter != null) {
+                return parameter.getDataType();
+            }
         }
         return null;
     }
@@ -102,6 +103,16 @@ public class SOMQuery {
     public Set<String> getSubscribedAttributes(String objectClass) {
         if (objectClasses.containsKey(objectClass)) {
             return objectClasses.get(objectClass).getSubscribedAttributes();
+        }
+        return null;
+    }
+    
+    public String getAttributeType(String objectClass, String attributeName) {
+        if (objectClasses.containsKey(objectClass)) {
+            AttributeInfo attribute = objectClasses.get(objectClass).getAttribute(attributeName);
+            if (attribute != null) {
+                return attribute.getDataType();
+            }
         }
         return null;
     }

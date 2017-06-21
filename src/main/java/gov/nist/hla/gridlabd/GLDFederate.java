@@ -95,7 +95,7 @@ public class GLDFederate {
     
     public void execute()
             throws InterruptedException,
-                   GLDClientException,
+                   GLDException,
                    IOException {
         try {
             joinFederationExecution();
@@ -442,7 +442,7 @@ public class GLDFederate {
                 try {
                     client.shutdown();
                     logger.info("sent shutdown command to GridLAB-D");
-                } catch (GLDClientException e) {
+                } catch (GLDException e) {
                     logger.info("destroying the GridLAB-D process");
                     gridlabd.destroy();
                 }
@@ -453,16 +453,16 @@ public class GLDFederate {
     
     private void connectToGLD()
             throws InterruptedException,
-                   GLDClientException {
+                   GLDException {
         // need a small delay before control can be issued; need to improve how we do this
         int attempt = 1;
         boolean connected = false;
         while (!connected) {
             try {
                 logger.info("trying to connect to GridLAB-D (" + attempt + ")");
-                client.getClockValue();
+                client.getUnixTime();
                 connected = true;
-            } catch (GLDClientException e) {
+            } catch (GLDException e) {
                 // should check process exit value to see if still running
                 if (attempt == configuration.getMaxConnectionAttempts()) {
                     throw e;
@@ -476,13 +476,13 @@ public class GLDFederate {
     }
     
     private void advanceSimulationTime(long unixTime)
-            throws GLDClientException,
+            throws GLDException,
                    InterruptedException {
-        client.advanceTime(unixTime);
+        client.pauseat(unixTime);
         
         boolean advancing = true;
         while (advancing) {
-            long currentUnixTime = client.getClockValue();
+            long currentUnixTime = client.getUnixTime();
             if (currentUnixTime < unixTime) {
                 logger.debug("waiting " + configuration.getWaitAdvanceTimeMs() + " ms for GridLAB-D clock to advance");
                 Thread.sleep(configuration.getWaitAdvanceTimeMs());

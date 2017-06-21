@@ -39,4 +39,19 @@ public class Sharing {
     public String getText() {
         return text;
     }
+    
+    @Override
+    public String toString() {
+        String result = "";
+        if (this.isPublished()) {
+            result += "Publish";
+        }
+        if (this.isSubscribed()) {
+            result += "Subscribe";
+        }
+        if (result.isEmpty()) {
+            result = "Neither";
+        }
+        return result;
+    }
 }
