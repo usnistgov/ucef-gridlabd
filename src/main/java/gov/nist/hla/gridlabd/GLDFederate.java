@@ -14,7 +14,6 @@ import gov.nist.hla.som.SOMQuery;
 import gov.nist.hla.som.SOMReader;
 import hla.rti.AsynchronousDeliveryAlreadyEnabled;
 import hla.rti.AttributeHandleSet;
-import hla.rti.ConcurrentAccessAttempted;
 import hla.rti.EnableTimeConstrainedPending;
 import hla.rti.EnableTimeRegulationPending;
 import hla.rti.FederationExecutionDoesNotExist;
@@ -43,24 +42,37 @@ public class GLDFederate {
     
     private static final String SIMULATION_END = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimEnd";
     private static final String SIMULATION_TIME = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimTime";
-    
     private static final String READY_TO_POPULATE = "readyToPopulate";
     private static final String READY_TO_RUN = "readyToRun";
     private static final String READY_TO_RESIGN = "readyToResign";
     
     private Configuration configuration;
     final private GLDClient client;
-    private Process gridlabd;
+    private Process gridlabd = null;
     
     private RTIambassador rtiAmb;
     private FederateAmbassador fedAmb;
-    private SOMQuery simulationObjectModel;
+    private SOMQuery objectModel;
     
     private boolean receivedSimEnd = false;
     private boolean receivedSimTime = false;
     private boolean reachedStopTime = false;
+    private boolean gridlabdStarted = false;
     
     public GLDFederate(String filepath)
+            throws IOException {
+        loadConfiguration(filepath);
+        client = new GLDClient("localhost", configuration.getServerPortNumber());
+        try {
+            rtiAmb = RtiFactoryFactory.getRtiFactory().createRtiAmbassador();
+        } catch (RTIexception e) {
+            throw new RTIAmbassadorException(e);
+        }
+        fedAmb = new FederateAmbassador();
+        loadObjectModel();
+    }
+    
+    private void loadConfiguration(String filepath)
             throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory()); 
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
@@ -74,23 +86,17 @@ public class GLDFederate {
             logger.error("invalid options in YAML configuration file " + filepath);
             throw new IOException(e);
         }
-        
-        client = new GLDClient("localhost", configuration.getServerPortNumber());
+    }
+    
+    private void loadObjectModel()
+            throws IOException {
         try {
-            rtiAmb = RtiFactoryFactory.getRtiFactory().createRtiAmbassador();
-        } catch (RTIexception e) {
-            throw new RTIAmbassadorException(e);
-        }
-        fedAmb = new FederateAmbassador();
-        
-        SOMReader reader;
-        try {
-            reader = new SOMReader();
+            SOMReader reader = new SOMReader();
+            reader.readXML(configuration.getSomFilepath());
+            objectModel = new SOMQuery(reader);
         } catch (ParserConfigurationException e) {
             throw new IOException(e);
         }
-        reader.readXML(configuration.getSomFilepath());
-        simulationObjectModel = new SOMQuery(reader);
     }
     
     public void execute()
@@ -106,17 +112,33 @@ public class GLDFederate {
             publishAndSubscribe();
 
             synchronize(READY_TO_POPULATE);
-            // check if start time provided
-            // if not, wait for RO message SimInit (verify subscribed!)
-            // if SimInit, write to configuraton using the set functions
-            // how do we handle time zones in GLD?
-            // server_quit_on_close=1 can be used for clean exits if the client connection is recycled
-            runGLD();
+            if (configuration.getUnixTimeStart() < 0) {
+                if (!objectModel.getSubscribedInteractions().contains(SIMULATION_TIME)) {
+                    logger.error("start time not specified and no subscription to " + SIMULATION_TIME);
+                    throw new RuntimeException("no start time specified for the GridLAB-D simulation");
+                }
+                logger.info("waiting to receive " + SIMULATION_TIME);
+                while (!receivedSimTime) {
+                    // how to recover if we receive simulation end?
+                    tick();
+                }
+            } else {
+                logger.info("starting simulation without waiting for " + SIMULATION_TIME);
+            }
+            startGLD();
             connectToGLD();
             synchronize(READY_TO_RUN);
-
-            // check if SimEnd subscribed
-            double timestep = configuration.getLogicalTimeStep() * configuration.getSimulationTimeScale();
+            
+            if (configuration.getUnixTimeStop() < 0) {
+                logger.info("no simulation stop time specified");
+            }
+            if (!objectModel.getSubscribedInteractions().contains(SIMULATION_END)) {
+                logger.info("no subscription for " + SIMULATION_END);
+                if (configuration.getUnixTimeStop() < 0) {
+                    logger.warn("no exit condition specified; will run forever until Ctrl+C");
+                }
+            }
+            final double timestep = configuration.getLogicalTimeStep() * configuration.getSimulationTimeScale();
             while (!receivedSimEnd && !reachedStopTime) {
                 double currentLogicalTime = fedAmb.getLogicalTime();
                 
@@ -154,13 +176,10 @@ public class GLDFederate {
     }
     
     private void sendPublications() {
-        // check time requirements
-        // reformat from GLD to HLA
-        // send interaction
+        // TODO: poll GLD as necessary
     }
 
-    private void handleSubscriptions()
-            throws RTIAmbassadorException {
+    private void handleSubscriptions() {
         try {
             Interaction receivedInteraction;
             while ((receivedInteraction = fedAmb.nextInteraction()) != null) {
@@ -180,13 +199,14 @@ public class GLDFederate {
                 if (interactionName.equals(SIMULATION_END)) {
                     receivedSimEnd = true;
                 } else if (interactionName.equals(SIMULATION_TIME)) {
-                    // need to check if misconfiguration / any of the following parameters are null
                     configuration.setUnixTimeStart(Double.valueOf(parameters.get("timeStart")).intValue());
                     configuration.setUnixTimeStop(Double.valueOf(parameters.get("timeStop")).intValue());
                     configuration.setSimulationTimeScale(Double.valueOf(parameters.get("timeScale")).intValue());
                     receivedSimTime = true;
+                } else if (gridlabdStarted) {
+                    handleInteraction(interactionName, parameters);
                 } else {
-                    // send to GLD
+                    logger.warn("dropped interaction " + interactionName);
                 }
             }
 
@@ -195,7 +215,7 @@ public class GLDFederate {
                 int objectClassHandle = receivedObjectReflection.getObjectClass();
                 String objectClassName = rtiAmb.getObjectClassName(objectClassHandle);
                 String objectName = receivedObjectReflection.getObjectName();
-                logger.debug("received object class=" + objectClassName + ", name=" + objectName);
+                logger.debug("received object class=" + objectClassName + " with name=" + objectName);
 
                 HashMap<String, String> attributes = new HashMap<String, String>();
                 for (int i = 0; i < receivedObjectReflection.getAttributeCount(); i++) {
@@ -206,7 +226,11 @@ public class GLDFederate {
                     attributes.put(attributeName, attributeValue);
                 }
                 
-                // send to GLD
+                if (gridlabdStarted) {
+                    handleObjectReflection(objectName, objectClassName, attributes);
+                } else {
+                    logger.warn("dropped object reflection " + objectName);
+                }
             }
 
             String removedObjectName;
@@ -219,8 +243,15 @@ public class GLDFederate {
         }
     }
 
-    private void tick()
-            throws RTIAmbassadorException {
+    private void handleInteraction(String interactionName, HashMap<String, String> parameters) {
+        // TODO: send to GLD
+    }
+    
+    private void handleObjectReflection(String objectName, String objectClassName, HashMap<String, String> attributes) {
+        // TODO: send to GLD
+    }
+    
+    private void tick() {
         try {
             rtiAmb.tick();
         } catch (RTIexception e) {
@@ -230,11 +261,10 @@ public class GLDFederate {
     }
 
     private void joinFederationExecution()
-            throws InterruptedException,
-                   RTIAmbassadorException {
+            throws InterruptedException {
         boolean joinSuccessful = false;
-        String federateName = configuration.getFederateName();
-        String federationName = configuration.getFederationName();
+        final String federateName = configuration.getFederateName();
+        final String federationName = configuration.getFederationName();
 
         for (int i = 0; !joinSuccessful && i < configuration.getMaxConnectionAttempts(); i++) {
             if (i > 0) {
@@ -259,8 +289,7 @@ public class GLDFederate {
     }
 
     // enable Receive Order messages during any tick call
-    private void enableAsynchronousDelivery()
-            throws RTIAmbassadorException {
+    private void enableAsynchronousDelivery() {
         try {
             logger.info("enabling asynchronous delivery of receive order messages");
             rtiAmb.enableAsynchronousDelivery();
@@ -271,8 +300,7 @@ public class GLDFederate {
         }
     }
 
-    private void enableTimeConstrained()
-            throws RTIAmbassadorException {
+    private void enableTimeConstrained() {
         try {
             logger.info("enabling time constrained");
             rtiAmb.enableTimeConstrained();
@@ -288,12 +316,13 @@ public class GLDFederate {
         }
     }
 
-    private void enableTimeRegulation()
-            throws RTIAmbassadorException {
+    private void enableTimeRegulation() {
         try {
             logger.info("enabling time regulation");
-            double lookahead = configuration.getLookahead();
-            rtiAmb.enableTimeRegulation(new DoubleTime(fedAmb.getLogicalTime()), new DoubleTimeInterval(lookahead));
+            rtiAmb.enableTimeRegulation(
+                    new DoubleTime(fedAmb.getLogicalTime()),
+                    new DoubleTimeInterval(configuration.getLookahead())
+                    );
             while (fedAmb.isTimeRegulating() == false) {
                 tick();
             }
@@ -306,35 +335,34 @@ public class GLDFederate {
         }
     }
 
-    private void publishAndSubscribe()
-            throws RTIAmbassadorException {
+    private void publishAndSubscribe() {
         try {
-            for (String interactionName : simulationObjectModel.getPublishedInteractions()) {
+            for (String interactionName : objectModel.getPublishedInteractions()) {
                 logger.info("creating HLA publication for the interaction " + interactionName);
                 int interactionHandle = rtiAmb.getInteractionClassHandle(interactionName);
                 rtiAmb.publishInteractionClass(interactionHandle);
             }
-            for (String interactionName : simulationObjectModel.getSubscribedInteractions()) {
+            for (String interactionName : objectModel.getSubscribedInteractions()) {
                 logger.info("creating HLA subscription for the interaction " + interactionName);
                 int interactionHandle = rtiAmb.getInteractionClassHandle(interactionName);
                 rtiAmb.subscribeInteractionClass(interactionHandle);
             }
-            for (String objectClass : simulationObjectModel.getPublishedObjects()) {
+            for (String objectClass : objectModel.getPublishedObjects()) {
                 int objectHandle = rtiAmb.getObjectClassHandle(objectClass);
                 AttributeHandleSet attributes = RtiFactoryFactory.getRtiFactory().createAttributeHandleSet();
 
-                for (String attributeName : simulationObjectModel.getPublishedAttributes(objectClass)) {
+                for (String attributeName : objectModel.getPublishedAttributes(objectClass)) {
                     logger.info("creating HLA publication for object=" + objectClass + ", attribute=" + attributeName);
                     int attributeHandle = rtiAmb.getAttributeHandle(attributeName, objectHandle);
                     attributes.add(attributeHandle);
                 }
                 rtiAmb.publishObjectClass(objectHandle, attributes);
             }
-            for (String objectClass : simulationObjectModel.getSubscribedObjects()) {
+            for (String objectClass : objectModel.getSubscribedObjects()) {
                 int objectHandle = rtiAmb.getObjectClassHandle(objectClass);
                 AttributeHandleSet attributes = RtiFactoryFactory.getRtiFactory().createAttributeHandleSet();
 
-                for (String attributeName : simulationObjectModel.getSubscribedAttributes(objectClass)) {
+                for (String attributeName : objectModel.getSubscribedAttributes(objectClass)) {
                     logger.info("creating HLA subscription for object=" + objectClass + ", attribute=" + attributeName);
                     int attributeHandle = rtiAmb.getAttributeHandle(attributeName, objectHandle);
                     attributes.add(attributeHandle);
@@ -346,8 +374,7 @@ public class GLDFederate {
         }
     }
 
-    private void synchronize(String label)
-            throws RTIAmbassadorException {  
+    private void synchronize(String label) {  
         logger.info("waiting for announcement of the synchronization point " + label);
         while (fedAmb.isSynchronizationPointPending(label) == false) {
             tick();
@@ -366,8 +393,7 @@ public class GLDFederate {
         logger.info("federation synchronized on " + label);
     }
 
-    private void advanceLogicalTime()
-            throws RTIAmbassadorException {
+    private void advanceLogicalTime() {
         Double newLogicalTime = fedAmb.getLogicalTime() + configuration.getLogicalTimeStep();
         logger.info("advancing logical time to " + newLogicalTime);
         try {
@@ -391,27 +417,18 @@ public class GLDFederate {
         }
     }
     
-    public static void main(String args[]) {
-        if (args.length != 1) {
-            logger.error("command line argument for YAML configuration file not specified");
-            System.exit(1);
-        }
-        
-        try {
-            GLDFederate gridlabd = new GLDFederate(args[0]);
-            gridlabd.execute();
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
-    
-    
-    private void runGLD()
+    private void startGLD()
             throws IOException {
-        long unixStopTime = configuration.getUnixTimeStop();
-        String stopTime = unixStopTime < 0 ? "NEVER" : client.unixTimeToDate(unixStopTime); 
         String startTime = client.unixTimeToDate(configuration.getUnixTimeStart());
+        String stopTime;
+        if (configuration.getUnixTimeStop() < 0) {
+            stopTime = "NEVER";
+        } else {
+            stopTime = client.unixTimeToDate(configuration.getUnixTimeStop());
+        }
         
+        // how do we handle time zones in GLD?
+        // server_quit_on_close=1 can be used for clean exits if the client connection is recycled
         logger.debug("creating the GridLAB-D process builder");
         ProcessBuilder builder = new ProcessBuilder();
         builder.inheritIO(); // maybe replace
@@ -436,12 +453,11 @@ public class GLDFederate {
         gridlabd = builder.start();
         
         // this will handle SIGINT; pkill java will be required for other halt conditions 
-        logger.info("regisstering shutdown hook");
+        logger.info("registering shutdown hook");
         Thread gldShutdown = new Thread() {
             public void run() {
                 try {
                     client.shutdown();
-                    logger.info("sent shutdown command to GridLAB-D");
                 } catch (GLDException e) {
                     logger.info("destroying the GridLAB-D process");
                     gridlabd.destroy();
@@ -463,8 +479,8 @@ public class GLDFederate {
                 client.getUnixTime();
                 connected = true;
             } catch (GLDException e) {
-                // should check process exit value to see if still running
                 if (attempt == configuration.getMaxConnectionAttempts()) {
+                    // does GridLAB-D shutdown successfully when this case occurs?
                     throw e;
                 }
                 final int delay = configuration.getWaitReconnectMs();
@@ -482,13 +498,26 @@ public class GLDFederate {
         
         boolean advancing = true;
         while (advancing) {
-            long currentUnixTime = client.getUnixTime();
-            if (currentUnixTime < unixTime) {
+            if (client.getUnixTime() < unixTime) {
                 logger.debug("waiting " + configuration.getWaitAdvanceTimeMs() + " ms for GridLAB-D clock to advance");
                 Thread.sleep(configuration.getWaitAdvanceTimeMs());
             } else {
                 advancing = false;
             }
+        }
+    }
+    
+    public static void main(String args[]) {
+        if (args.length != 1) {
+            logger.error("command line argument for YAML configuration file not specified");
+            System.exit(1);
+        }
+        
+        try {
+            GLDFederate gridlabd = new GLDFederate(args[0]);
+            gridlabd.execute();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
     }
 }
