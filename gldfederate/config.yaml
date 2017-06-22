@@ -9,4 +9,4 @@ time_start: 1244020500
 time_stop: -1
 
 model_filepath: model.glm
-working_directory: gld
+working_directory: ../model

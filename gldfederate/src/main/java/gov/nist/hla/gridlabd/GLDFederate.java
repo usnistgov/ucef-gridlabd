@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -45,6 +46,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 public class GLDFederate {    
     private static final Logger logger = LogManager.getLogger();
     
+    private static final String INTERACTION_ROOT = "InteractionRoot.C2WInteractionRoot";
     private static final String SIMULATION_END = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimEnd";
     private static final String SIMULATION_TIME = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimTime";
     private static final String READY_TO_POPULATE = "readyToPopulate";
@@ -201,11 +203,17 @@ public class GLDFederate {
         LogicalTime timestamp = new DoubleTime(fedAmb.getLogicalTime() + configuration.getLookahead());
         
         try {
+            Set<String> rootParameters = objectModel.getParameterSet(INTERACTION_ROOT);
             for (String interactionName : objectModel.getPublishedInteractions()) {
                 int interactionHandle = rtiAmb.getInteractionClassHandle(interactionName);
                 
                 SuppliedParameters suppliedParameters = RtiFactoryFactory.getRtiFactory().createSuppliedParameters();
                 for (String parameterName : objectModel.getParameterSet(interactionName)) {
+                    if (rootParameters.contains(parameterName)) {
+                        // we probably need to set these to some reasonable default value
+                        logger.debug("skipping parameter " + parameterName + " from " + INTERACTION_ROOT);
+                        continue;
+                    }
                     String object = interactionName;
                     String property = parameterName;
                     String value;
@@ -328,7 +336,12 @@ public class GLDFederate {
     }
 
     private void handleInteraction(String interactionName, HashMap<String, String> parameters) {
+        Set<String> rootParameters = objectModel.getParameterSet(INTERACTION_ROOT);
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            if (rootParameters.contains(entry.getKey())) {
+                logger.debug("skipping parameter " + entry.getKey() + " from " + INTERACTION_ROOT);
+                continue;
+            }
             String object = interactionName;
             String property = entry.getKey();
             String value = entry.getValue();
