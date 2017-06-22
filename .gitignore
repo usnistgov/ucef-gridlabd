@@ -1,5 +1,6 @@
-/target/
-/logs/
+**/target/
+**/logs/
+/model/*.csv
 .settings
 .classpath
 .project

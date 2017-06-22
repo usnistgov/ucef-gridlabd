@@ -2,7 +2,7 @@ federationManagerParameter:
   Step: 1.0
   Lookahead: 0.1
   RootPathEnvVarKey: CPSWT_ROOT
-  RealTimeMode: 1
+  RealTimeMode: 0
   FederationEndTime: 0
   Seed4Dur: 0
   AutoStart: 1

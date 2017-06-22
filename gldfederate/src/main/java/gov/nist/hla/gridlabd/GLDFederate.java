@@ -29,7 +29,6 @@ import hla.rti.SuppliedAttributes;
 import hla.rti.SuppliedParameters;
 import hla.rti.TimeConstrainedAlreadyEnabled;
 import hla.rti.TimeRegulationAlreadyEnabled;
-import hla.rti.jlc.EncodingHelpers;
 import hla.rti.jlc.RtiFactoryFactory;
 
 import org.apache.logging.log4j.LogManager;
@@ -137,6 +136,7 @@ public class GLDFederate {
             }
             startGLD();
             connectToGLD();
+            gridlabdStarted = true;
             synchronize(READY_TO_RUN);
             
             if (configuration.getUnixTimeStop() < 0) {
@@ -148,27 +148,23 @@ public class GLDFederate {
                     logger.warn("no exit condition specified; will run forever until Ctrl+C");
                 }
             }
+            
+            double simulationTime = configuration.getUnixTimeStart();
             final double timestep = configuration.getLogicalTimeStep() * configuration.getSimulationTimeScale();
-            while (!receivedSimEnd && !reachedStopTime) {
-                double currentLogicalTime = fedAmb.getLogicalTime();
-                
-                sendPublications();
-                if (currentLogicalTime >= configuration.getUnixTimeStop()) {
-                    reachedStopTime = true;
-                } else {
+            while (!receivedSimEnd && !reachedStopTime) {                
+                try {
+                    int code = gridlabd.exitValue();
+                    logger.info("GridLAB-D done with exit value = " + code);
+                    reachedStopTime = true; // or due to exception; might check code value
+                } catch (IllegalThreadStateException e) {
+                    sendPublications();
                     handleSubscriptions();
-                    try {
-                        int code = gridlabd.exitValue();
-                        logger.info("GridLAB-D done with exit value = " + code);
-                        reachedStopTime = true; // or due to exception; might check code value
-                    } catch (IllegalThreadStateException e) {
-                        double nextLogicalTime = currentLogicalTime + timestep;
-                        if (nextLogicalTime > configuration.getUnixTimeStop()) {
-                            nextLogicalTime = configuration.getUnixTimeStop();
-                        }
-                        advanceSimulationTime((int)nextLogicalTime); // truncate
-                        advanceLogicalTime();
+                    simulationTime += timestep;
+                    if (simulationTime > configuration.getUnixTimeStop()) {
+                        simulationTime = configuration.getUnixTimeStop();
                     }
+                    advanceSimulationTime((int)simulationTime); // truncate
+                    advanceLogicalTime();
                 }
             }
         } finally {
@@ -230,7 +226,7 @@ public class GLDFederate {
                     }
                     
                     int parameterHandle = rtiAmb.getParameterHandle(parameterName, interactionHandle);
-                    byte[] parameterValue = EncodingHelpers.encodeString(value);
+                    byte[] parameterValue = value.getBytes(); // cpswt does not use the null character
                     suppliedParameters.add(parameterHandle, parameterValue);
                 }
                 
@@ -257,9 +253,11 @@ public class GLDFederate {
                     } else {
                         value = client.getObjectProperty(object, property);
                     }
+                    logger.debug(object + "." + property + "=" + value);
+                    logger.debug("value size: " + value.length());
                     
                     int attributeHandle = rtiAmb.getAttributeHandle(attributeName, classHandle);
-                    byte[] attributeValue = EncodingHelpers.encodeString(value);
+                    byte[] attributeValue = value.getBytes(); // cpswt does not use the null character
                     suppliedAttributes.add(attributeHandle, attributeValue);
                 }
                 

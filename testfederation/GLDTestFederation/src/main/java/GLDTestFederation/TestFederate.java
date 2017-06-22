@@ -44,16 +44,16 @@ public class TestFederate extends TestFederateBase {
 
       atr.requestSyncStart();
       
-      // install 1 new door every 2 hours
-      if (((int)logicalTime) % 12 == 0) {
+      // install 1 new door every 30 minutes
+      if (((int)logicalTime) % 3 == 0) {
           installedDoors += 1;
           F1_house_A15 a15 = create_F1_house_A15();
           a15.set_number_of_doors(installedDoors);;
           a15.sendInteraction(getRTI(), logicalTime);
       }
       
-      // build 1 new story every 6 hours
-      if (((int)logicalTime) % 36 == 0) {
+      // build 1 new story every 2 hours
+      if (((int)logicalTime) % 12 == 0) {
           builtStories += 1;
           a8.set_number_of_stories(builtStories);
           a8.updateAttributeValues(getRTI(), logicalTime);
