@@ -62,9 +62,9 @@ public class GLDClient {
         }
     }
     
-    public int getGlobalVariableAsInteger(String variable)
+    public long getGlobalVariableAsLong(String variable)
             throws GLDException {
-        return stringToInteger(getGlobalVariable(variable));
+        return stringToLong(getGlobalVariable(variable));
     }
     
     public double getGlobalVariableAsDouble(String variable)
@@ -81,9 +81,9 @@ public class GLDClient {
         }
     }
     
-    public int getObjectPropertyAsInteger(String object, String property)
+    public long getObjectPropertyAsLong(String object, String property)
             throws GLDException {
-        return stringToInteger(getObjectProperty(object, property));
+        return stringToLong(getObjectProperty(object, property));
     }
     
     public double getObjectPropertyAsDouble(String object, String property)
@@ -114,9 +114,9 @@ public class GLDClient {
     }
     
     // throws NumberFormatException at runtime if the string cannot be converted
-    private int stringToInteger(String str) {
+    private long stringToLong(String str) {
         // GridLAB-D integers are formatted as "value [unit]" where value matches %hd, %ld, or %ll and unit is optional
-        return (int) stringToDouble(str);
+        return (long) stringToDouble(str);
     }
     
     // throws NumberFormatException at runtime if the string cannot be converted

@@ -221,7 +221,7 @@ public class GLDFederate {
                     String dataType = objectModel.getParameterType(interactionName, parameterName);
                     if (dataType.contains("integer")) {
                         // required to strip the units from the returned value
-                        value = Integer.toString(client.getObjectPropertyAsInteger(object, property));
+                        value = Long.toString(client.getObjectPropertyAsLong(object, property));
                     } else if (dataType.contains("float")) {
                         // required to strip the units from the returned value
                         value = Double.toString(client.getObjectPropertyAsDouble(object, property));
@@ -250,7 +250,7 @@ public class GLDFederate {
                     String dataType = objectModel.getAttributeType(objectClassName, attributeName);
                     if (dataType.contains("integer")) {
                         // required to strip the units from the returned value
-                        value = Integer.toString(client.getObjectPropertyAsInteger(object, property));
+                        value = Long.toString(client.getObjectPropertyAsLong(object, property));
                     } else if (dataType.contains("float")) {
                         // required to strip the units from the returned value
                         value = Double.toString(client.getObjectPropertyAsDouble(object, property));
