@@ -214,7 +214,7 @@ public class GLDFederate {
                         logger.debug("skipping parameter " + parameterName + " from " + INTERACTION_ROOT);
                         continue;
                     }
-                    String object = interactionName;
+                    String object = truncateClassName(interactionName);
                     String property = parameterName;
                     String value;
                     
@@ -243,7 +243,7 @@ public class GLDFederate {
                 
                 SuppliedAttributes suppliedAttributes = RtiFactoryFactory.getRtiFactory().createSuppliedAttributes();
                 for (String attributeName : objectModel.getPublishedAttributes(objectClassName)) {
-                    String object = objectClassName;
+                    String object = truncateClassName(objectClassName);
                     String property = attributeName;
                     String value;
                     
@@ -342,7 +342,7 @@ public class GLDFederate {
                 logger.debug("skipping parameter " + entry.getKey() + " from " + INTERACTION_ROOT);
                 continue;
             }
-            String object = interactionName;
+            String object = truncateClassName(interactionName);
             String property = entry.getKey();
             String value = entry.getValue();
             try {
@@ -357,7 +357,7 @@ public class GLDFederate {
     
     private void handleObjectReflection(String objectName, String objectClassName, HashMap<String, String> attributes) {
         for (Map.Entry<String, String> entry : attributes.entrySet()) {
-            String object = objectClassName;
+            String object = truncateClassName(objectClassName);
             String property = entry.getKey();
             String value = entry.getValue();
             try {
@@ -369,6 +369,16 @@ public class GLDFederate {
             }
         }
     }
+    
+    private String truncateClassName(String className) {
+        String result = className;
+        
+        int lastPeriod = className.lastIndexOf(".");
+        if (lastPeriod > 0) {
+          result = className.substring(lastPeriod+1);
+        }
+        return result;
+  }
     
     private void tick() {
         try {

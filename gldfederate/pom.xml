@@ -62,7 +62,7 @@
                         <argument>-Djava.net.preferIPv4Stack=true</argument>
                         <argument>-classpath</argument>
                         <classpath/>
-                        <argument>gldfederate.GLDFederate</argument>
+                        <argument>gov.nist.hla.gridlabd.GLDFederate</argument>
                         <argument>${configuration.filepath}</argument>
                     </arguments>
                 </configuration>
