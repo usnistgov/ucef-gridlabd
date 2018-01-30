@@ -1,0 +1,30 @@
+{
+  "federateTypesAllowed": [
+    "GridLabD",
+    "TestFederate"
+  ],
+  "expectedFederates": [
+    {
+      "federateType": "GridLabD",
+      "count": 1
+    },
+    {
+      "federateType": "TestFederate",
+      "count": 1
+    }
+  ],
+  "lateJoinerFederates": [
+    {
+      "federateType": "GridLabD",
+      "count": 0
+    },
+    {
+      "federateType": "TestFederate",
+      "count": 0
+    }
+  ],
+  "pauseTimes": [],
+  "coaDefinition": "conf/coaConfig.json",
+  "coaSelection": "conf/coaSelection.json",
+  "terminateOnCOAFinish": false
+}

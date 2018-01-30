@@ -1,0 +1,239 @@
+{
+  "__OBJECTS__": {
+    "9e7ac7c8-38cf-4af4-83d0-e60ee934840f": {
+      "attributes": {
+        "name": "TestFederate",
+        "TimeRegulating": false,
+        "TimeConstrained": "true",
+        "Step": "1.0",
+        "Meld": "false",
+        "Lookahead": "0.2",
+        "InstantiationScript": "",
+        "GeneratorClass": "",
+        "FederateType": "1",
+        "EnableROAsynchronousDelivery": "true"
+      },
+      "__FEDERATE_BASE__": "JavaFederate",
+      "federates": [],
+      "__FEDERATE_TYPE__": "directly deployable",
+      "parameters": [],
+      "inputs": [
+        {
+          "GUID": "64eb69d0-3ab8-4021-8afc-d0ef14eba41d"
+        }
+      ],
+      "outputs": [
+        {
+          "GUID": "a7eed8c4-3031-44b1-a1f0-b8412373c238"
+        },
+        {
+          "GUID": "b150cac9-1b40-4ea9-9687-70fee3eba68e"
+        }
+      ],
+      "RegistryInfo": "",
+      "documentation": "No documentation exists yet.",
+      "repository": "No repository exists yet.",
+      "GUID": "9e7ac7c8-38cf-4af4-83d0-e60ee934840f"
+    },
+    "809a5ed9-3008-4160-ada4-593e7a8adde2": {
+      "attributes": {
+        "name": "InteractionRoot",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "63753470-7a79-44cc-ad59-de1d5a73e3d0"
+      },
+      "parameters": [],
+      "GUID": "809a5ed9-3008-4160-ada4-593e7a8adde2"
+    },
+    "f0ed86f6-580e-441d-98a5-527deea172b7": {
+      "attributes": {
+        "name": "C2WInteractionRoot",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "809a5ed9-3008-4160-ada4-593e7a8adde2"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "f0ed86f6-580e-441d-98a5-527deea172b7"
+    },
+    "a7eed8c4-3031-44b1-a1f0-b8412373c238": {
+      "attributes": {
+        "name": "HeatingControl",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "f0ed86f6-580e-441d-98a5-527deea172b7"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "name",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "heating_setpoint",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "a7eed8c4-3031-44b1-a1f0-b8412373c238"
+    },
+    "b150cac9-1b40-4ea9-9687-70fee3eba68e": {
+      "attributes": {
+        "name": "CoolingControl",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "f0ed86f6-580e-441d-98a5-527deea172b7"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "name",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "cooling_setpoint",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "b150cac9-1b40-4ea9-9687-70fee3eba68e"
+    },
+    "64eb69d0-3ab8-4021-8afc-d0ef14eba41d": {
+      "attributes": {
+        "name": "Global",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "f0ed86f6-580e-441d-98a5-527deea172b7"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "clock",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "64eb69d0-3ab8-4021-8afc-d0ef14eba41d"
+    }
+  },
+  "__ROOT_OBJECT__": {
+    "GUID": "9e7ac7c8-38cf-4af4-83d0-e60ee934840f",
+    "name": "TestFederate",
+    "version": "0.0.1",
+    "description": ""
+  },
+  "Federates": {
+    "9e7ac7c8-38cf-4af4-83d0-e60ee934840f": ""
+  },
+  "COAs": {},
+  "Experiments": {},
+  "Interactions": {
+    "809a5ed9-3008-4160-ada4-593e7a8adde2": "",
+    "f0ed86f6-580e-441d-98a5-527deea172b7": "",
+    "a7eed8c4-3031-44b1-a1f0-b8412373c238": "",
+    "b150cac9-1b40-4ea9-9687-70fee3eba68e": "",
+    "64eb69d0-3ab8-4021-8afc-d0ef14eba41d": ""
+  },
+  "Repositories": [],
+  "Builds": [],
+  "Executions": []
+}

@@ -1,0 +1,334 @@
+{
+  "__OBJECTS__": {
+    "09b01284-c923-4a1f-a73f-ea9f62c927c4": {
+      "attributes": {
+        "name": "GridLabD",
+        "TimeRegulating": "true",
+        "TimeConstrained": "true",
+        "Step": "1.0",
+        "Meld": "false",
+        "Lookahead": "0.2",
+        "InstantiationScript": "",
+        "GeneratorClass": "",
+        "FederateType": "1",
+        "EnableROAsynchronousDelivery": "true"
+      },
+      "__FEDERATE_BASE__": "JavaFederate",
+      "federates": [],
+      "__FEDERATE_TYPE__": "directly deployable",
+      "parameters": [],
+      "inputs": [
+        {
+          "GUID": "c8e7bd7a-8a51-43fd-a406-5d2ed91b36e3"
+        },
+        {
+          "GUID": "0ab0074c-f47f-41b5-a1bf-647a302f0941"
+        },
+        {
+          "GUID": "a5f90d57-fae3-4ca6-ad77-faa438debd43"
+        }
+      ],
+      "outputs": [
+        {
+          "GUID": "b65fcf80-d4bb-4531-941e-099cdcbc05fc"
+        }
+      ],
+      "RegistryInfo": "",
+      "documentation": "No documentation exists yet.",
+      "repository": "No repository exists yet.",
+      "GUID": "09b01284-c923-4a1f-a73f-ea9f62c927c4"
+    },
+    "27b5fd5c-d975-40e9-a491-ad6663d64003": {
+      "attributes": {
+        "name": "InteractionRoot",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "bc788f4e-ab67-4fe0-adfd-ee05aba49053"
+      },
+      "parameters": [],
+      "GUID": "27b5fd5c-d975-40e9-a491-ad6663d64003"
+    },
+    "430fcaa8-dc11-4f18-bdee-49b8ee5fe60a": {
+      "attributes": {
+        "name": "C2WInteractionRoot",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "27b5fd5c-d975-40e9-a491-ad6663d64003"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "430fcaa8-dc11-4f18-bdee-49b8ee5fe60a"
+    },
+    "6f4a40a8-d57e-4e05-ad65-1427d4fbfed9": {
+      "attributes": {
+        "name": "SimulationControl",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "430fcaa8-dc11-4f18-bdee-49b8ee5fe60a"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "6f4a40a8-d57e-4e05-ad65-1427d4fbfed9"
+    },
+    "c8e7bd7a-8a51-43fd-a406-5d2ed91b36e3": {
+      "attributes": {
+        "name": "SimTime",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "6f4a40a8-d57e-4e05-ad65-1427d4fbfed9"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "timeStart",
+          "ParameterType": "int",
+          "Hidden": "false"
+        },
+        {
+          "name": "timeStop",
+          "ParameterType": "int",
+          "Hidden": "false"
+        },
+        {
+          "name": "timeScale",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "timeZone",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "c8e7bd7a-8a51-43fd-a406-5d2ed91b36e3"
+    },
+    "b65fcf80-d4bb-4531-941e-099cdcbc05fc": {
+      "attributes": {
+        "name": "Global",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "430fcaa8-dc11-4f18-bdee-49b8ee5fe60a"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "clock",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "b65fcf80-d4bb-4531-941e-099cdcbc05fc"
+    },
+    "0ab0074c-f47f-41b5-a1bf-647a302f0941": {
+      "attributes": {
+        "name": "HeatingControl",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "430fcaa8-dc11-4f18-bdee-49b8ee5fe60a"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "name",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "heating_setpoint",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "0ab0074c-f47f-41b5-a1bf-647a302f0941"
+    },
+    "a5f90d57-fae3-4ca6-ad77-faa438debd43": {
+      "attributes": {
+        "name": "CoolingControl",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "430fcaa8-dc11-4f18-bdee-49b8ee5fe60a"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "name",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "cooling_setpoint",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "a5f90d57-fae3-4ca6-ad77-faa438debd43"
+    }
+  },
+  "__ROOT_OBJECT__": {
+    "GUID": "09b01284-c923-4a1f-a73f-ea9f62c927c4",
+    "name": "GridLabD",
+    "version": "0.0.1",
+    "description": ""
+  },
+  "Federates": {
+    "09b01284-c923-4a1f-a73f-ea9f62c927c4": ""
+  },
+  "COAs": {},
+  "Experiments": {},
+  "Interactions": {
+    "27b5fd5c-d975-40e9-a491-ad6663d64003": "",
+    "430fcaa8-dc11-4f18-bdee-49b8ee5fe60a": "",
+    "6f4a40a8-d57e-4e05-ad65-1427d4fbfed9": "",
+    "c8e7bd7a-8a51-43fd-a406-5d2ed91b36e3": "",
+    "b65fcf80-d4bb-4531-941e-099cdcbc05fc": "",
+    "0ab0074c-f47f-41b5-a1bf-647a302f0941": "",
+    "a5f90d57-fae3-4ca6-ad77-faa438debd43": ""
+  },
+  "Repositories": [],
+  "Builds": [],
+  "Executions": []
+}
