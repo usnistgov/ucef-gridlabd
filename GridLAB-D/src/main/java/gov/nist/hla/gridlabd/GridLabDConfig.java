@@ -10,8 +10,10 @@ public class GridLabDConfig extends GatewayFederateConfig {
     
     private int serverPortNumber = 6267;
     
-    private double simulationTimeScale;
-    private boolean simulationTimeScaleSet = false;
+    private String simulationTimeZone = null;
+    
+    // if negative, expects to receive InteractionRoot.C2WInteractionRoot.SimControl.SimTime
+    private double simulationTimeScale = -1;
     
     // if negative, expects to receive InteractionRoot.C2WInteractionRoot.SimControl.SimTime
     private long unixTimeStart = -1;
@@ -52,18 +54,19 @@ public class GridLabDConfig extends GatewayFederateConfig {
         return serverPortNumber;
     }
     
+    public void setSimulationTimeZone(String timeZone) {
+        this.simulationTimeZone = timeZone;
+    }
+    
+    public String getSimulationTimeZone() {
+        return simulationTimeZone;
+    }
+    
     public void setSimulationTimeScale(double scale) {
-        if (scale <= 0) {
-            throw new RuntimeException("invalid time scale " + scale);
-        }
         this.simulationTimeScale = scale;
-        this.simulationTimeScaleSet = true;
     }
     
     public double getSimulationTimeScale() {
-        if (!simulationTimeScaleSet) {
-            throw new ValueNotSet("simulaton_time_scale");
-        }
         return simulationTimeScale;
     }
     

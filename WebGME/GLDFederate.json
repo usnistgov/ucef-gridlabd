@@ -1,9 +1,9 @@
 {
   "__OBJECTS__": {
-    "e7db752d-195b-4f9f-a381-bd0a13514609": {
+    "232a42d7-4e7c-4e92-8374-976776a44a95": {
       "attributes": {
-        "name": "TestFederate",
-        "TimeRegulating": false,
+        "name": "GLDFederate",
+        "TimeRegulating": "true",
         "TimeConstrained": "true",
         "Step": "1.0",
         "Meld": "false",
@@ -19,26 +19,26 @@
       "parameters": [],
       "inputs": [
         {
-          "GUID": "7c55b9b6-4502-44cd-aa95-57263a13008b"
+          "GUID": "b55a4b91-ab59-4b1a-b7fa-4b3e57f571f8"
+        },
+        {
+          "GUID": "83ca83b1-6026-4f6f-82ee-b1abdb46f292"
+        },
+        {
+          "GUID": "74b26e3c-f3d4-4750-8819-439d4b2ac136"
         }
       ],
       "outputs": [
         {
-          "GUID": "6e261461-02d2-4053-9272-a09e559ab95d"
-        },
-        {
-          "GUID": "c36255be-478c-4694-84b4-6e7fc3c4ef8b"
-        },
-        {
-          "GUID": "feaeb8e7-c474-49b6-9647-40c9163bb4ac"
+          "GUID": "66e5769a-cda0-486d-b110-6332edaeec44"
         }
       ],
       "RegistryInfo": "",
       "documentation": "No documentation exists yet.",
       "repository": "No repository exists yet.",
-      "GUID": "e7db752d-195b-4f9f-a381-bd0a13514609"
+      "GUID": "232a42d7-4e7c-4e92-8374-976776a44a95"
     },
-    "29025038-8775-48f7-b4b1-484806872ff5": {
+    "02409ca9-8fd5-44f7-9933-7be0978a0707": {
       "attributes": {
         "name": "InteractionRoot",
         "Order": "timestamp",
@@ -47,12 +47,12 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "8be550a7-1422-4fae-898a-5f58af00556d"
+        "GUID": "0a71bdb7-67ac-4655-8b88-104b8928ffc4"
       },
       "parameters": [],
-      "GUID": "29025038-8775-48f7-b4b1-484806872ff5"
+      "GUID": "02409ca9-8fd5-44f7-9933-7be0978a0707"
     },
-    "af167dfa-8ac7-475d-ad8c-79cdbb310bc7": {
+    "96fe8343-b8b1-46a3-95dd-9da3dc5b3725": {
       "attributes": {
         "name": "C2WInteractionRoot",
         "Order": "timestamp",
@@ -61,7 +61,7 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "29025038-8775-48f7-b4b1-484806872ff5"
+        "GUID": "02409ca9-8fd5-44f7-9933-7be0978a0707"
       },
       "parameters": [
         {
@@ -85,54 +85,9 @@
           "Hidden": "false"
         }
       ],
-      "GUID": "af167dfa-8ac7-475d-ad8c-79cdbb310bc7"
+      "GUID": "96fe8343-b8b1-46a3-95dd-9da3dc5b3725"
     },
-    "6e261461-02d2-4053-9272-a09e559ab95d": {
-      "attributes": {
-        "name": "HeatingControl",
-        "Order": "timestamp",
-        "LogLevel": "NORMAL",
-        "EnableLogging": "false",
-        "Delivery": "reliable"
-      },
-      "__INTERACTION_BASE__": {
-        "GUID": "af167dfa-8ac7-475d-ad8c-79cdbb310bc7"
-      },
-      "parameters": [
-        {
-          "name": "originFed",
-          "ParameterType": "String",
-          "Hidden": "false"
-        },
-        {
-          "name": "sourceFed",
-          "ParameterType": "String",
-          "Hidden": "false"
-        },
-        {
-          "name": "name",
-          "ParameterType": "String",
-          "Hidden": "false"
-        },
-        {
-          "name": "heating_setpoint",
-          "ParameterType": "double",
-          "Hidden": "false"
-        },
-        {
-          "name": "actualLogicalGenerationTime",
-          "ParameterType": "double",
-          "Hidden": "false"
-        },
-        {
-          "name": "federateFilter",
-          "ParameterType": "String",
-          "Hidden": "false"
-        }
-      ],
-      "GUID": "6e261461-02d2-4053-9272-a09e559ab95d"
-    },
-    "c5241b53-2491-480a-9d9e-56a31492dba4": {
+    "62f1736a-4324-4b90-92c8-a27e2f36c46d": {
       "attributes": {
         "name": "SimulationControl",
         "Order": "timestamp",
@@ -141,7 +96,7 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "af167dfa-8ac7-475d-ad8c-79cdbb310bc7"
+        "GUID": "96fe8343-b8b1-46a3-95dd-9da3dc5b3725"
       },
       "parameters": [
         {
@@ -165,9 +120,9 @@
           "Hidden": "false"
         }
       ],
-      "GUID": "c5241b53-2491-480a-9d9e-56a31492dba4"
+      "GUID": "62f1736a-4324-4b90-92c8-a27e2f36c46d"
     },
-    "c36255be-478c-4694-84b4-6e7fc3c4ef8b": {
+    "b55a4b91-ab59-4b1a-b7fa-4b3e57f571f8": {
       "attributes": {
         "name": "SimTime",
         "Order": "timestamp",
@@ -176,7 +131,7 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "c5241b53-2491-480a-9d9e-56a31492dba4"
+        "GUID": "62f1736a-4324-4b90-92c8-a27e2f36c46d"
       },
       "parameters": [
         {
@@ -220,9 +175,9 @@
           "Hidden": "false"
         }
       ],
-      "GUID": "c36255be-478c-4694-84b4-6e7fc3c4ef8b"
+      "GUID": "b55a4b91-ab59-4b1a-b7fa-4b3e57f571f8"
     },
-    "7c55b9b6-4502-44cd-aa95-57263a13008b": {
+    "66e5769a-cda0-486d-b110-6332edaeec44": {
       "attributes": {
         "name": "GlobalVariables",
         "Order": "timestamp",
@@ -231,7 +186,7 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "af167dfa-8ac7-475d-ad8c-79cdbb310bc7"
+        "GUID": "96fe8343-b8b1-46a3-95dd-9da3dc5b3725"
       },
       "parameters": [
         {
@@ -260,9 +215,54 @@
           "Hidden": "false"
         }
       ],
-      "GUID": "7c55b9b6-4502-44cd-aa95-57263a13008b"
+      "GUID": "66e5769a-cda0-486d-b110-6332edaeec44"
     },
-    "feaeb8e7-c474-49b6-9647-40c9163bb4ac": {
+    "83ca83b1-6026-4f6f-82ee-b1abdb46f292": {
+      "attributes": {
+        "name": "HeatingControl",
+        "Order": "timestamp",
+        "LogLevel": "NORMAL",
+        "EnableLogging": "false",
+        "Delivery": "reliable"
+      },
+      "__INTERACTION_BASE__": {
+        "GUID": "96fe8343-b8b1-46a3-95dd-9da3dc5b3725"
+      },
+      "parameters": [
+        {
+          "name": "originFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "sourceFed",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "name",
+          "ParameterType": "String",
+          "Hidden": "false"
+        },
+        {
+          "name": "heating_setpoint",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "actualLogicalGenerationTime",
+          "ParameterType": "double",
+          "Hidden": "false"
+        },
+        {
+          "name": "federateFilter",
+          "ParameterType": "String",
+          "Hidden": "false"
+        }
+      ],
+      "GUID": "83ca83b1-6026-4f6f-82ee-b1abdb46f292"
+    },
+    "74b26e3c-f3d4-4750-8819-439d4b2ac136": {
       "attributes": {
         "name": "CoolingControl",
         "Order": "timestamp",
@@ -271,7 +271,7 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "af167dfa-8ac7-475d-ad8c-79cdbb310bc7"
+        "GUID": "96fe8343-b8b1-46a3-95dd-9da3dc5b3725"
       },
       "parameters": [
         {
@@ -305,28 +305,28 @@
           "Hidden": "false"
         }
       ],
-      "GUID": "feaeb8e7-c474-49b6-9647-40c9163bb4ac"
+      "GUID": "74b26e3c-f3d4-4750-8819-439d4b2ac136"
     }
   },
   "__ROOT_OBJECT__": {
-    "GUID": "e7db752d-195b-4f9f-a381-bd0a13514609",
-    "name": "TestFederate",
+    "GUID": "232a42d7-4e7c-4e92-8374-976776a44a95",
+    "name": "GLDFederate",
     "version": "0.0.1",
     "description": ""
   },
   "Federates": {
-    "e7db752d-195b-4f9f-a381-bd0a13514609": ""
+    "232a42d7-4e7c-4e92-8374-976776a44a95": ""
   },
   "COAs": {},
   "Experiments": {},
   "Interactions": {
-    "29025038-8775-48f7-b4b1-484806872ff5": "",
-    "af167dfa-8ac7-475d-ad8c-79cdbb310bc7": "",
-    "6e261461-02d2-4053-9272-a09e559ab95d": "",
-    "c5241b53-2491-480a-9d9e-56a31492dba4": "",
-    "c36255be-478c-4694-84b4-6e7fc3c4ef8b": "",
-    "7c55b9b6-4502-44cd-aa95-57263a13008b": "",
-    "feaeb8e7-c474-49b6-9647-40c9163bb4ac": ""
+    "02409ca9-8fd5-44f7-9933-7be0978a0707": "",
+    "96fe8343-b8b1-46a3-95dd-9da3dc5b3725": "",
+    "62f1736a-4324-4b90-92c8-a27e2f36c46d": "",
+    "b55a4b91-ab59-4b1a-b7fa-4b3e57f571f8": "",
+    "66e5769a-cda0-486d-b110-6332edaeec44": "",
+    "83ca83b1-6026-4f6f-82ee-b1abdb46f292": "",
+    "74b26e3c-f3d4-4750-8819-439d4b2ac136": ""
   },
   "Repositories": [],
   "Builds": [],

@@ -8,13 +8,13 @@
             <semantics></semantics>
         <objectClass>
             <name>House</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Publish</sharing>
             <semantics></semantics>
 
             <attribute>
                 <name>air_temperature</name>
                 <dataType>double</dataType>
-                <sharing>PublishSubscribe</sharing>
+                <sharing>Publish</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
@@ -23,7 +23,7 @@
             <attribute>
                 <name>compressor_count</name>
                 <dataType>int</dataType>
-                <sharing>PublishSubscribe</sharing>
+                <sharing>Publish</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
@@ -32,7 +32,7 @@
             <attribute>
                 <name>compressor_on</name>
                 <dataType>boolean</dataType>
-                <sharing>PublishSubscribe</sharing>
+                <sharing>Publish</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
@@ -41,7 +41,7 @@
             <attribute>
                 <name>name</name>
                 <dataType>String</dataType>
-                <sharing>PublishSubscribe</sharing>
+                <sharing>Publish</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
@@ -85,38 +85,8 @@
                 <semantics></semantics>
             </parameter>
         <interactionClass>
-            <name>ActionBase</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
             <name>FederateJoinInteraction</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Publish</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
 
@@ -135,36 +105,12 @@
             <parameter> 
                 <name>IsLateJoiner</name>
                 <dataType>boolean</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
         </interactionClass>
         <interactionClass>
             <name>FederateResignInteraction</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Publish</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
 
@@ -185,449 +131,23 @@
                 <dataType>boolean</dataType>
                 <semantics></semantics>
             </parameter>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>OutcomeBase</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>SimLog</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>Comment</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>FedName</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>Time</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        <interactionClass>
-            <name>HighPrio</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>Comment</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>FedName</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>Time</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>LowPrio</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>Comment</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>FedName</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>Time</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>MediumPrio</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>Comment</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>FedName</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>Time</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>VeryLowPrio</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>Comment</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>FedName</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>Time</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
         </interactionClass>
         <interactionClass>
             <name>SimulationControl</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Neither</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
         <interactionClass>
             <name>SimEnd</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Subscribe</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>SimPause</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>SimResume</name>
-            <sharing>PublishSubscribe</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
         </interactionClass>
         <interactionClass>
             <name>SimTime</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Subscribe</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
 
             <parameter> 
                 <name>timeScale</name>
@@ -636,35 +156,29 @@
             </parameter>
 
             <parameter> 
-                <name>timeStart</name>
-                <dataType>int</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>timeStop</name>
-                <dataType>int</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
                 <name>timeZone</name>
                 <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>unixTimeStart</name>
+                <dataType>long</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>unixTimeStop</name>
+                <dataType>long</dataType>
                 <semantics></semantics>
             </parameter>
         </interactionClass>
         </interactionClass>
         <interactionClass>
             <name>CoolingControl</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Subscribe</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
 
             <parameter> 
                 <name>cooling_setpoint</name>
@@ -673,82 +187,28 @@
             </parameter>
 
             <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
                 <name>name</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
         </interactionClass>
         <interactionClass>
-            <name>Global</name>
-            <sharing>PublishSubscribe</sharing>
+            <name>GlobalVariables</name>
+            <sharing>Publish</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
 
             <parameter> 
                 <name>clock</name>
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
         </interactionClass>
         <interactionClass>
             <name>HeatingControl</name>
-            <sharing>PublishSubscribe</sharing>
+            <sharing>Subscribe</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
-
-            <parameter> 
-                <name>actualLogicalGenerationTime</name>
-                <dataType>double</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
 
             <parameter> 
                 <name>heating_setpoint</name>
@@ -758,18 +218,6 @@
 
             <parameter> 
                 <name>name</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>originFed</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-
-            <parameter> 
-                <name>sourceFed</name>
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>

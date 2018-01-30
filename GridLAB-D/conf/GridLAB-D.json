@@ -1,6 +1,6 @@
 {
-    "federateName": "GridLabD",
-    "federationId": "GridLabDTestFederation",
+    "federateName": "GLDFederate",
+    "federationId": "TestFederation",
     "fomFilepath": "conf/GridLAB-D.xml",
     "maxReconnectAttempts": 12,
     "waitReconnectMs": 5000,
@@ -8,6 +8,5 @@
     "stepSize": 1.0,
     "lookAhead": 0.1,
     "modelFilepath": "hla_federate_example.glm",
-    "workingDirectory": "model",
-    "simulationTimeScale": 1.0
+    "workingDirectory": "model"
 }

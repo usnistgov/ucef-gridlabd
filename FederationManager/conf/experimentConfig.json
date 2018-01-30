@@ -1,11 +1,11 @@
 {
   "federateTypesAllowed": [
-    "GridLabD",
+    "GLDFederate",
     "TestFederate"
   ],
   "expectedFederates": [
     {
-      "federateType": "GridLabD",
+      "federateType": "GLDFederate",
       "count": 1
     },
     {
@@ -15,7 +15,7 @@
   ],
   "lateJoinerFederates": [
     {
-      "federateType": "GridLabD",
+      "federateType": "GLDFederate",
       "count": 0
     },
     {

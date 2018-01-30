@@ -1,7 +1,7 @@
 {
   "federateRTIInitWaitTimeMs": 200,
   "federateType": "FederationManager",
-  "federationId": "GridLabDTestFederation",
+  "federationId": "TestFederation",
   "isLateJoiner": true,
   "lookAhead": 0.1,
   "stepSize": 1,
@@ -11,6 +11,6 @@
   "federatesEndpoint": "/federates",
   "federationEndTime": 0,
   "realTimeMode": true,
-  "fedFile": "fom/GridLabDTestFederation.fed",
+  "fedFile": "fom/TestFederation.fed",
   "experimentConfig": "conf/experimentConfig.json"
 }

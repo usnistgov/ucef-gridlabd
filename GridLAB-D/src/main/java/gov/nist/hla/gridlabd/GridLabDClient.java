@@ -23,80 +23,80 @@ public class GridLabDClient {
     }
     
     public void shutdown()
-            throws GLDException {
+            throws GridLabDException {
         try {
             client.get("/control/shutdown");
             logger.info(client.getAuthority() + " : sent shutdown command");
         } catch (HTTPClientException e) {
-            throw new GLDException(e);
+            throw new GridLabDException(e);
         }
     }
     
     public void pauseat(long unixTime)
-            throws GLDException {
+            throws GridLabDException {
         String date = unixTimeToDate(unixTime);
         try {
             // URLEncoder.encode(date, "UTF-8") produces characters GLD does not recognize
             client.get("/control/pauseat=" + date.replaceAll(" ", "%20"));
             logger.info(client.getAuthority() + " : sent pauseat command for " + date);
         } catch (HTTPClientException e) {
-            throw new GLDException(e);
+            throw new GridLabDException(e);
         }
     }
     
     public long getUnixTime()
-            throws GLDException {
+            throws GridLabDException {
         try {
             return dateToUnixTime(client.get("/raw/clock"));
         } catch (HTTPClientException e) {
-            throw new GLDException(e);
+            throw new GridLabDException(e);
         }
     }
     
     public String getGlobalVariable(String variable)
-            throws GLDException {
+            throws GridLabDException {
         try {
             return client.get("/raw/" + variable);
         } catch (HTTPClientException e) {
-            throw new GLDException(e);
+            throw new GridLabDException(e);
         }
     }
     
     public long getGlobalVariableAsLong(String variable)
-            throws GLDException {
+            throws GridLabDException {
         return stringToLong(getGlobalVariable(variable));
     }
     
     public double getGlobalVariableAsDouble(String variable)
-            throws GLDException {
+            throws GridLabDException {
         return stringToDouble(getGlobalVariable(variable));
     }
     
     public String getObjectProperty(String object, String property)
-            throws GLDException {
+            throws GridLabDException {
         try {
             return client.get("/raw/" + object + "/" + property);
         } catch (HTTPClientException e) {
-            throw new GLDException(e);
+            throw new GridLabDException(e);
         }
     }
     
     public long getObjectPropertyAsLong(String object, String property)
-            throws GLDException {
+            throws GridLabDException {
         return stringToLong(getObjectProperty(object, property));
     }
     
     public double getObjectPropertyAsDouble(String object, String property)
-            throws GLDException {
+            throws GridLabDException {
         return stringToDouble(getObjectProperty(object, property));
     }
     
     public void setObjectProperty(String object, String property, String value)
-            throws GLDException {
+            throws GridLabDException {
         try {
             client.get("/raw/" + object + "/" + property + "=" + value);
         } catch (HTTPClientException e) {
-            throw new GLDException(e);
+            throw new GridLabDException(e);
         }
     }
     
@@ -105,11 +105,11 @@ public class GridLabDClient {
     }
     
     public long dateToUnixTime(String date)
-            throws GLDException {
+            throws GridLabDException {
         try {
             return dateFormat.parse(date).getTime()/1000;
         } catch (ParseException e) {
-            throw new GLDException(e);
+            throw new GridLabDException(e);
         }
     }
     

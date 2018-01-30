@@ -54,34 +54,6 @@ public class HTTPClient {
         }
     }
 
-    public void post(String path, String content)
-            throws StatusCodeException,
-                   HTTPClientException {
-        String uri = "http://" + authority + path;
-        HttpPost request = new HttpPost(uri);
-        StringEntity entity = new StringEntity(content, ContentType.APPLICATION_JSON);
-        request.setEntity(entity);
-        sendRequest(request);
-    }
-
-    public void patch(String path, String content)
-            throws StatusCodeException,
-                   HTTPClientException {
-        String uri = "http://" + authority + path;
-        HttpPatch request = new HttpPatch(uri);
-        StringEntity entity = new StringEntity(content, ContentType.APPLICATION_JSON);
-        request.setEntity(entity);
-        sendRequest(request);
-    }
-
-    public void delete(String path)
-            throws StatusCodeException,
-                   HTTPClientException {
-        String uri = "http://" + authority + path;
-        HttpDelete request = new HttpDelete(uri);
-        sendRequest(request);
-    }
-
     private HttpResponse sendRequest(HttpUriRequest request)
             throws StatusCodeException,
                    HTTPClientException {
