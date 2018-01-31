@@ -9,12 +9,6 @@ module tape;
 module climate;
 module residential;
 
-clock {
-    timezone EST+5EDT;
-    starttime '2009-06-02 0:00:00';
-    stoptime '2009-06-03 0:00:00';
-}
-
 object climate {
     name weather;
     tmyfile "AZ-Phoenix.tmy2";

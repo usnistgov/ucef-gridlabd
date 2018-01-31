@@ -102,8 +102,8 @@ public class TestFederate extends TestFederateBase {
         log.trace("sendSimTime");
         
         SimTime time = create_SimTime();
-        time.set_unixTimeStart(1243918800); // 2009-06-02 00:00:00 ET
-        time.set_unixTimeStop(1244005200);  // 2009-06-03 00:00:00 ET
+        time.set_unixTimeStart(1243915200); // 2009-06-02 00:00:00 ET
+        time.set_unixTimeStop(1244001600);  // 2009-06-03 00:00:00 ET
         time.set_timeScale(900);            // 15 minutes
         time.set_timeZone("US/MD/Baltimore");
         time.sendInteraction(getLRC());

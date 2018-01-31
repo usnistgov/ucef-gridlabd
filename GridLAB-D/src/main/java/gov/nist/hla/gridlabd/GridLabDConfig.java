@@ -10,6 +10,8 @@ public class GridLabDConfig extends GatewayFederateConfig {
     
     private int serverPortNumber = 6267;
     
+    private boolean useSimTime = true;
+    
     private String simulationTimeZone = null;
     
     // if negative, expects to receive InteractionRoot.C2WInteractionRoot.SimControl.SimTime

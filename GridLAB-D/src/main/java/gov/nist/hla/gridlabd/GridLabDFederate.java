@@ -279,14 +279,15 @@ public class GridLabDFederate implements GatewayCallback {
                 "--define",
                 "starttime=" + startTime,
                 "--define",
-                "stoptime=" + stopTime,
-                "--define",
-                "pauseat=" + startTime
+                "stoptime=" + stopTime
+                //"--define",
+                //"pauseat=" + startTime
                 );
         Map<String, String> environment = builder.environment();
         environment.put("TZ", configuration.getSimulationTimeZone());
         log.debug("command   = " + Arrays.toString(builder.command().toArray()));
         log.debug("directory = " + configuration.getWorkingDirectory());
+        log.debug("time zone = " + configuration.getSimulationTimeZone());
         
         log.info("launching the GridLAB-D process");
         gridlabd = builder.start();
