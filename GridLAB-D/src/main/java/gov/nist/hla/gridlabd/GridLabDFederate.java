@@ -254,7 +254,7 @@ public class GridLabDFederate implements GatewayCallback {
         isInitialized = true;
     }
     
-    private void startGLD()
+    public void startGLD()
             throws IOException {
         String startTime = client.unixTimeToDate(configuration.getUnixTimeStart());
         String stopTime;
