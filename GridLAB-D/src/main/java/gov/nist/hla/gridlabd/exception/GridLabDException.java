@@ -1,4 +1,4 @@
-package gov.nist.hla.gridlabd;
+package gov.nist.hla.gridlabd.exception;
 
 public class GridLabDException extends RuntimeException {
     public GridLabDException(String message) {

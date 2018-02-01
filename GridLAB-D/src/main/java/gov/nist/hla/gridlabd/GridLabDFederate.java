@@ -23,6 +23,8 @@ import javax.xml.validation.Validator;
 
 import gov.nist.hla.gateway.GatewayCallback;
 import gov.nist.hla.gateway.GatewayFederate;
+import gov.nist.hla.gridlabd.exception.GridLabDException;
+import gov.nist.hla.gridlabd.exception.SchemaValidationException;
 import gov.nist.pages.ucef.ObjectClassConfigType;
 import gov.nist.pages.ucef.PublishedObjectsType;
 import gov.nist.pages.ucef.ucefPackage;
@@ -45,22 +47,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class GridLabDFederate implements GatewayCallback {    
     private static final Logger log = LogManager.getLogger();
     
-    private static final String INTERACTION_ROOT = "InteractionRoot.C2WInteractionRoot";
     private static final String SIMULATION_END = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimEnd";
+    
     private static final String SIMULATION_TIME = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimTime";
+    
+    final private GridLabDConfig configuration;
     
     final private SimpleDateFormat dateFormat;
     
     final private GatewayFederate gateway;
-    
-    final private GridLabDConfig configuration;
     
     final private GridLabDClient client;
     
     private Process gridlabd = null;
     
     private boolean isInitialized = false;
+    
     private boolean receivedSimTime = false;
+    
     private boolean receivedSimEnd = false;
     
     public static GridLabDConfig readConfiguration(String filePath)
@@ -91,14 +95,17 @@ public class GridLabDFederate implements GatewayCallback {
     
     public GridLabDFederate(GridLabDConfig configuration)
             throws SchemaValidationException {
+        this.configuration = configuration;
+        
         registerUcefSchema();
         validateAgainstSchema(configuration.getFomFilepath());
-        this.gateway = new GatewayFederate(configuration, this);
-        this.configuration = configuration;
-        this.client = new GridLabDClient("localhost", configuration.getServerPortNumber());
+        
         // future GridLAB-D releases will continue to support GMT
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
         this.dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        
+        this.gateway = new GatewayFederate(configuration, this);
+        this.client = new GridLabDClient("localhost", configuration.getServerPortNumber());
     }
     
     public void run() {
@@ -109,10 +116,81 @@ public class GridLabDFederate implements GatewayCallback {
     @Override
     public void initializeSelf() {
         log.trace("initializeSelf");
-        createObjectInstances();
+        registerObjectInstances();
     }
     
-    // must be called before gateway constructed
+    @Override
+    public void initializeWithPeers() {
+        log.trace("initializeWithPeers");
+        
+        if (configuration.getUseSimTime()) {
+            InteractionClassType simTime = gateway.getObjectModel().getInteraction(SIMULATION_TIME);
+            if (!gateway.getObjectModel().getSubscribedInteractions().contains(simTime)) {
+                throw new GridLabDException("no subscription for " + SIMULATION_TIME);
+            }
+            
+            while (!receivedSimTime) {
+                try {
+                    if (receivedSimEnd) {
+                        log.warn("received {} prior to initialization", SIMULATION_END);
+                        throw new GridLabDException("unexpected " + SIMULATION_END);
+                    }
+                    log.info("waiting {} ms to receive {}", configuration.getWaitTimeMs(), SIMULATION_TIME);
+                    Thread.sleep(configuration.getWaitTimeMs());
+                    gateway.tick();
+                } catch (FederateNotExecutionMember | InterruptedException e) {
+                    throw new GridLabDException(e);
+                }
+            }
+        } else {
+            log.info("starting GridLAB-D simulation without " + SIMULATION_TIME);
+        }
+        
+        try {
+            startGld();
+            connectToGld();
+        } catch (IOException | InterruptedException e) {
+            throw new GridLabDException(e);
+        }
+        isInitialized = true;
+        log.info("Initialized.");
+    }
+    
+    @Override
+    public void receiveInteraction(Double timeStep, String className, Map<String, String> parameters) {
+        log.trace("receiveInteraction {} {} {}", timeStep, className, parameters.toString());
+        
+        if (className.equals(SIMULATION_END)) {
+            receivedSimEnd = true;
+        } else if (className.equals(SIMULATION_TIME)) {
+            configuration.setUnixTimeStart(Long.valueOf(parameters.get("unixTimeStart")));
+            configuration.setUnixTimeStop(Long.valueOf(parameters.get("unixTimeStop")));
+            configuration.setSimulationTimeScale(Double.valueOf(parameters.get("timeScale")));
+            configuration.setSimulationTimeZone(parameters.get("timeZone"));
+            receivedSimTime = true;
+        } else if (isInitialized) {
+            //handleInteraction(className, parameters);
+        } else {
+            log.warn("dropped interaction " + className);
+        }
+    }
+
+    @Override
+    public void receiveObject(Double timeStep, String className, String instanceName, Map<String, String> attributes) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void doTimeStep(Double timeStep) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void terminate() {
+        log.trace("terminate");
+        // clean shutdown for early exit
+    }
+    
     private void registerUcefSchema() {
         log.info("loading schema {}", ucefPackage.eNS_URI);
         Deserialize.registerPackage(ucefPackage.eNS_URI, ucefPackage.eINSTANCE);
@@ -138,44 +216,65 @@ public class GridLabDFederate implements GatewayCallback {
         }
     }
     
-    private void createObjectInstances() {
-        log.trace("createObjectInstances");
+    private String toTimeStamp(long unixTime) {
+        log.trace("toTimeStamp {}", unixTime);
+        return dateFormat.format(new Date(unixTime*1000));
+    }
+    
+    private long toUnixTime(String timeStamp)
+            throws ParseException {
+        log.trace("toUnixTime {}", timeStamp);
+        return dateFormat.parse(timeStamp).getTime()/1000;
+    }
+    
+    private boolean isGlobalVariable(ObjectClassType object) {
+        log.trace("isGlobalVariable {}", object.getName().getValue());
+        return gateway.getObjectModel().getAttribute(object, "name") == null;
+    }
+    
+    private boolean isGlobalVariable(InteractionClassType interaction) {
+        log.trace("isGlobalVariable {}", interaction.getName().getValue());
+        return gateway.getObjectModel().getParameter(interaction, "name") == null;
+    }
+    
+    private void registerObjectInstances() {
+        log.trace("registerObjectInstances");
         
         for (ObjectClassType object : gateway.getObjectModel().getPublishedObjects()) {
             if (isGlobalVariable(object)) {
-                createGlobalInstance(object);
+                registerGlobalVariable(object);
             } else {
-                createObjectInstance(object);
+                registerGldObjects(object);
             }
         }
     }
     
-    private void createGlobalInstance(ObjectClassType object) {
-        log.trace("createGlobalInstance {}", object.getName());
+    private void registerGlobalVariable(ObjectClassType object) {
+        log.trace("registerGlobalVariable {}", object.getName().getValue());
         
-        String classPath = gateway.getObjectModel().getClassPath(object);
+        final String classPath = gateway.getObjectModel().getClassPath(object);
         
-        if (!getPublishedObjectNames(object).isEmpty()) {
+        if (!getGldObjectNames(object).isEmpty()) {
             log.warn("GridLAB-D object names were associated with global variables in {}", classPath);
         }
         
         try {
             String instanceName = gateway.registerObjectInstance(classPath);
-            // store this somehow
-            log.info("created object instance {} with class {} to publish global variables", instanceName, classPath);
+            // store this somehow for updates
+            log.info("registered object {} with class {} to publish global variables", instanceName, classPath);
         } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished e) {
             throw new GridLabDException(e);
         }
     }
     
-    private void createObjectInstance(ObjectClassType object) {
-        log.trace("createObjectInstance {}", object.getName());
+    private void registerGldObjects(ObjectClassType object) {
+        log.trace("registerGldObjects {}", object.getName().getValue());
         
         String classPath = gateway.getObjectModel().getClassPath(object);
-        Set<String> publishedObjectNames = getPublishedObjectNames(object);
+        Set<String> publishedObjectNames = getGldObjectNames(object);
         
         if (publishedObjectNames.isEmpty()) {
-            log.warn("no GridLAB-D object names were defined for published class {}", classPath);
+            log.warn("no GridLAB-D object names were defined for published object {}", classPath);
         }
         for (String objectName : publishedObjectNames) {
             try {
@@ -183,39 +282,17 @@ public class GridLabDFederate implements GatewayCallback {
                 Map<String, String> initialValues = new HashMap<String, String>();
                 initialValues.put("name", objectName);
                 gateway.updateObject(instanceName, initialValues);
-                // store this somehow
-                log.info("created object instance {} with class {} for GridLAB-D object {}", instanceName, classPath, objectName);
-            } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished | ObjectNotKnown | AttributeNotOwned e) {
+                // store this somehow for updates
+                log.info("registered object {} with class {} to publish {}", instanceName, classPath, objectName);
+            } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished | ObjectNotKnown
+                    | AttributeNotOwned e) {
                 throw new GridLabDException(e);
             }
         }
     }
     
-        /*
-        try {
-            for (String objectClassName : objectModel.getPublishedObjects()) {
-                int objectClassHandle = rtiAmb.getObjectClassHandle(objectClassName);
-                int objectInstanceHandle = rtiAmb.registerObjectInstance(objectClassHandle);
-                objectInstances.put(objectClassName, objectInstanceHandle);
-                log.info("registered instance for " + objectClassName + " with handle " + objectInstanceHandle);
-            }
-        } catch (RTIexception e) {
-            throw new RTIAmbassadorException(e);
-        }
-        */
-    
-    private boolean isGlobalVariable(ObjectClassType object) {
-        log.trace("isGlobalVariable {}", object.getName());
-        return gateway.getObjectModel().getAttribute(object, "name") == null;
-    }
-    
-    private boolean isGlobalVariable(InteractionClassType interaction) {
-        log.trace("isGlobalVariable {}", interaction.getName());
-        return gateway.getObjectModel().getParameter(interaction, "name") == null;
-    }
-    
-    private Set<String> getPublishedObjectNames(ObjectClassType object) {
-        log.trace("getPublishedObjectNames {}", object.getName());
+    private Set<String> getGldObjectNames(ObjectClassType object) {
+        log.trace("getGldObjectNames {}", object.getName().getValue());
         
         Set<String> publishedObjectNames = new HashSet<String>();
         
@@ -225,80 +302,52 @@ public class GridLabDFederate implements GatewayCallback {
                 ObjectClassConfigType objectConfig = (ObjectClassConfigType) feature.getValue();
                 
                 PublishedObjectsType gridlabdObjectNames = objectConfig.getPublishedObjects();
-                if (gridlabdObjectNames != null) {
-                    publishedObjectNames.addAll(gridlabdObjectNames.getObjectName());
+                if (gridlabdObjectNames == null) {
+                    log.debug("no GridLAB-D objects defined for {}", object.getName().getValue());
+                    continue;
                 }
+                publishedObjectNames.addAll(gridlabdObjectNames.getObjectName());
             }
         }
         return publishedObjectNames;
     }
     
-    @Override
-    public void initializeWithPeers() {
-        log.trace("initializeWithPeers");
-        
-        if (configuration.getUnixTimeStart() < 0 || configuration.getSimulationTimeScale() < 0) {
-            if (!gateway.getObjectModel().getSubscribedInteractions().contains(gateway.getObjectModel().getInteraction(SIMULATION_TIME))) {
-                log.error("start time not specified and no subscription to " + SIMULATION_TIME);
-                throw new GridLabDException("no start time specified for the GridLAB-D simulation");
-            }
-            log.info("waiting to receive " + SIMULATION_TIME);
-            while (!receivedSimTime) {
-                // how to recover if we receive simulation end?
-                try {
-                    gateway.tick();
-                } catch (FederateNotExecutionMember e) {
-                    throw new GridLabDException(e);
-                }
-            }
-        } else {
-            log.info("starting simulation without waiting for " + SIMULATION_TIME);
-        }
-        try {
-            startGLD();
-            connectToGLD();
-        } catch (IOException | InterruptedException e) {
-            throw new GridLabDException(e);
-        }
-        isInitialized = true;
-    }
-    
-    private void startGLD()
+    private void startGld()
             throws IOException {
-        String startTime = toTimeStamp(configuration.getUnixTimeStart());
-        String stopTime;
-        if (configuration.getUnixTimeStop() < 0) {
-            stopTime = "NEVER";
-        } else {
-            stopTime = toTimeStamp(configuration.getUnixTimeStop());
-        }
+        log.trace("startGld");
         
-        // how do we handle time zones in GLD?
-        // server_quit_on_close=1 can be used for clean exits if the client connection is recycled
-        log.debug("creating the GridLAB-D process builder");
+        String timeStart = toTimeStamp(configuration.getUnixTimeStart());
+        String timeStop  = configuration.getUnixTimeStop() < 0 ? "NEVER" : toTimeStamp(configuration.getUnixTimeStop());
+        String timeZone  = configuration.getSimulationTimeZone();
+        configuration.getSimulationTimeScale(); // to trigger early exception if missing
+        
+        log.debug("creating process builder for GridLAB-D");
         ProcessBuilder builder = new ProcessBuilder();
         builder.inheritIO(); // maybe replace
+        
         builder.directory(new File(configuration.getWorkingDirectory()));
+        log.debug("directory: {}", configuration.getWorkingDirectory());
+        
         builder.command(
                 "gridlabd",
-                configuration.getModelFilepath(),
+                configuration.getModelFilePath(),
                 "--server",
                 "--server_portnum",
                 Integer.toString(configuration.getServerPortNumber()), // no guarantee this port gets used
                 "--define",
-                "starttime=" + startTime,
+                "starttime=" + timeStart,
                 "--define",
-                "stoptime=" + stopTime
-                //"--define",
-                //"pauseat=" + startTime
+                "stoptime=" + timeStop,
+                "--define",
+                "pauseat=" + timeStart
                 );
-        Map<String, String> environment = builder.environment();
-        environment.put("TZ", configuration.getSimulationTimeZone());
-        log.debug("command   = " + Arrays.toString(builder.command().toArray()));
-        log.debug("directory = " + configuration.getWorkingDirectory());
-        log.debug("time zone = " + configuration.getSimulationTimeZone());
+        log.debug("command: {}", Arrays.toString(builder.command().toArray()));
         
-        log.info("launching the GridLAB-D process");
+        Map<String, String> environment = builder.environment();
+        environment.put("TZ", timeZone);
+        log.debug("timezone: {}", timeZone);
+        
+        log.info("starting GridLAB-D process");
         gridlabd = builder.start();
         
         // this will handle SIGINT; pkill java will be required for other halt conditions 
@@ -316,69 +365,23 @@ public class GridLabDFederate implements GatewayCallback {
         Runtime.getRuntime().addShutdownHook(gldShutdown);
     }
     
-    private void connectToGLD()
+    private void connectToGld()
             throws InterruptedException {
-        // need a small delay before control can be issued; need to improve how we do this
-        int attempt = 1;
+        log.trace("connectToGld");
+        
         boolean connected = false;
         while (!connected) {
             try {
-                log.info("trying to connect to GridLAB-D (" + attempt + ")");
-                client.isPaused();
-                connected = true;
+                log.info("waiting {} ms on connection to {}", configuration.getWaitTimeMs(), client);
+                Thread.sleep(configuration.getWaitTimeMs());
+                connected = client.isPaused();
+                if (!connected) {
+                    log.info("GridLAB-D model not yet initialized");
+                }
             } catch (IOException e) {
-                final long delay = configuration.getWaitReconnectMs();
-                log.warn("connection to GridLAB-D server failed; retry in " + delay + " ms");
-                Thread.sleep(delay);
-                attempt += 1;
+                log.warn("failed to connect to GridLAB-D server");
             }
         }
-    }
-
-    @Override
-    public void receiveInteraction(Double timeStep, String className, Map<String, String> parameters) {
-        if (className.equals(SIMULATION_END)) {
-            receivedSimEnd = true;
-        } else if (className.equals(SIMULATION_TIME)) {
-            configuration.setUnixTimeStart(Long.valueOf(parameters.get("unixTimeStart")));
-            configuration.setUnixTimeStop(Long.valueOf(parameters.get("unixTimeStop")));
-            configuration.setSimulationTimeScale(Double.valueOf(parameters.get("timeScale")).intValue());
-            configuration.setSimulationTimeZone(parameters.get("timeZone"));
-            receivedSimTime = true;
-        } else if (isInitialized) {
-            //handleInteraction(className, parameters);
-        } else {
-            log.warn("dropped interaction " + className);
-        }
-    }
-
-    @Override
-    public void receiveObject(Double timeStep, String className, String instanceName, Map<String, String> attributes) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void doTimeStep(Double timeStep) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void terminate() {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    private String toTimeStamp(long unixTime) {
-        log.trace("toTimeStamp {}", unixTime);
-        return dateFormat.format(new Date(unixTime*1000));
-    }
-    
-    private long toUnixTime(String timeStamp)
-            throws ParseException {
-        log.trace("toUnixTime {}", timeStamp);
-        return dateFormat.parse(timeStamp).getTime()/1000;
     }
     
     /*

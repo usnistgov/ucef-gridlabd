@@ -7,6 +7,6 @@
     "isLateJoiner": false,
     "stepSize": 1.0,
     "lookAhead": 0.1,
-    "modelFilepath": "hla_federate_example.glm",
+    "modelFilePath": "hla_federate_example.glm",
     "workingDirectory": "/home/vagrant/ucef-gridlabd/GridLAB-D/model"
 }

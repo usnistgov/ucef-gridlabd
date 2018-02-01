@@ -11,7 +11,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import gov.nist.hla.gridlabd.StatusCodeException;
+import gov.nist.hla.gridlabd.exception.StatusCodeException;
 
 public class GridLabDClient {
     private static final Logger log = LogManager.getLogger();

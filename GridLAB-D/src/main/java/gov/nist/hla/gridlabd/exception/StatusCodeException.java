@@ -1,4 +1,4 @@
-package gov.nist.hla.gridlabd;
+package gov.nist.hla.gridlabd.exception;
 
 import java.io.IOException;
 

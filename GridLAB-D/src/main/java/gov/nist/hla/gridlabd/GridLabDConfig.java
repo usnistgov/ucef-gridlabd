@@ -1,40 +1,42 @@
 package gov.nist.hla.gridlabd;
 
 import gov.nist.hla.gateway.GatewayFederateConfig;
+import gov.nist.hla.gateway.exception.ValueNotSet;
 
 public class GridLabDConfig extends GatewayFederateConfig {
-    private String modelFilepath;
-    private boolean modelFilepathSet = false;
+    private String modelFilePath;
+    private boolean modelFilePathSet = false;
     
     private String workingDirectory = null;
     
     private int serverPortNumber = 6267;
     
+    private int waitTimeMs = 500;
+    
     private boolean useSimTime = true;
     
-    private String simulationTimeZone = null;
+    private long unixTimeStart;
+    private boolean unixTimeStartSet = false;
     
-    // if negative, expects to receive InteractionRoot.C2WInteractionRoot.SimControl.SimTime
-    private double simulationTimeScale = -1;
+    private long unixTimeStop;
+    private boolean unixTimestopSet = false;
     
-    // if negative, expects to receive InteractionRoot.C2WInteractionRoot.SimControl.SimTime
-    private long unixTimeStart = -1;
+    private double simulationTimeScale;
+    private boolean simulationTimeScaleSet = false;
     
-    // if negative, will run until receiving InteractionRoot.C2WInteractionRoot.SimControl.SimEnd
-    private long unixTimeStop = -1; 
-    
-    private int waitAdvanceTimeMs = 500;
+    private String simulationTimeZone;
+    private boolean simulationTimeZoneSet = false;
 
-    public void setModelFilepath(String filepath) {
-        this.modelFilepath = filepath;
-        this.modelFilepathSet = true;
+    public void setModelFilePath(String filepath) {
+        this.modelFilePath = filepath;
+        this.modelFilePathSet = true;
     }
     
-    public String getModelFilepath() {
-        if (!modelFilepathSet) {
-            throw new ValueNotSet("model_filepath");
+    public String getModelFilePath() {
+        if (!modelFilePathSet) {
+            throw new ValueNotSet("modelFilePath");
         }
-        return modelFilepath;
+        return modelFilePath;
     }
     
     public void setWorkingDirectory(String filepath) {
@@ -56,46 +58,70 @@ public class GridLabDConfig extends GatewayFederateConfig {
         return serverPortNumber;
     }
     
-    public void setSimulationTimeZone(String timeZone) {
-        this.simulationTimeZone = timeZone;
+    public void setWaitTimeMs(int wait) {
+        if (wait < 0) {
+            throw new RuntimeException("invalid time advance wait time " + wait);
+        }
+        this.waitTimeMs = wait;
     }
     
-    public String getSimulationTimeZone() {
-        return simulationTimeZone;
+    public int getWaitTimeMs() {
+        return waitTimeMs;
     }
     
-    public void setSimulationTimeScale(double scale) {
-        this.simulationTimeScale = scale;
+    public void setUseSimTime(boolean flag) {
+        this.useSimTime = flag;
     }
     
-    public double getSimulationTimeScale() {
-        return simulationTimeScale;
+    public boolean getUseSimTime() {
+        return useSimTime;
     }
     
     public void setUnixTimeStart(long unixTime) {
         this.unixTimeStart = unixTime;
+        this.unixTimeStartSet = true;
     }
     
     public long getUnixTimeStart() {
+        if (!unixTimeStartSet) {
+            throw new ValueNotSet("unixTimeStart");
+        }
         return unixTimeStart;
     }
     
     public void setUnixTimeStop(long unixTime) {
         this.unixTimeStop = unixTime;
+        this.unixTimestopSet = true;
     }
     
     public long getUnixTimeStop() {
+        if (!unixTimestopSet) {
+            throw new ValueNotSet("unixTimeStop");
+        }
         return unixTimeStop;
     }
     
-    public void setWaitAdvanceTimeMs(int wait) {
-        if (wait < 0) {
-            throw new RuntimeException("invalid time advance wait time " + wait);
-        }
-        this.waitAdvanceTimeMs = wait;
+    public void setSimulationTimeScale(double scale) {
+        this.simulationTimeScale = scale;
+        this.simulationTimeScaleSet = true;
     }
     
-    public int getWaitAdvanceTimeMs() {
-        return waitAdvanceTimeMs;
+    public double getSimulationTimeScale() {
+        if (!simulationTimeScaleSet) {
+            throw new ValueNotSet("simulationTimeScale");
+        }
+        return simulationTimeScale;
+    }
+    
+    public void setSimulationTimeZone(String timeZone) {
+        this.simulationTimeZone = timeZone;
+        this.simulationTimeZoneSet = true;
+    }
+    
+    public String getSimulationTimeZone() {
+        if (!simulationTimeZoneSet) {
+            throw new ValueNotSet("simulationTimeZone");
+        }
+        return simulationTimeZone;
     }
 }

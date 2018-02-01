@@ -1,4 +1,4 @@
-package gov.nist.hla.gridlabd;
+package gov.nist.hla.gridlabd.exception;
 
 public class SchemaValidationException extends Exception {
     public SchemaValidationException(String message, Throwable cause) {
