@@ -4,11 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -44,6 +48,8 @@ public class GridLabDFederate implements GatewayCallback {
     private static final String INTERACTION_ROOT = "InteractionRoot.C2WInteractionRoot";
     private static final String SIMULATION_END = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimEnd";
     private static final String SIMULATION_TIME = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimTime";
+    
+    final private SimpleDateFormat dateFormat;
     
     final private GatewayFederate gateway;
     
@@ -90,6 +96,9 @@ public class GridLabDFederate implements GatewayCallback {
         this.gateway = new GatewayFederate(configuration, this);
         this.configuration = configuration;
         this.client = new GridLabDClient("localhost", configuration.getServerPortNumber());
+        // future GridLAB-D releases will continue to support GMT
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+        this.dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
     
     public void run() {
@@ -254,14 +263,14 @@ public class GridLabDFederate implements GatewayCallback {
         isInitialized = true;
     }
     
-    public void startGLD()
+    private void startGLD()
             throws IOException {
-        String startTime = client.unixTimeToDate(configuration.getUnixTimeStart());
+        String startTime = toTimeStamp(configuration.getUnixTimeStart());
         String stopTime;
         if (configuration.getUnixTimeStop() < 0) {
             stopTime = "NEVER";
         } else {
-            stopTime = client.unixTimeToDate(configuration.getUnixTimeStop());
+            stopTime = toTimeStamp(configuration.getUnixTimeStop());
         }
         
         // how do we handle time zones in GLD?
@@ -298,7 +307,7 @@ public class GridLabDFederate implements GatewayCallback {
             public void run() {
                 try {
                     client.shutdown();
-                } catch (GridLabDException e) {
+                } catch (IOException e) {
                     log.info("destroying the GridLAB-D process");
                     gridlabd.destroy();
                 }
@@ -315,9 +324,9 @@ public class GridLabDFederate implements GatewayCallback {
         while (!connected) {
             try {
                 log.info("trying to connect to GridLAB-D (" + attempt + ")");
-                client.getUnixTime();
+                client.isPaused();
                 connected = true;
-            } catch (GridLabDException e) {
+            } catch (IOException e) {
                 final long delay = configuration.getWaitReconnectMs();
                 log.warn("connection to GridLAB-D server failed; retry in " + delay + " ms");
                 Thread.sleep(delay);
@@ -359,6 +368,17 @@ public class GridLabDFederate implements GatewayCallback {
     public void terminate() {
         // TODO Auto-generated method stub
         
+    }
+    
+    private String toTimeStamp(long unixTime) {
+        log.trace("toTimeStamp {}", unixTime);
+        return dateFormat.format(new Date(unixTime*1000));
+    }
+    
+    private long toUnixTime(String timeStamp)
+            throws ParseException {
+        log.trace("toUnixTime {}", timeStamp);
+        return dateFormat.parse(timeStamp).getTime()/1000;
     }
     
     /*
