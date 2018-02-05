@@ -14,16 +14,16 @@ import org.cpswt.utils.CpswtUtils;
 import org.cpswt.hla.*;
 
 /**
-* The House class implements the House object in the
+* The House class implements the House interaction in the
 * TestFederation simulation.
 */
-public class House extends ObjectRoot {
+public class House extends C2WInteractionRoot {
 
 	private static final Logger logger = LogManager.getLogger(House.class);
 
 	/**
-	* Default constructor -- creates an instance of the House object
-	* class with default attribute values.
+	* Default constructor -- creates an instance of the House interaction
+	* class with default parameter values.
 	*/
 	public House() { }
 
@@ -36,34 +36,34 @@ public class House extends ObjectRoot {
 	
 	
 	/**
-	* Returns the handle (RTI assigned) of the "air_temperature" attribute of
-	* its containing object class.
+	* Returns the handle (RTI assigned) of the "air_temperature" parameter of
+	* its containing interaction class.
 	*
-	* @return the handle (RTI assigned) of the "air_temperature" attribute
+	* @return the handle (RTI assigned) of the "air_temperature" parameter
 	*/
 	public static int get_air_temperature_handle() { return _air_temperature_handle; }
 	
 	/**
-	* Returns the handle (RTI assigned) of the "compressor_count" attribute of
-	* its containing object class.
+	* Returns the handle (RTI assigned) of the "compressor_count" parameter of
+	* its containing interaction class.
 	*
-	* @return the handle (RTI assigned) of the "compressor_count" attribute
+	* @return the handle (RTI assigned) of the "compressor_count" parameter
 	*/
 	public static int get_compressor_count_handle() { return _compressor_count_handle; }
 	
 	/**
-	* Returns the handle (RTI assigned) of the "compressor_on" attribute of
-	* its containing object class.
+	* Returns the handle (RTI assigned) of the "compressor_on" parameter of
+	* its containing interaction class.
 	*
-	* @return the handle (RTI assigned) of the "compressor_on" attribute
+	* @return the handle (RTI assigned) of the "compressor_on" parameter
 	*/
 	public static int get_compressor_on_handle() { return _compressor_on_handle; }
 	
 	/**
-	* Returns the handle (RTI assigned) of the "name" attribute of
-	* its containing object class.
+	* Returns the handle (RTI assigned) of the "name" parameter of
+	* its containing interaction class.
 	*
-	* @return the handle (RTI assigned) of the "name" attribute
+	* @return the handle (RTI assigned) of the "name" parameter
 	*/
 	public static int get_name_handle() { return _name_handle; }
 	
@@ -74,7 +74,7 @@ public class House extends ObjectRoot {
 	private static int _handle;
 
 	/**
-	* Returns the handle (RTI assigned) of the House object class.
+	* Returns the handle (RTI assigned) of the House interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the handle of the class pertaining to the reference,\
 	* rather than the handle of the class for the instance referred to by the reference.
@@ -84,17 +84,17 @@ public class House extends ObjectRoot {
 
 	/**
 	* Returns the fully-qualified (dot-delimited) name of the House
-	* object class.
+	* interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the name of the class pertaining to the reference,\
 	* rather than the name of the class for the instance referred to by the reference.
 	* For the polymorphic version of this method, use {@link #getClassName()}.
 	*/
-	public static String get_class_name() { return "ObjectRoot.House"; }
+	public static String get_class_name() { return "InteractionRoot.C2WInteractionRoot.House"; }
 
 	/**
 	* Returns the simple name (the last name in the dot-delimited fully-qualified
-	* class name) of the House object class.
+	* class name) of the House interaction class.
 	*/
 	public static String get_simple_class_name() { return "House"; }
 
@@ -102,61 +102,62 @@ public class House extends ObjectRoot {
 	private static Set< String > _allDatamemberNames = new HashSet< String >();
 
 	/**
-	* Returns a set containing the names of all of the non-hidden attributes in the
-	* House object class.
+	* Returns a set containing the names of all of the non-hidden parameters in the
+	* House interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
 	* the reference.  For the polymorphic version of this method, use
-	* {@link #getAttributeNames()}.
+	* {@link #getParameterNames()}.
 	*/
-	public static Set< String > get_attribute_names() {
+	public static Set< String > get_parameter_names() {
 		return new HashSet< String >(_datamemberNames);
 	}
 
 
 	/**
-	* Returns a set containing the names of all of the attributes in the
-	* House object class.
+	* Returns a set containing the names of all of the parameters in the
+	* House interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
 	* the reference.  For the polymorphic version of this method, use
-	* {@link #getAttributeNames()}.
+	* {@link #getParameterNames()}.
 	*/
-	public static Set< String > get_all_attribute_names() {
+	public static Set< String > get_all_parameter_names() {
 		return new HashSet< String >(_allDatamemberNames);
 	}
 
 
 	
-	private static AttributeHandleSet _publishedAttributeHandleSet;
-	private static Set< String > _publishAttributeNameSet = new HashSet< String >();
-
-	private static AttributeHandleSet _subscribedAttributeHandleSet; 
-	private static Set< String > _subscribeAttributeNameSet = new HashSet< String >();
-
-	
 
 	static {
-		_classNameSet.add("ObjectRoot.House");
-		_classNameClassMap.put("ObjectRoot.House", House.class);
+		_classNameSet.add("InteractionRoot.C2WInteractionRoot.House");
+		_classNameClassMap.put("InteractionRoot.C2WInteractionRoot.House", House.class);
 		
-		_datamemberClassNameSetMap.put("ObjectRoot.House", _datamemberNames);
-		_allDatamemberClassNameSetMap.put("ObjectRoot.House", _allDatamemberNames);
+		_datamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.House", _datamemberNames);
+		_allDatamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.House", _allDatamemberNames);
 
+		
 		
 		
 		_datamemberNames.add("air_temperature");
 		_datamemberNames.add("compressor_count");
 		_datamemberNames.add("compressor_on");
+		
 		_datamemberNames.add("name");
 		
 		
+		
+		
+		_allDatamemberNames.add("actualLogicalGenerationTime");
 		_allDatamemberNames.add("air_temperature");
 		_allDatamemberNames.add("compressor_count");
 		_allDatamemberNames.add("compressor_on");
+		_allDatamemberNames.add("federateFilter");
 		_allDatamemberNames.add("name");
+		_allDatamemberNames.add("originFed");
+		_allDatamemberNames.add("sourceFed");
 		
 		
 		_datamemberTypeMap.put("air_temperature", "double");
@@ -164,30 +165,22 @@ public class House extends ObjectRoot {
 		_datamemberTypeMap.put("compressor_on", "boolean");
 		_datamemberTypeMap.put("name", "String");
 	
-
-		_classNamePublishAttributeNameMap.put("ObjectRoot.House", _publishAttributeNameSet);
-		_publishedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNamePublishedAttributeMap.put("ObjectRoot.House", _publishedAttributeHandleSet);
-
-		_classNameSubscribeAttributeNameMap.put("ObjectRoot.House", _subscribeAttributeNameSet);
-		_subscribedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNameSubscribedAttributeMap.put("ObjectRoot.House", _subscribedAttributeHandleSet);
 	
 
 	}
 
 
-	private static String initErrorMessage = "Error:  ObjectRoot.House:  could not initialize:  ";
+	private static String initErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.House:  could not initialize:  ";
 	protected static void init(RTIambassador rti) {
 		if (_isInitialized) return;
 		_isInitialized = true;
 		
-		ObjectRoot.init(rti);
+		C2WInteractionRoot.init(rti);
 		
 		boolean isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
-				_handle = rti.getObjectClassHandle("ObjectRoot.House");
+				_handle = rti.getInteractionClassHandle("InteractionRoot.C2WInteractionRoot.House");
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -203,8 +196,8 @@ public class House extends ObjectRoot {
 			}
 		}
 
-		_classNameHandleMap.put("ObjectRoot.House", get_handle());
-		_classHandleNameMap.put(get_handle(), "ObjectRoot.House");
+		_classNameHandleMap.put("InteractionRoot.C2WInteractionRoot.House", get_handle());
+		_classHandleNameMap.put(get_handle(), "InteractionRoot.C2WInteractionRoot.House");
 		_classHandleSimpleNameMap.put(get_handle(), "House");
 
 		
@@ -212,17 +205,17 @@ public class House extends ObjectRoot {
 		while(isNotInitialized) {
 			try {
 							
-				_air_temperature_handle = rti.getAttributeHandle("air_temperature", get_handle());			
-				_compressor_count_handle = rti.getAttributeHandle("compressor_count", get_handle());			
-				_compressor_on_handle = rti.getAttributeHandle("compressor_on", get_handle());			
-				_name_handle = rti.getAttributeHandle("name", get_handle());
+				_air_temperature_handle = rti.getParameterHandle("air_temperature", get_handle());			
+				_compressor_count_handle = rti.getParameterHandle("compressor_count", get_handle());			
+				_compressor_on_handle = rti.getParameterHandle("compressor_on", get_handle());			
+				_name_handle = rti.getParameterHandle("name", get_handle());
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
 				logger.error(f);
 				return;
-			} catch (ObjectClassNotDefined i) {
-				logger.error("{} Object Class Not Defined", initErrorMessage);
+			} catch (InteractionClassNotDefined i) {
+				logger.error("{} Interaction Class Not Defined", initErrorMessage);
 				logger.error(i);
 				return;
 			} catch (NameNotFound n) {
@@ -236,10 +229,10 @@ public class House extends ObjectRoot {
 		}
 			
 			
-		_datamemberNameHandleMap.put("ObjectRoot.House,air_temperature", get_air_temperature_handle());
-		_datamemberNameHandleMap.put("ObjectRoot.House,compressor_count", get_compressor_count_handle());
-		_datamemberNameHandleMap.put("ObjectRoot.House,compressor_on", get_compressor_on_handle());
-		_datamemberNameHandleMap.put("ObjectRoot.House,name", get_name_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.House,air_temperature", get_air_temperature_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.House,compressor_count", get_compressor_count_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.House,compressor_on", get_compressor_on_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.House,name", get_name_handle());
 			
 			
 		_datamemberHandleNameMap.put(get_air_temperature_handle(), "air_temperature");
@@ -250,10 +243,10 @@ public class House extends ObjectRoot {
 	}
 
 	private static boolean _isPublished = false;
-	private static String publishErrorMessage = "Error:  ObjectRoot.House:  could not publish:  ";
+	private static String publishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.House:  could not publish:  ";
 
 	/**
-	* Publishes the House object class for a federate.
+	* Publishes the House interaction class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -262,29 +255,20 @@ public class House extends ObjectRoot {
 		
 		init(rti);
 
-		
-		_publishedAttributeHandleSet.empty();
-		for(String attributeName : _publishAttributeNameSet) {
-			try {
-				_publishedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.House," + attributeName));
-			} catch (Exception e) {
-				logger.error("{} Could not publish \"" + attributeName + "\" attribute.", publishErrorMessage);
-			}
-		}
 	
 
 		synchronized(rti) {
 			boolean isNotPublished = true;
 			while(isNotPublished) {
 				try {
-					rti.publishObjectClass(get_handle(), _publishedAttributeHandleSet);
+					rti.publishInteractionClass(get_handle());
 					isNotPublished = false;
 				} catch (FederateNotExecutionMember f) {
 					logger.error("{} Federate Not Execution Member", publishErrorMessage);
 					logger.error(f);
 					return;
-				} catch (ObjectClassNotDefined i) {
-					logger.error("{} Object Class Not Defined", publishErrorMessage);
+				} catch (InteractionClassNotDefined i) {
+					logger.error("{} Interaction Class Not Defined", publishErrorMessage);
 					logger.error(i);
 					return;
 				} catch (Exception e) {
@@ -297,9 +281,9 @@ public class House extends ObjectRoot {
 		_isPublished = true;
 	}
 
-	private static String unpublishErrorMessage = "Error:  ObjectRoot.House:  could not unpublish:  ";
+	private static String unpublishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.House:  could not unpublish:  ";
 	/**
-	* Unpublishes the House object class for a federate.
+	* Unpublishes the House interaction class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -311,18 +295,18 @@ public class House extends ObjectRoot {
 			boolean isNotUnpublished = true;
 			while(isNotUnpublished) {
 				try {
-					rti.unpublishObjectClass(get_handle());
+					rti.unpublishInteractionClass(get_handle());
 					isNotUnpublished = false;
 				} catch (FederateNotExecutionMember f) {
 					logger.error("{} Federate Not Execution Member", unpublishErrorMessage);
 					logger.error(f);
 					return;
-				} catch (ObjectClassNotDefined i) {
-					logger.error("{} Object Class Not Defined", unpublishErrorMessage);
+				} catch (InteractionClassNotDefined i) {
+					logger.error("{} Interaction Class Not Defined", unpublishErrorMessage);
 					logger.error(i);
 					return;
-				} catch (ObjectClassNotPublished i) {
-					logger.error("{} Object Class Not Published", unpublishErrorMessage);
+				} catch (InteractionClassNotPublished i) {
+					logger.error("{} Interaction Class Not Published", unpublishErrorMessage);
 					logger.error(i);
 					return;
 				} catch (Exception e) {
@@ -336,9 +320,9 @@ public class House extends ObjectRoot {
 	}
 
 	private static boolean _isSubscribed = false;
-	private static String subscribeErrorMessage = "Error:  ObjectRoot.House:  could not subscribe:  ";
+	private static String subscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.House:  could not subscribe:  ";
 	/**
-	* Subscribes a federate to the House object class.
+	* Subscribes a federate to the House interaction class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -346,29 +330,20 @@ public class House extends ObjectRoot {
 		if (_isSubscribed) return;
 		
 		init(rti);
-		
-		_subscribedAttributeHandleSet.empty();
-		for(String attributeName : _subscribeAttributeNameSet) {
-			try {
-				_subscribedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.House," + attributeName));
-			} catch (Exception e) {
-				logger.error("{} Could not subscribe to \"" + attributeName + "\" attribute.", subscribeErrorMessage);
-			}
-		}
 	
 		
 		synchronized(rti) {
 			boolean isNotSubscribed = true;
 			while(isNotSubscribed) {
 				try {
-					rti.subscribeObjectClassAttributes(get_handle(), _subscribedAttributeHandleSet);
+					rti.subscribeInteractionClass(get_handle());
 					isNotSubscribed = false;
 				} catch (FederateNotExecutionMember f) {
 					logger.error("{} Federate Not Execution Member", subscribeErrorMessage);
 					logger.error(f);
 					return;
-				} catch (ObjectClassNotDefined i) {
-					logger.error("{} Object Class Not Defined", subscribeErrorMessage);
+				} catch (InteractionClassNotDefined i) {
+					logger.error("{} Interaction Class Not Defined", subscribeErrorMessage);
 					logger.error(i);
 					return;
 				} catch (Exception e) {
@@ -381,9 +356,9 @@ public class House extends ObjectRoot {
 		_isSubscribed = true;
 	}
 
-	private static String unsubscribeErrorMessage = "Error:  ObjectRoot.House:  could not unsubscribe:  ";
+	private static String unsubscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.House:  could not unsubscribe:  ";
 	/**
-	* Unsubscribes a federate from the House object class.
+	* Unsubscribes a federate from the House interaction class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -395,18 +370,18 @@ public class House extends ObjectRoot {
 			boolean isNotUnsubscribed = true;
 			while(isNotUnsubscribed) {
 				try {
-					rti.unsubscribeObjectClass(get_handle());
+					rti.unsubscribeInteractionClass(get_handle());
 					isNotUnsubscribed = false;
 				} catch (FederateNotExecutionMember f) {
 					logger.error("{} Federate Not Execution Member", unsubscribeErrorMessage);
 					logger.error(f);
 					return;
-				} catch (ObjectClassNotDefined i) {
-					logger.error("{} Object Class Not Defined", unsubscribeErrorMessage);
+				} catch (InteractionClassNotDefined i) {
+					logger.error("{} Interaction Class Not Defined", unsubscribeErrorMessage);
 					logger.error(i);
 					return;
-				} catch (ObjectClassNotSubscribed i) {
-					logger.error("{} Object Class Not Subscribed", unsubscribeErrorMessage);
+				} catch (InteractionClassNotSubscribed i) {
+					logger.error("{} Interaction Class Not Subscribed", unsubscribeErrorMessage);
 					logger.error(i);
 					return;
 				} catch (Exception e) {
@@ -421,93 +396,83 @@ public class House extends ObjectRoot {
 
 	/**
 	* Return true if "handle" is equal to the handle (RTI assigned) of this class
-	* (that is, the House object class).
+	* (that is, the House interaction class).
 	*
 	* @param handle handle to compare to the value of the handle (RTI assigned) of
-	* this class (the House object class).
+	* this class (the House interaction class).
 	* @return "true" if "handle" matches the value of the handle of this class
-	* (that is, the House object class).
+	* (that is, the House interaction class).
 	*/
 	public static boolean match(int handle) { return handle == get_handle(); }
 
 	/**
-	* Returns the handle (RTI assigned) of this instance's object class .
+	* Returns the handle (RTI assigned) of this instance's interaction class .
 	* 
-	* @return the handle (RTI assigned) if this instance's object class
+	* @return the handle (RTI assigned) if this instance's interaction class
 	*/
 	public int getClassHandle() { return get_handle(); }
 
 	/**
-	* Returns the fully-qualified (dot-delimited) name of this instance's object class.
+	* Returns the fully-qualified (dot-delimited) name of this instance's interaction class.
 	* 
-	* @return the fully-qualified (dot-delimited) name of this instance's object class
+	* @return the fully-qualified (dot-delimited) name of this instance's interaction class
 	*/
 	public String getClassName() { return get_class_name(); }
 
 	/**
 	* Returns the simple name (last name in its fully-qualified dot-delimited name)
-	* of this instance's object class.
+	* of this instance's interaction class.
 	* 
-	* @return the simple name of this instance's object class 
+	* @return the simple name of this instance's interaction class 
 	*/
 	public String getSimpleClassName() { return get_simple_class_name(); }
 
 	/**
-	* Returns a set containing the names of all of the non-hiddenattributes of an
-	* object class instance.
+	* Returns a set containing the names of all of the non-hiddenparameters of an
+	* interaction class instance.
 	*
-	* @return set containing the names of all of the attributes of an
-	* object class instance
+	* @return set containing the names of all of the parameters of an
+	* interaction class instance
 	*/
-	public Set< String > getAttributeNames() { return get_attribute_names(); }
+	public Set< String > getParameterNames() { return get_parameter_names(); }
 
 	/**
-	* Returns a set containing the names of all of the attributes of an
-	* object class instance.
+	* Returns a set containing the names of all of the parameters of an
+	* interaction class instance.
 	*
-	* @return set containing the names of all of the attributes of an
-	* object class instance
+	* @return set containing the names of all of the parameters of an
+	* interaction class instance
 	*/
-	public Set< String > getAllAttributeNames() { return get_all_attribute_names(); }
+	public Set< String > getAllParameterNames() { return get_all_parameter_names(); }
 
 	/**
-	* Publishes the object class of this instance of the class for a federate.
+	* Publishes the interaction class of this instance of the class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
-	public void publishObject(RTIambassador rti) { publish(rti); }
+	public void publishInteraction(RTIambassador rti) { publish(rti); }
 
 	/**
-	* Unpublishes the object class of this instance of this class for a federate.
+	* Unpublishes the interaction class of this instance of this class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
-	public void unpublishObject(RTIambassador rti) { unpublish(rti); }
+	public void unpublishInteraction(RTIambassador rti) { unpublish(rti); }
 
 	/**
-	* Subscribes a federate to the object class of this instance of this class.
+	* Subscribes a federate to the interaction class of this instance of this class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
-	public void subscribeObject(RTIambassador rti) { subscribe(rti); }
+	public void subscribeInteraction(RTIambassador rti) { subscribe(rti); }
 
 	/**
-	* Unsubscribes a federate from the object class of this instance of this class.
+	* Unsubscribes a federate from the interaction class of this instance of this class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
-	public void unsubscribeObject(RTIambassador rti) { unsubscribe(rti); }
+	public void unsubscribeInteraction(RTIambassador rti) { unsubscribe(rti); }
 
-	
-	/**
-	* Returns a data structure containing the handles of all attributes for this object
-	* class that are currently marked for subscription.  To actually subscribe to these
-	* attributes, a federate must call <objectclassname>.subscribe(RTIambassador rti).
-	*
-	* @return data structure containing the handles of all attributes for this object
-	* class that are currently marked for subscription
-	*/
-	public AttributeHandleSet getSubscribedAttributeHandleSet() { return _subscribedAttributeHandleSet; }
 	
 
 	public String toString() {
@@ -526,377 +491,121 @@ public class House extends ObjectRoot {
 
 	
 	
-	/**
-	* Publishes the "air_temperature" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "air_temperature" attribute for publication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void publish_air_temperature() {
-		_publishAttributeNameSet.add( "air_temperature" );
-	}
-
-	/**
-	* Unpublishes the "air_temperature" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "air_temperature" attribute for unpublication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void unpublish_air_temperature() {
-		_publishAttributeNameSet.remove( "air_temperature" );
-	}
+	private double _air_temperature = 0;
 	
-	/**
-	* Subscribes a federate to the "air_temperature" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "air_temperature" attribute for subscription.
-	* To actually subscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void subscribe_air_temperature() {
-		_subscribeAttributeNameSet.add( "air_temperature" );
-	}
-
-	/**
-	* Unsubscribes a federate from the "air_temperature" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "air_temperature" attribute for unsubscription.
-	* To actually unsubscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void unsubscribe_air_temperature() {
-		_subscribeAttributeNameSet.remove( "air_temperature" );
-	}
+	private int _compressor_count = 0;
 	
+	private boolean _compressor_on = false;
 	
-	/**
-	* Publishes the "compressor_count" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "compressor_count" attribute for publication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void publish_compressor_count() {
-		_publishAttributeNameSet.add( "compressor_count" );
-	}
-
-	/**
-	* Unpublishes the "compressor_count" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "compressor_count" attribute for unpublication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void unpublish_compressor_count() {
-		_publishAttributeNameSet.remove( "compressor_count" );
-	}
-	
-	/**
-	* Subscribes a federate to the "compressor_count" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "compressor_count" attribute for subscription.
-	* To actually subscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void subscribe_compressor_count() {
-		_subscribeAttributeNameSet.add( "compressor_count" );
-	}
-
-	/**
-	* Unsubscribes a federate from the "compressor_count" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "compressor_count" attribute for unsubscription.
-	* To actually unsubscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void unsubscribe_compressor_count() {
-		_subscribeAttributeNameSet.remove( "compressor_count" );
-	}
-	
-	
-	/**
-	* Publishes the "compressor_on" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "compressor_on" attribute for publication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void publish_compressor_on() {
-		_publishAttributeNameSet.add( "compressor_on" );
-	}
-
-	/**
-	* Unpublishes the "compressor_on" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "compressor_on" attribute for unpublication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void unpublish_compressor_on() {
-		_publishAttributeNameSet.remove( "compressor_on" );
-	}
-	
-	/**
-	* Subscribes a federate to the "compressor_on" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "compressor_on" attribute for subscription.
-	* To actually subscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void subscribe_compressor_on() {
-		_subscribeAttributeNameSet.add( "compressor_on" );
-	}
-
-	/**
-	* Unsubscribes a federate from the "compressor_on" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "compressor_on" attribute for unsubscription.
-	* To actually unsubscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void unsubscribe_compressor_on() {
-		_subscribeAttributeNameSet.remove( "compressor_on" );
-	}
-	
-	
-	/**
-	* Publishes the "name" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "name" attribute for publication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void publish_name() {
-		_publishAttributeNameSet.add( "name" );
-	}
-
-	/**
-	* Unpublishes the "name" attribute of the attribute's containing object
-	* class for a federate.
-	* Note:  This method only marks the "name" attribute for unpublication.
-	* To actually publish the attribute, the federate must (re)publish its containing
-	* object class.
-	* (using <objectClassName>.publish( RTIambassador rti ) ).
-	*/
-	public static void unpublish_name() {
-		_publishAttributeNameSet.remove( "name" );
-	}
-	
-	/**
-	* Subscribes a federate to the "name" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "name" attribute for subscription.
-	* To actually subscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void subscribe_name() {
-		_subscribeAttributeNameSet.add( "name" );
-	}
-
-	/**
-	* Unsubscribes a federate from the "name" attribute of the attribute's
-	* containing object class.
-	* Note:  This method only marks the "name" attribute for unsubscription.
-	* To actually unsubscribe to the attribute, the federate must (re)subscribe to its
-	* containing object class.
-	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
-	*/
-	public static void unsubscribe_name() {
-		_subscribeAttributeNameSet.remove( "name" );
-	}
-	
+	private String _name = "";
 
 	
 	
-	private Attribute< Double > _air_temperature =
- 		new Attribute< Double >(  new Double( 0 )  );
-	
 	/**
-	* Set the value of the "air_temperature" attribute to "value" for this object.
+	* Set the value of the "air_temperature" parameter to "value" for this parameter.
 	*
-	* @param value the new value for the "air_temperature" attribute
+	* @param value the new value for the "air_temperature" parameter
 	*/
-	public void set_air_temperature( double value ) {
-		_air_temperature.setValue( value );
-		_air_temperature.setTime( getTime() );
-	}
+	public void set_air_temperature( double value ) { _air_temperature = value; }
 	
 	/**
-	* Returns the value of the "air_temperature" attribute of this object.
+	* Returns the value of the "air_temperature" parameter of this interaction.
 	*
-	* @return the value of the "air_temperature" attribute
+	* @return the value of the "air_temperature" parameter
 	*/
-	public double get_air_temperature() {
-		return _air_temperature.getValue();
-	}
+	public double get_air_temperature() { return _air_temperature; }
+	
 	
 	/**
-	* Returns the current timestamp of the "air_temperature" attribute of this object.
-	* 
-	* @return the current timestamp of the "air_temperature" attribute
-	*/
-	public double get_air_temperature_time() {
-		return _air_temperature.getTime();
-	}
-	
-	
-	private Attribute< Integer > _compressor_count =
- 		new Attribute< Integer >(  new Integer( 0 )  );
-	
-	/**
-	* Set the value of the "compressor_count" attribute to "value" for this object.
+	* Set the value of the "compressor_count" parameter to "value" for this parameter.
 	*
-	* @param value the new value for the "compressor_count" attribute
+	* @param value the new value for the "compressor_count" parameter
 	*/
-	public void set_compressor_count( int value ) {
-		_compressor_count.setValue( value );
-		_compressor_count.setTime( getTime() );
-	}
+	public void set_compressor_count( int value ) { _compressor_count = value; }
 	
 	/**
-	* Returns the value of the "compressor_count" attribute of this object.
+	* Returns the value of the "compressor_count" parameter of this interaction.
 	*
-	* @return the value of the "compressor_count" attribute
+	* @return the value of the "compressor_count" parameter
 	*/
-	public int get_compressor_count() {
-		return _compressor_count.getValue();
-	}
+	public int get_compressor_count() { return _compressor_count; }
+	
 	
 	/**
-	* Returns the current timestamp of the "compressor_count" attribute of this object.
-	* 
-	* @return the current timestamp of the "compressor_count" attribute
-	*/
-	public double get_compressor_count_time() {
-		return _compressor_count.getTime();
-	}
-	
-	
-	private Attribute< Boolean > _compressor_on =
- 		new Attribute< Boolean >(  new Boolean( false )  );
-	
-	/**
-	* Set the value of the "compressor_on" attribute to "value" for this object.
+	* Set the value of the "compressor_on" parameter to "value" for this parameter.
 	*
-	* @param value the new value for the "compressor_on" attribute
+	* @param value the new value for the "compressor_on" parameter
 	*/
-	public void set_compressor_on( boolean value ) {
-		_compressor_on.setValue( value );
-		_compressor_on.setTime( getTime() );
-	}
+	public void set_compressor_on( boolean value ) { _compressor_on = value; }
 	
 	/**
-	* Returns the value of the "compressor_on" attribute of this object.
+	* Returns the value of the "compressor_on" parameter of this interaction.
 	*
-	* @return the value of the "compressor_on" attribute
+	* @return the value of the "compressor_on" parameter
 	*/
-	public boolean get_compressor_on() {
-		return _compressor_on.getValue();
-	}
+	public boolean get_compressor_on() { return _compressor_on; }
+	
 	
 	/**
-	* Returns the current timestamp of the "compressor_on" attribute of this object.
-	* 
-	* @return the current timestamp of the "compressor_on" attribute
-	*/
-	public double get_compressor_on_time() {
-		return _compressor_on.getTime();
-	}
-	
-	
-	private Attribute< String > _name =
- 		new Attribute< String >(  new String( "" )  );
-	
-	/**
-	* Set the value of the "name" attribute to "value" for this object.
+	* Set the value of the "name" parameter to "value" for this parameter.
 	*
-	* @param value the new value for the "name" attribute
+	* @param value the new value for the "name" parameter
 	*/
-	public void set_name( String value ) {
-		_name.setValue( value );
-		_name.setTime( getTime() );
-	}
+	public void set_name( String value ) { _name = value; }
 	
 	/**
-	* Returns the value of the "name" attribute of this object.
+	* Returns the value of the "name" parameter of this interaction.
 	*
-	* @return the value of the "name" attribute
+	* @return the value of the "name" parameter
 	*/
-	public String get_name() {
-		return _name.getValue();
-	}
-	
-	/**
-	* Returns the current timestamp of the "name" attribute of this object.
-	* 
-	* @return the current timestamp of the "name" attribute
-	*/
-	public double get_name_time() {
-		return _name.getTime();
-	}
+	public String get_name() { return _name; }
 	
 
 
-	protected House( ReflectedAttributes datamemberMap, boolean initFlag ) {
+	protected House( ReceivedInteraction datamemberMap, boolean initFlag ) {
 		super( datamemberMap, false );
-		if ( initFlag ) setAttributes( datamemberMap );
+		if ( initFlag ) setParameters( datamemberMap );
 	}
 	
-	protected House( ReflectedAttributes datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
+	protected House( ReceivedInteraction datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
 		super( datamemberMap, logicalTime, false );
-		if ( initFlag ) setAttributes( datamemberMap );
+		if ( initFlag ) setParameters( datamemberMap );
 	}
 
 
 	/**
-	* Creates an instance of the House object class, using
-	* "datamemberMap" to initialize its attribute values.
+	* Creates an instance of the House interaction class, using
+	* "datamemberMap" to initialize its parameter values.
 	* "datamemberMap" is usually acquired as an argument to an RTI federate
 	* callback method, such as "receiveInteraction".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* attributes of this new House object class instance
+	* parameters of this new House interaction class instance
 	*/
-	public House( ReflectedAttributes datamemberMap ) {
+	public House( ReceivedInteraction datamemberMap ) {
 		this( datamemberMap, true );
 	}
 	
 	/**
-	* Like {@link #House( ReflectedAttributes datamemberMap )}, except this
-	* new House object class instance is given a timestamp of
+	* Like {@link #House( ReceivedInteraction datamemberMap )}, except this
+	* new House interaction class instance is given a timestamp of
 	* "logicalTime".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* attributes of this new House object class instance
-	* @param logicalTime timestamp for this new House object class
+	* parameters of this new House interaction class instance
+	* @param logicalTime timestamp for this new House interaction class
 	* instance
 	*/
-	public House( ReflectedAttributes datamemberMap, LogicalTime logicalTime ) {
+	public House( ReceivedInteraction datamemberMap, LogicalTime logicalTime ) {
 		this( datamemberMap, logicalTime, true );
 	}
 
 	/**
-	* Creates a new House object class instance that is a duplicate
+	* Creates a new House interaction class instance that is a duplicate
 	* of the instance referred to by House_var.
 	*
-	* @param House_var House object class instance of which
-	* this newly created House object class instance will be a
+	* @param House_var House interaction class instance of which
+	* this newly created House interaction class instance will be a
 	* duplicate
 	*/
 	public House( House House_var ) {
@@ -911,15 +620,15 @@ public class House extends ObjectRoot {
 
 
 	/**
-	* Returns the value of the attribute whose name is "datamemberName"
-	* for this object.
+	* Returns the value of the parameter whose name is "datamemberName"
+	* for this interaction.
 	*
-	* @param datamemberName name of attribute whose value is to be
+	* @param datamemberName name of parameter whose value is to be
 	* returned
-	* @return value of the attribute whose name is "datamemberName"
-	* for this object
+	* @return value of the parameter whose name is "datamemberName"
+	* for this interaction
 	*/
-	public Object getAttribute( String datamemberName ) {
+	public Object getParameter( String datamemberName ) {
 		
 		
 		
@@ -927,19 +636,19 @@ public class House extends ObjectRoot {
 		else if (  "compressor_count".equals( datamemberName )  ) return new Integer(get_compressor_count());
 		else if (  "compressor_on".equals( datamemberName )  ) return new Boolean(get_compressor_on());
 		else if (  "name".equals( datamemberName )  ) return get_name();
-		else return super.getAttribute( datamemberName );
+		else return super.getParameter( datamemberName );
 	}
 	
 	/**
-	* Returns the value of the attribute whose handle (RTI assigned)
-	* is "datamemberHandle" for this object.
+	* Returns the value of the parameter whose handle (RTI assigned)
+	* is "datamemberHandle" for this interaction.
 	*
-	* @param datamemberHandle handle (RTI assigned) of attribute whose
+	* @param datamemberHandle handle (RTI assigned) of parameter whose
 	* value is to be returned
-	* @return value of the attribute whose handle (RTI assigned) is
-	* "datamemberHandle" for this object
+	* @return value of the parameter whose handle (RTI assigned) is
+	* "datamemberHandle" for this interaction
 	*/
-	public Object getAttribute( int datamemberHandle ) {
+	public Object getParameter( int datamemberHandle ) {
 		
 				
 		
@@ -947,10 +656,10 @@ public class House extends ObjectRoot {
 		else if ( get_compressor_count_handle() == datamemberHandle ) return new Integer(get_compressor_count());
 		else if ( get_compressor_on_handle() == datamemberHandle ) return new Boolean(get_compressor_on());
 		else if ( get_name_handle() == datamemberHandle ) return get_name();
-		else return super.getAttribute( datamemberHandle );
+		else return super.getParameter( datamemberHandle );
 	}
 	
-	protected boolean setAttributeAux( int param_handle, String val ) {
+	protected boolean setParameterAux( int param_handle, String val ) {
 		boolean retval = true;		
 		
 			
@@ -959,12 +668,12 @@ public class House extends ObjectRoot {
 		else if ( param_handle == get_compressor_count_handle() ) set_compressor_count( Integer.parseInt(val) );
 		else if ( param_handle == get_compressor_on_handle() ) set_compressor_on( Boolean.parseBoolean(val) );
 		else if ( param_handle == get_name_handle() ) set_name( val );
-		else retval = super.setAttributeAux( param_handle, val );
+		else retval = super.setParameterAux( param_handle, val );
 		
 		return retval;
 	}
 	
-	protected boolean setAttributeAux( String datamemberName, String val ) {
+	protected boolean setParameterAux( String datamemberName, String val ) {
 		boolean retval = true;
 		
 			
@@ -973,12 +682,12 @@ public class House extends ObjectRoot {
 		else if (  "compressor_count".equals( datamemberName )  ) set_compressor_count( Integer.parseInt(val) );
 		else if (  "compressor_on".equals( datamemberName )  ) set_compressor_on( Boolean.parseBoolean(val) );
 		else if (  "name".equals( datamemberName )  ) set_name( val );	
-		else retval = super.setAttributeAux( datamemberName, val );
+		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
 	}
 	
-	protected boolean setAttributeAux( String datamemberName, Object val ) {
+	protected boolean setParameterAux( String datamemberName, Object val ) {
 		boolean retval = true;
 		
 		
@@ -987,58 +696,25 @@ public class House extends ObjectRoot {
 		else if (  "compressor_count".equals( datamemberName )  ) set_compressor_count( (Integer)val );
 		else if (  "compressor_on".equals( datamemberName )  ) set_compressor_on( (Boolean)val );
 		else if (  "name".equals( datamemberName )  ) set_name( (String)val );		
-		else retval = super.setAttributeAux( datamemberName, val );
+		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
 	}
 
-	protected SuppliedAttributes createSuppliedDatamembers( boolean force ) {
-		SuppliedAttributes datamembers = super.createSuppliedDatamembers( force );
+	protected SuppliedParameters createSuppliedDatamembers() {
+		SuppliedParameters datamembers = super.createSuppliedDatamembers();
 
 	
-		boolean isPublished = false;
 		
 		
-			try {
-				isPublished = _publishedAttributeHandleSet.isMember( get_air_temperature_handle() );
-			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.House.createSuppliedAttributes:  could not determine if air_temperature is published.");
-				isPublished = false;
-			}
-			if (  isPublished && _air_temperature.shouldBeUpdated( force )  ) {
-				datamembers.add( get_air_temperature_handle(), Double.toString(get_air_temperature()).getBytes() );
-				_air_temperature.setHasBeenUpdated();
-			}
-			try {
-				isPublished = _publishedAttributeHandleSet.isMember( get_compressor_count_handle() );
-			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.House.createSuppliedAttributes:  could not determine if compressor_count is published.");
-				isPublished = false;
-			}
-			if (  isPublished && _compressor_count.shouldBeUpdated( force )  ) {
-				datamembers.add( get_compressor_count_handle(), Integer.toString(get_compressor_count()).getBytes() );
-				_compressor_count.setHasBeenUpdated();
-			}
-			try {
-				isPublished = _publishedAttributeHandleSet.isMember( get_compressor_on_handle() );
-			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.House.createSuppliedAttributes:  could not determine if compressor_on is published.");
-				isPublished = false;
-			}
-			if (  isPublished && _compressor_on.shouldBeUpdated( force )  ) {
-				datamembers.add( get_compressor_on_handle(), Boolean.toString(get_compressor_on()).getBytes() );
-				_compressor_on.setHasBeenUpdated();
-			}
-			try {
-				isPublished = _publishedAttributeHandleSet.isMember( get_name_handle() );
-			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.House.createSuppliedAttributes:  could not determine if name is published.");
-				isPublished = false;
-			}
-			if (  isPublished && _name.shouldBeUpdated( force )  ) {
-				datamembers.add( get_name_handle(), get_name().getBytes() );
-				_name.setHasBeenUpdated();
-			}
+			datamembers.add( get_air_temperature_handle(), Double.toString(get_air_temperature()).getBytes() );
+		
+			datamembers.add( get_compressor_count_handle(), Integer.toString(get_compressor_count()).getBytes() );
+		
+			datamembers.add( get_compressor_on_handle(), Boolean.toString(get_compressor_on()).getBytes() );
+		
+			datamembers.add( get_name_handle(), get_name().getBytes() );
+		
 	
 		return datamembers;
 	}

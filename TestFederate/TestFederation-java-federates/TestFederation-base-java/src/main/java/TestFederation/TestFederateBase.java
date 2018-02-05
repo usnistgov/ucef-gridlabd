@@ -29,41 +29,49 @@ public class TestFederateBase extends SynchronizedFederate {
 		enableAsynchronousDelivery();
         // interaction pubsub
         
-        CoolingControl.publish(getLRC());
-        HeatingControl.publish(getLRC());
         SimTime.publish(getLRC());
+        CoolingControl.publish(getLRC());
         
         GlobalVariables.subscribe(getLRC());
         _subscribedInteractionFilter.setFedFilters( 
 			GlobalVariables.get_handle(), 
 			SubscribedInteractionFilter.OriginFedFilter.ORIGIN_FILTER_DISABLED, 
 			SubscribedInteractionFilter.SourceFedFilter.SOURCE_FILTER_DISABLED 
+		);
+        House.subscribe(getLRC());
+        _subscribedInteractionFilter.setFedFilters( 
+			House.get_handle(), 
+			SubscribedInteractionFilter.OriginFedFilter.ORIGIN_FILTER_DISABLED, 
+			SubscribedInteractionFilter.SourceFedFilter.SOURCE_FILTER_DISABLED 
 		);		
 		// object pubsub
+        
+        	
+        CoolingControlObject.publish_cooling_setpoint();
+        CoolingControlObject.publish_name();
+        CoolingControlObject.publish(getLRC());
                 
         	
-        House.subscribe_air_temperature();
-        House.subscribe_compressor_count();
-        House.subscribe_compressor_on();
-        House.subscribe_name();
-        House.subscribe(getLRC());
+        GlobalVariablesObject.subscribe_clock();
+        GlobalVariablesObject.subscribe(getLRC());
+        
+        	
+        HouseObject.subscribe_air_temperature();
+        HouseObject.subscribe_compressor_count();
+        HouseObject.subscribe_compressor_on();
+        HouseObject.subscribe_name();
+        HouseObject.subscribe(getLRC());
         	}
         
 	
-	public CoolingControl create_CoolingControl() {
-	   CoolingControl interaction = new CoolingControl();
-	   interaction.set_sourceFed( getFederateId() );
-	   interaction.set_originFed( getFederateId() );
-	   return interaction;
-	}
-	public HeatingControl create_HeatingControl() {
-	   HeatingControl interaction = new HeatingControl();
-	   interaction.set_sourceFed( getFederateId() );
-	   interaction.set_originFed( getFederateId() );
-	   return interaction;
-	}
 	public SimTime create_SimTime() {
 	   SimTime interaction = new SimTime();
+	   interaction.set_sourceFed( getFederateId() );
+	   interaction.set_originFed( getFederateId() );
+	   return interaction;
+	}
+	public CoolingControl create_CoolingControl() {
+	   CoolingControl interaction = new CoolingControl();
 	   interaction.set_sourceFed( getFederateId() );
 	   interaction.set_originFed( getFederateId() );
 	   return interaction;

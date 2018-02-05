@@ -39,7 +39,44 @@
             </attribute>
         </objectClass>
         <objectClass>
-            <name>House</name>
+            <name>CoolingControlObject</name>
+            <sharing>PublishSubscribe</sharing>
+            <semantics></semantics>
+
+            <attribute>
+                <name>cooling_setpoint</name>
+                <dataType>double</dataType>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics></semantics>
+            </attribute>
+
+            <attribute>
+                <name>name</name>
+                <dataType>String</dataType>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics></semantics>
+            </attribute>
+        </objectClass>
+        <objectClass>
+            <name>GlobalVariablesObject</name>
+            <sharing>PublishSubscribe</sharing>
+            <semantics></semantics>
+
+            <attribute>
+                <name>clock</name>
+                <dataType>String</dataType>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics></semantics>
+            </attribute>
+        </objectClass>
+        <objectClass>
+            <name>HouseObject</name>
             <sharing>PublishSubscribe</sharing>
             <semantics></semantics>
 
@@ -765,7 +802,7 @@
             </parameter>
         </interactionClass>
         <interactionClass>
-            <name>HeatingControl</name>
+            <name>House</name>
             <sharing>PublishSubscribe</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
@@ -777,14 +814,26 @@
             </parameter>
 
             <parameter> 
-                <name>federateFilter</name>
-                <dataType>String</dataType>
+                <name>air_temperature</name>
+                <dataType>double</dataType>
                 <semantics></semantics>
             </parameter>
 
             <parameter> 
-                <name>heating_setpoint</name>
-                <dataType>double</dataType>
+                <name>compressor_count</name>
+                <dataType>int</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>compressor_on</name>
+                <dataType>boolean</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>federateFilter</name>
+                <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
 

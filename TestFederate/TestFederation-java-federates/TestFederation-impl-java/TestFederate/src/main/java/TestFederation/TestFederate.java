@@ -37,8 +37,8 @@ public class TestFederate extends TestFederateBase {
         while ((reflector = getNextObjectReflectorNoWait()) != null) {
             reflector.reflect();
             ObjectRoot object = reflector.getObjectRoot();
-            if (object instanceof House) {
-                handleObjectClass((House) object);
+            if (object instanceof HouseObject) {
+                handleObjectClass((HouseObject) object);
             }
             log.info("Object received and handled: " + caller);
         }
@@ -113,11 +113,6 @@ public class TestFederate extends TestFederateBase {
             throws Exception {
         log.trace("sendHouse1");
         
-        HeatingControl heating = create_HeatingControl();
-        heating.set_name("house1");
-        heating.set_heating_setpoint(70);
-        heating.sendInteraction(getLRC());
-        
         CoolingControl cooling = create_CoolingControl();
         cooling.set_name("house1");
         cooling.set_cooling_setpoint(73);
@@ -128,13 +123,7 @@ public class TestFederate extends TestFederateBase {
             throws Exception {
         log.trace("sendHouse2");
         
-        double heating_setpoint = (workSchedule ? 58 : 68);
         double cooling_setpoint = (workSchedule ? 85 : 75);
-        
-        HeatingControl heating = create_HeatingControl();
-        heating.set_name("house2");
-        heating.set_heating_setpoint(heating_setpoint);
-        heating.sendInteraction(getLRC());
         
         CoolingControl cooling = create_CoolingControl();
         cooling.set_name("house2");
@@ -168,7 +157,7 @@ public class TestFederate extends TestFederateBase {
         return hourValue >= 8 && hourValue < 17;
     }
     
-    private void handleObjectClass(House object) {
+    private void handleObjectClass(HouseObject object) {
         log.info("received house update {}", object.toString());
     }
     

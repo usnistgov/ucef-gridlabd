@@ -49,7 +49,12 @@
   (attribute FederateHandle reliable timestamp)
   (attribute FederateHost reliable timestamp)
   (attribute FederateType reliable timestamp) )
-(class House
+(class CoolingControlObject
+  (attribute cooling_setpoint reliable timestamp)
+  (attribute name reliable timestamp) )
+(class GlobalVariablesObject
+  (attribute clock reliable timestamp) )
+(class HouseObject
   (attribute air_temperature reliable timestamp)
   (attribute compressor_count reliable timestamp)
   (attribute compressor_on reliable timestamp)
@@ -391,10 +396,12 @@
   (parameter originFed)
   (parameter sourceFed)
 )
-(class HeatingControl reliable timestamp 
+(class House reliable timestamp 
   (parameter actualLogicalGenerationTime)
+  (parameter air_temperature)
+  (parameter compressor_count)
+  (parameter compressor_on)
   (parameter federateFilter)
-  (parameter heating_setpoint)
   (parameter name)
   (parameter originFed)
   (parameter sourceFed)
