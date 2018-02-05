@@ -26,6 +26,7 @@ import gov.nist.hla.gateway.GatewayFederate;
 import gov.nist.hla.gridlabd.exception.GridLabDException;
 import gov.nist.hla.gridlabd.exception.SchemaValidationException;
 import gov.nist.pages.ucef.AttributeConfigType;
+import gov.nist.pages.ucef.InteractionClassConfigType;
 import gov.nist.pages.ucef.LinearConversionType;
 import gov.nist.pages.ucef.ObjectClassConfigType;
 import gov.nist.pages.ucef.ParameterConfigType;
@@ -35,6 +36,8 @@ import gov.nist.pages.ucef.ucefPackage;
 import gov.nist.sds4emf.Deserialize;
 import hla.rti.AttributeNotOwned;
 import hla.rti.FederateNotExecutionMember;
+import hla.rti.InteractionClassNotPublished;
+import hla.rti.InvalidFederationTime;
 import hla.rti.NameNotFound;
 import hla.rti.ObjectClassNotPublished;
 import hla.rti.ObjectNotKnown;
@@ -80,6 +83,8 @@ public class GridLabDFederate implements GatewayCallback {
     private boolean receivedSimEnd = false;
     
     private Map<String, String> gldObjectName = new HashMap<String, String>();
+    
+    private Map<String, String> publishedObjectInstances = new HashMap<String, String>();
     
     public static GridLabDConfig readConfiguration(String filePath)
             throws IOException {
@@ -130,12 +135,13 @@ public class GridLabDFederate implements GatewayCallback {
     @Override
     public void initializeSelf() {
         log.trace("initializeSelf");
-        registerObjectInstances();
     }
     
     @Override
     public void initializeWithPeers() {
         log.trace("initializeWithPeers");
+        
+        registerObjectInstances();
         
         if (configuration.getUseSimTime()) {
             InteractionClassType simTime = gateway.getObjectModel().getInteraction(SIMULATION_TIME);
@@ -219,6 +225,9 @@ public class GridLabDFederate implements GatewayCallback {
             gateway.requestExit();
         } catch (IllegalThreadStateException e) {
             // maybe check if GridLAB-D advanced to the expected time ?
+            
+            sendPublications();
+            
             nextPauseTime += configuration.getStepSize() * configuration.getSimulationTimeScale();
             if (nextPauseTime > configuration.getUnixTimeStop()) {
                 nextPauseTime = configuration.getUnixTimeStop();
@@ -328,7 +337,7 @@ public class GridLabDFederate implements GatewayCallback {
                 Map<String, String> initialValues = new HashMap<String, String>();
                 initialValues.put("name", objectName);
                 gateway.updateObject(instanceName, initialValues);
-                // store this somehow for updates
+                //publishedObjectInstances.put(instanceName, objectName);
                 log.info("registered object {} with class {} to publish {}", instanceName, classPath, objectName);
             } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished | ObjectNotKnown
                     | AttributeNotOwned e) {
@@ -349,6 +358,26 @@ public class GridLabDFederate implements GatewayCallback {
                 PublishedObjectsType gridlabdObjectNames = objectConfig.getPublishedObjects();
                 if (gridlabdObjectNames == null) {
                     log.debug("no GridLAB-D objects defined for {}", object.getName().getValue());
+                    continue;
+                }
+                publishedObjectNames.addAll(gridlabdObjectNames.getObjectName());
+            }
+        }
+        return publishedObjectNames;
+    }
+    
+    private Set<String> getGldObjectNames(InteractionClassType interaction) {
+        log.trace("getGldObjectNames {}", interaction.getName().getValue());
+        
+        Set<String> publishedObjectNames = new HashSet<String>();
+        
+        for (FeatureMap.Entry feature : interaction.getAny()) {
+            if (feature.getValue() instanceof InteractionClassConfigType) {
+                InteractionClassConfigType interactionConfig = (InteractionClassConfigType) feature.getValue();
+                
+                PublishedObjectsType gridlabdObjectNames = interactionConfig.getPublishedObjects();
+                if (gridlabdObjectNames == null) {
+                    log.debug("no GridLAB-D objects defined for {}", interaction.getName().getValue());
                     continue;
                 }
                 publishedObjectNames.addAll(gridlabdObjectNames.getObjectName());
@@ -627,93 +656,49 @@ public class GridLabDFederate implements GatewayCallback {
             }
         }
     }
-    
-    /*
-    private HashMap<String, Integer> objectInstances = new HashMap<String, Integer>();
-    
-    private void sendPublications()
-            throws GLDException {
-        LogicalTime timestamp = new DoubleTime(fedAmb.getLogicalTime() + configuration.getLookahead());
+
+    private void sendPublications() {
+        log.trace("sendPublications");
         
-        try {
-            Set<String> rootParameters = objectModel.getParameterSet(INTERACTION_ROOT);
-            for (String interactionName : objectModel.getPublishedInteractions()) {
-                int interactionHandle = rtiAmb.getInteractionClassHandle(interactionName);
-                
-                SuppliedParameters suppliedParameters = RtiFactoryFactory.getRtiFactory().createSuppliedParameters();
-                for (String parameterName : objectModel.getParameterSet(interactionName)) {
-                    if (rootParameters.contains(parameterName)) {
+        InteractionClassType root = gateway.getObjectModel().getInteraction(INTERACTION_ROOT);
+        Set<ParameterType> rootParameters = gateway.getObjectModel().getParameters(root);
+        
+        Set<String> rootParameterNames = new HashSet<String>();
+        for (ParameterType parameter : rootParameters) {
+            rootParameterNames.add(parameter.getName().getValue());
+        }
+        
+        // need to check for global variables 
+        for (InteractionClassType interaction : gateway.getObjectModel().getPublishedInteractions()) {
+            for (String objectName : getGldObjectNames(interaction)) {
+                Map<String, String> updatedValues = new HashMap<String, String>();
+                for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
+                    // can a derived re-define a root parameter with same name / different class? uhh...
+                    if (rootParameterNames.contains(parameter.getName().getValue())) {
                         // we probably need to set these to some reasonable default value
-                        log.debug("skipping parameter " + parameterName + " from " + INTERACTION_ROOT);
+                        log.debug("skipping parameter " + parameter.getName().getValue() + " from " + INTERACTION_ROOT);
                         continue;
                     }
-                    String object = truncateClassName(interactionName);
-                    String property = parameterName;
-                    String value;
-                    
-                    String dataType = objectModel.getParameterType(interactionName, parameterName);
-                    if (dataType.contains("integer")) {
-                        // required to strip the units from the returned value
-                        value = Long.toString(client.getObjectPropertyAsLong(object, property));
-                    } else if (dataType.contains("float")) {
-                        // required to strip the units from the returned value
-                        value = Double.toString(client.getObjectPropertyAsDouble(object, property));
-                    } else {
-                        value = client.getObjectProperty(object, property);
+                    // need to do data conversion
+                    try {
+                        String value = client.getObjectProperty(objectName, parameter.getName().getValue());
+                        // need to check if double and strip units
+                        updatedValues.put(parameter.getName().getValue(), value);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        log.warn(e);
                     }
-                    
-                    int parameterHandle = rtiAmb.getParameterHandle(parameterName, interactionHandle);
-                    byte[] parameterValue = value.getBytes(); // cpswt does not use the null character
-                    suppliedParameters.add(parameterHandle, parameterValue);
                 }
-                
-                rtiAmb.sendInteraction(interactionHandle, suppliedParameters, null, timestamp);
-            }
-            
-            for (String objectClassName : objectModel.getPublishedObjects()) {
-                int classHandle = rtiAmb.getObjectClassHandle(objectClassName);
-                int objectHandle = objectInstances.get(objectClassName);
-                
-                SuppliedAttributes suppliedAttributes = RtiFactoryFactory.getRtiFactory().createSuppliedAttributes();
-                for (String attributeName : objectModel.getPublishedAttributes(objectClassName)) {
-                    String object = truncateClassName(objectClassName);
-                    String property = attributeName;
-                    String value;
-                    
-                    String dataType = objectModel.getAttributeType(objectClassName, attributeName);
-                    if (dataType.contains("integer")) {
-                        // required to strip the units from the returned value
-                        value = Long.toString(client.getObjectPropertyAsLong(object, property));
-                    } else if (dataType.contains("float")) {
-                        // required to strip the units from the returned value
-                        value = Double.toString(client.getObjectPropertyAsDouble(object, property));
-                    } else {
-                        value = client.getObjectProperty(object, property);
-                    }
-                    log.debug(object + "." + property + "=" + value);
-                    log.debug("value size: " + value.length());
-                    
-                    int attributeHandle = rtiAmb.getAttributeHandle(attributeName, classHandle);
-                    byte[] attributeValue = value.getBytes(); // cpswt does not use the null character
-                    suppliedAttributes.add(attributeHandle, attributeValue);
+                String className = gateway.getObjectModel().getClassPath(interaction);
+                try {
+                    gateway.sendInteraction(className, updatedValues, gateway.getTimeStamp());
+                } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished
+                        | InvalidFederationTime e) {
+                    // TODO Auto-generated catch block
+                    log.warn(e);
                 }
-                
-                rtiAmb.updateAttributeValues(objectHandle, suppliedAttributes, null, timestamp);
             }
-        } catch (RTIexception e) {
-            // might want to separate this out into recoverable cases
-            throw new RTIAmbassadorException(e);
         }
+        // missing object updates
     }
-    
-    private String truncateClassName(String className) {
-        String result = className;
-        
-        int lastPeriod = className.lastIndexOf(".");
-        if (lastPeriod > 0) {
-          result = className.substring(lastPeriod+1);
-        }
-        return result;
-    }
-    */
 }

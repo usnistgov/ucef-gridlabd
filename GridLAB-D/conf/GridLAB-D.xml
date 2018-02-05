@@ -88,6 +88,12 @@
                 <order>TimeStamp</order>
                 <semantics></semantics>
             </attribute>
+<ucef:objectClassConfig>
+    <ucef:publishedObjects>
+        <ucef:objectName>house2</ucef:objectName>
+        <ucef:objectName>house3</ucef:objectName>
+    </ucef:publishedObjects>
+</ucef:objectClassConfig>
         </objectClass>
         </objectClass>
     </objects>
@@ -280,6 +286,11 @@
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
+<ucef:interactionClassConfig>
+    <ucef:publishedObjects>
+        <ucef:objectName>house1</ucef:objectName>
+    </ucef:publishedObjects>
+</ucef:interactionClassConfig>
         </interactionClass>
         </interactionClass>
         </interactionClass>
