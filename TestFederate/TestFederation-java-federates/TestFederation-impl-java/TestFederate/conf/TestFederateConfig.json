@@ -4,5 +4,6 @@
   "federationId": "TestFederation",
   "isLateJoiner": false,
   "lookAhead": 0.1,
-  "stepSize": 1.0
+  "stepSize": 1.0,
+  "useCelsius": true
 }

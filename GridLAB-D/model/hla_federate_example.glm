@@ -22,8 +22,12 @@ object house {
     name house2;
 }
 
+object house {
+    name house3;
+}
+
 object multi_recorder {
-    property house1:heating_setpoint, house1:air_temperature, house1:cooling_setpoint, house1:compressor_count, house2:heating_setpoint, house2:air_temperature, house2:cooling_setpoint, house2:compressor_count;
+    property house1:air_temperature, house1:cooling_setpoint, house1:compressor_count, house2:air_temperature, house2:cooling_setpoint, house2:compressor_count, house3:air_temperature, house3:cooling_setpoint, house3:compressor_count;
     file house_data.csv;
     interval 900;
 }

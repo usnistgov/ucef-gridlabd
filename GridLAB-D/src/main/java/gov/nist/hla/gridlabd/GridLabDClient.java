@@ -129,7 +129,7 @@ public class GridLabDClient {
         if (unit == null | unit.isEmpty()) {
             setObjectProperty(objectName, propertyName, Double.toString(value));
         } else {
-            get("/xml/" + objectName + "/" + propertyName + "=" + value + " " + unit);
+            get("/xml/" + objectName + "/" + propertyName + "=" + value + "%20" + unit);
         }
     }
     

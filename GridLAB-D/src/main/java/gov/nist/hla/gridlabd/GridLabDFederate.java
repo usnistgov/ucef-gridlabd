@@ -25,6 +25,8 @@ import gov.nist.hla.gateway.GatewayCallback;
 import gov.nist.hla.gateway.GatewayFederate;
 import gov.nist.hla.gridlabd.exception.GridLabDException;
 import gov.nist.hla.gridlabd.exception.SchemaValidationException;
+import gov.nist.pages.ucef.AttributeConfigType;
+import gov.nist.pages.ucef.LinearConversionType;
 import gov.nist.pages.ucef.ObjectClassConfigType;
 import gov.nist.pages.ucef.ParameterConfigType;
 import gov.nist.pages.ucef.PublishedObjectsType;
@@ -40,6 +42,7 @@ import hla.rti.ObjectNotKnown;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.ieee.standards.ieee1516._2010.AttributeType;
 import org.ieee.standards.ieee1516._2010.InteractionClassType;
 import org.ieee.standards.ieee1516._2010.ObjectClassType;
 import org.ieee.standards.ieee1516._2010.ParameterType;
@@ -75,6 +78,8 @@ public class GridLabDFederate implements GatewayCallback {
     private boolean receivedSimTime = false;
     
     private boolean receivedSimEnd = false;
+    
+    private Map<String, String> gldObjectName = new HashMap<String, String>();
     
     public static GridLabDConfig readConfiguration(String filePath)
             throws IOException {
@@ -201,11 +206,7 @@ public class GridLabDFederate implements GatewayCallback {
     public void receiveObject(Double timeStep, String className, String instanceName, Map<String, String> attributes) {
         log.trace("receiveObject {} {} {} {}", timeStep, className, instanceName, attributes.toString());
         
-        if (isInitialized) {
-            handleObjectReflection(className, instanceName, attributes);
-        } else {
-            log.warn("dropped object reflection " + className);
-        }
+        handleObjectReflection(className, instanceName, attributes);
     }
     
     @Override
@@ -471,19 +472,67 @@ public class GridLabDFederate implements GatewayCallback {
                 continue;
             }
             ParameterType param = gateway.getObjectModel().getParameter(interaction, parameter.getKey());
-            String gldValue = doUnitConversion(param, parameter.getValue());
+            String unit = doNameConversion(param);
             try {
-                // this cannot be more efficient due to the limitations of GridLAB-D
-                client.setObjectProperty(gldObjectName, parameter.getKey(), gldValue);
-                log.debug("set {}:{}={}", gldObjectName, parameter.getKey(), gldValue);
+                if (unit != null) {
+                    double value = Double.parseDouble(parameter.getValue());
+                    // this cannot be more efficient due to the limitations of GridLAB-D
+                    client.setObjectProperty(gldObjectName, parameter.getKey(), value, unit);
+                    log.debug("set {}:{}={} [{}]", gldObjectName, parameter.getKey(), value, unit);
+                } else {
+                    String gldValue = doLinearConversion(param, parameter.getValue());
+                    // this cannot be more efficient due to the limitations of GridLAB-D
+                    client.setObjectProperty(gldObjectName, parameter.getKey(), gldValue);
+                    log.debug("set {}:{}={}", gldObjectName, parameter.getKey(), gldValue);
+                }
             } catch (IOException e) {
                 log.error("could not set value for {}:{}", gldObjectName, parameter.getKey());
             }
         }
     }
     
-    private String doUnitConversion(ParameterType parameter, String hlaValue) {
-        log.trace("doUnitConversion {} {}", parameter.getName().getValue(), hlaValue);
+    private String doNameConversion(AttributeType attribute) {
+        log.trace("doNameConversion {}", attribute.getName().getValue());
+        
+        // unit conversion only works with type double in GridLAb-D ; how to check ?
+        
+        for (FeatureMap.Entry feature : attribute.getAny()) {
+            if (feature.getValue() instanceof AttributeConfigType) {
+                AttributeConfigType attributeConfig = (AttributeConfigType) feature.getValue();
+                
+                UnitConversionType unitConversion = attributeConfig.getUnitConversion();
+                
+                if (unitConversion.getNameConversion() != null) {
+                    return unitConversion.getNameConversion();
+                }
+            }
+        }
+        log.debug("no conversion rule defined");
+        return null;
+    }
+    
+    private String doLinearConversion(AttributeType attribute, String hlaValue) {
+        log.trace("doLinearConversion {} {}", attribute.getName().getValue(), hlaValue);
+        
+        // unit conversion only works with type double in GridLAb-D ; how to check ?
+        
+        for (FeatureMap.Entry feature : attribute.getAny()) {
+            if (feature.getValue() instanceof AttributeConfigType) {
+                AttributeConfigType attributeConfig = (AttributeConfigType) feature.getValue();
+                
+                UnitConversionType unitConversion = attributeConfig.getUnitConversion();
+                
+                if (unitConversion.getLinearConversion() != null) {
+                    return doLinearConversion(unitConversion.getLinearConversion(), hlaValue);
+                }
+            }
+        }
+        log.debug("no conversion rule defined");
+        return hlaValue;
+    }
+    
+    private String doNameConversion(ParameterType parameter) {
+        log.trace("doNameConversion {}", parameter.getName().getValue());
         
         // unit conversion only works with type double in GridLAb-D ; how to check ?
         
@@ -494,17 +543,37 @@ public class GridLabDFederate implements GatewayCallback {
                 UnitConversionType unitConversion = parameterConfig.getUnitConversion();
                 
                 if (unitConversion.getNameConversion() != null) {
-                    String result = hlaValue + " " + unitConversion.getNameConversion();
-                    log.debug("name conversion {}", result);
-                    return result;
+                    return unitConversion.getNameConversion();
                 }
+            }
+        }
+        log.debug("no conversion rule defined");
+        return null;
+    }
+    
+    private String doLinearConversion(LinearConversionType conversion, String value){
+        log.trace("doLinearConversion");
+        double scale = conversion.getScale();
+        double offset = conversion.getOffset();
+        double y = Double.parseDouble(value);
+        double x = (y - offset) / scale;
+        log.debug("linear conversion {} = ({} - {}) / {}", x, y, offset, scale);
+        return Double.toString(x);
+    }
+    
+    private String doLinearConversion(ParameterType parameter, String hlaValue) {
+        log.trace("doLinearConversion {} {}", parameter.getName().getValue(), hlaValue);
+        
+        // unit conversion only works with type double in GridLAb-D ; how to check ?
+        
+        for (FeatureMap.Entry feature : parameter.getAny()) {
+            if (feature.getValue() instanceof ParameterConfigType) {
+                ParameterConfigType parameterConfig = (ParameterConfigType) feature.getValue();
+                
+                UnitConversionType unitConversion = parameterConfig.getUnitConversion();
+                
                 if (unitConversion.getLinearConversion() != null) {
-                    double scale = unitConversion.getLinearConversion().getScale();
-                    double offset = unitConversion.getLinearConversion().getOffset();
-                    double y = Double.parseDouble(hlaValue);
-                    double x = (y - offset) / scale;
-                    log.debug("linear conversion {} = ({} - {}) / {}", x, y, offset, scale);
-                    return Double.toString(x);
+                    return doLinearConversion(unitConversion.getLinearConversion(), hlaValue);
                 }
             }
         }
@@ -514,7 +583,49 @@ public class GridLabDFederate implements GatewayCallback {
     
     private void handleObjectReflection(String className, String instanceName, Map<String, String> attributes) {
         log.trace("handleObjectReflection {} {} {}", className, instanceName, attributes.toString());
-        // will need to retrieve the object name from previous updates / skip if undefined ?
+        
+        if (!gldObjectName.containsKey(instanceName) && !attributes.containsKey("name")) {
+            // might be better to store this to retrieve later when we get a name
+            log.warn("skipped update for {} - missing name", instanceName);
+            return;
+        }
+        
+        if (attributes.containsKey("name")) {
+            gldObjectName.put(instanceName, attributes.get("name"));
+            log.debug("using {} for object instance {}", attributes.get("name"), instanceName);
+        }
+        
+        ObjectClassType object = gateway.getObjectModel().getObject(className);
+        if (isGlobalVariable(object)) {
+            log.warn("update for global variables defined in {} not supported", className);
+            return;
+        }
+        
+        String name = gldObjectName.get(instanceName);
+        log.debug("received update for {}", name);
+        
+        for (Map.Entry<String, String> attribute : attributes.entrySet()) {
+            if (attribute.getKey().equals("name")) {
+                continue;
+            }
+            AttributeType attr = gateway.getObjectModel().getAttribute(object, attribute.getKey());
+            String unit = doNameConversion(attr);
+            try {
+                if (unit != null) {
+                    double value = Double.parseDouble(attribute.getValue());
+                    // this cannot be more efficient due to the limitations of GridLAB-D
+                    client.setObjectProperty(name, attribute.getKey(), value, unit);
+                    log.debug("set {}:{}={} [{}]", name, attribute.getKey(), value, unit);
+                } else {
+                    String gldValue = doLinearConversion(attr, attribute.getValue());
+                    // this cannot be more efficient due to the limitations of GridLAB-D
+                    client.setObjectProperty(name, attribute.getKey(), gldValue);
+                    log.debug("set {}:{}={}", name, attribute.getKey(), gldValue);
+                }
+            } catch (IOException e) {
+                log.error("could not set value for {}:{}", name, attribute.getKey());
+            }
+        }
     }
     
     /*
