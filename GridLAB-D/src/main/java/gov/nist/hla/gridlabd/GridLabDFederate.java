@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -23,15 +22,10 @@ import javax.xml.validation.Validator;
 
 import gov.nist.hla.gateway.GatewayCallback;
 import gov.nist.hla.gateway.GatewayFederate;
+import gov.nist.hla.gateway.exception.RTIAmbassadorException;
 import gov.nist.hla.gridlabd.exception.GridLabDException;
 import gov.nist.hla.gridlabd.exception.SchemaValidationException;
-import gov.nist.pages.ucef.AttributeConfigType;
-import gov.nist.pages.ucef.InteractionClassConfigType;
 import gov.nist.pages.ucef.LinearConversionType;
-import gov.nist.pages.ucef.ObjectClassConfigType;
-import gov.nist.pages.ucef.ParameterConfigType;
-import gov.nist.pages.ucef.PublishedObjectsType;
-import gov.nist.pages.ucef.UnitConversionType;
 import gov.nist.pages.ucef.ucefPackage;
 import gov.nist.sds4emf.Deserialize;
 import hla.rti.AttributeNotOwned;
@@ -44,7 +38,6 @@ import hla.rti.ObjectNotKnown;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.emf.ecore.util.FeatureMap;
 import org.ieee.standards.ieee1516._2010.AttributeType;
 import org.ieee.standards.ieee1516._2010.InteractionClassType;
 import org.ieee.standards.ieee1516._2010.ObjectClassType;
@@ -56,13 +49,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class GridLabDFederate implements GatewayCallback {    
     private static final Logger log = LogManager.getLogger();
     
-    private static final String INTERACTION_ROOT = "InteractionRoot.C2WInteractionRoot";
+    private static final String INTERACTION_SIM_TIME = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimTime";
     
-    private static final String SIMULATION_END = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimEnd";
-    
-    private static final String SIMULATION_TIME = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimTime";
-    
-    private static final String OBJECT_ROOT = "ObjectRoot";
+    private static final String INTERACTION_SIM_END = "InteractionRoot.C2WInteractionRoot.SimulationControl.SimEnd";
     
     final private GridLabDConfig configuration;
     
@@ -70,21 +59,17 @@ public class GridLabDFederate implements GatewayCallback {
     
     final private GatewayFederate gateway;
     
+    final private ObjectModelHelper objectModelHelper;
+    
     final private GridLabDClient client;
     
     private Process gridlabd = null;
     
-    private double nextPauseTime;
-    
-    private boolean isInitialized = false;
-    
+    private boolean isGridLabDRunning = false;
     private boolean receivedSimTime = false;
-    
     private boolean receivedSimEnd = false;
     
     private Map<String, String> gldObjectName = new HashMap<String, String>();
-    
-    private Map<String, String> publishedObjectInstances = new HashMap<String, String>();
     
     public static GridLabDConfig readConfiguration(String filePath)
             throws IOException {
@@ -124,130 +109,12 @@ public class GridLabDFederate implements GatewayCallback {
         this.dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         
         this.gateway = new GatewayFederate(configuration, this);
+        this.objectModelHelper = new ObjectModelHelper(gateway.getObjectModel());
         this.client = new GridLabDClient("localhost", configuration.getServerPortNumber());
     }
     
-    public void run() {
-        log.trace("run");
-        gateway.run();
-    }
-    
-    @Override
-    public void initializeSelf() {
-        log.trace("initializeSelf");
-    }
-    
-    @Override
-    public void initializeWithPeers() {
-        log.trace("initializeWithPeers");
-        
-        registerObjectInstances();
-        
-        if (configuration.getUseSimTime()) {
-            InteractionClassType simTime = gateway.getObjectModel().getInteraction(SIMULATION_TIME);
-            if (!gateway.getObjectModel().getSubscribedInteractions().contains(simTime)) {
-                throw new GridLabDException("no subscription for " + SIMULATION_TIME);
-            }
-            
-            while (!receivedSimTime) {
-                try {
-                    if (receivedSimEnd) {
-                        log.warn("received {} prior to initialization", SIMULATION_END);
-                        throw new GridLabDException("unexpected " + SIMULATION_END);
-                    }
-                    log.info("waiting {} ms to receive {}", configuration.getWaitTimeMs(), SIMULATION_TIME);
-                    Thread.sleep(configuration.getWaitTimeMs());
-                    gateway.tick();
-                } catch (FederateNotExecutionMember | InterruptedException e) {
-                    throw new GridLabDException(e);
-                }
-            }
-        } else {
-            log.info("starting GridLAB-D simulation without " + SIMULATION_TIME);
-        }
-        
-        nextPauseTime = configuration.getUnixTimeStart();
-        
-        if (configuration.getUnixTimeStop() < 0) {
-            log.info("running without a simulation stop time");
-        }
-        InteractionClassType simEnd = gateway.getObjectModel().getInteraction(SIMULATION_END);
-        if (!gateway.getObjectModel().getSubscribedInteractions().contains(simEnd)) {
-            log.info("running without support for " + SIMULATION_END);
-            if (configuration.getUnixTimeStop() < 0) {
-                log.warn("no exit condition; will run forever!");
-            }
-        }
-        
-        try {
-            startGld();
-            connectToGld();
-        } catch (IOException | InterruptedException e) {
-            throw new GridLabDException(e);
-        }
-        isInitialized = true;
-        log.info("Initialized.");
-    }
-    
-    @Override
-    public void receiveInteraction(Double timeStep, String className, Map<String, String> parameters) {
-        log.trace("receiveInteraction {} {} {}", timeStep, className, parameters.toString());
-        
-        if (className.equals(SIMULATION_END)) {
-            receivedSimEnd = true;
-        } else if (className.equals(SIMULATION_TIME)) {
-            configuration.setUnixTimeStart(Long.valueOf(parameters.get("unixTimeStart")));
-            configuration.setUnixTimeStop(Long.valueOf(parameters.get("unixTimeStop")));
-            configuration.setSimulationTimeScale(Double.valueOf(parameters.get("timeScale")));
-            configuration.setSimulationTimeZone(parameters.get("timeZone"));
-            receivedSimTime = true;
-        } else if (isInitialized) {
-            handleInteraction(className, parameters);
-        } else {
-            log.warn("dropped interaction " + className);
-        }
-    }
-
-    @Override
-    public void receiveObject(Double timeStep, String className, String instanceName, Map<String, String> attributes) {
-        log.trace("receiveObject {} {} {} {}", timeStep, className, instanceName, attributes.toString());
-        
-        handleObjectReflection(className, instanceName, attributes);
-    }
-    
-    @Override
-    public void doTimeStep(Double timeStep) {
-        log.trace("doTimeStep {}", timeStep);
-        
-        try {
-            int code = gridlabd.exitValue();
-            log.info("GridLAB-D done with exit value {}", code);
-            gateway.requestExit();
-        } catch (IllegalThreadStateException e) {
-            // maybe check if GridLAB-D advanced to the expected time ?
-            
-            sendPublications();
-            
-            nextPauseTime += configuration.getStepSize() * configuration.getSimulationTimeScale();
-            if (nextPauseTime > configuration.getUnixTimeStop()) {
-                nextPauseTime = configuration.getUnixTimeStop();
-            }
-            try {
-                advanceSimulationTime(Double.valueOf(nextPauseTime).longValue());
-            } catch (InterruptedException | IOException e2) {
-                throw new GridLabDException(e2);
-            } 
-        }
-    }
-    
-    @Override
-    public void terminate() {
-        log.trace("terminate");
-        // clean shutdown for early exit
-    }
-    
     private void registerUcefSchema() {
-        log.info("loading schema {}", ucefPackage.eNS_URI);
+        log.info("registering schema {}", ucefPackage.eNS_URI);
         Deserialize.registerPackage(ucefPackage.eNS_URI, ucefPackage.eINSTANCE);
     }
     
@@ -271,62 +138,79 @@ public class GridLabDFederate implements GatewayCallback {
         }
     }
     
-    private String toTimeStamp(long unixTime) {
-        log.trace("toTimeStamp {}", unixTime);
-        return dateFormat.format(new Date(unixTime*1000));
+    public void run() {
+        log.trace("run");
+        gateway.run();
     }
     
-    private long toUnixTime(String timeStamp)
-            throws ParseException {
-        log.trace("toUnixTime {}", timeStamp);
-        return dateFormat.parse(timeStamp).getTime()/1000;
+    @Override
+    public void initializeSelf() {
+        log.trace("initializeSelf");
     }
     
-    private boolean isGlobalVariable(ObjectClassType object) {
-        log.trace("isGlobalVariable {}", object.getName().getValue());
-        return gateway.getObjectModel().getAttribute(object, "name") == null;
-    }
-    
-    private boolean isGlobalVariable(InteractionClassType interaction) {
-        log.trace("isGlobalVariable {}", interaction.getName().getValue());
-        return gateway.getObjectModel().getParameter(interaction, "name") == null;
+    @Override
+    public void initializeWithPeers() {
+        log.trace("initializeWithPeers");
+        
+        registerObjectInstances();
+        
+        if (configuration.getUseSimTime()) {
+            waitForSimTime();
+        } else {
+            log.info("configured to run without " + INTERACTION_SIM_TIME);
+        }
+        
+        if (configuration.getUnixTimeStop() < 0) {
+            log.info("configured to run with stoptime=NEVER");
+        }
+        if (!objectModelHelper.isSubscribed(INTERACTION_SIM_END)) {
+            log.warn("configured to run without " + INTERACTION_SIM_END);
+            if (configuration.getUnixTimeStop() < 0) {
+                throw new GridLabDException("no exit condition");
+            }
+        }
+        
+        try {
+            startGld();
+            connectToGld();
+            isGridLabDRunning = true;
+        } catch (IOException | InterruptedException e) {
+            throw new GridLabDException(e);
+        }
+        
+        log.info("Initialized.");
     }
     
     private void registerObjectInstances() {
         log.trace("registerObjectInstances");
         
         for (ObjectClassType object : gateway.getObjectModel().getPublishedObjects()) {
-            if (isGlobalVariable(object)) {
+            if (objectModelHelper.isGlobalVariable(object)) {
                 registerGlobalVariable(object);
             } else {
-                registerGldObjects(object);
+                registerObjectInstances(object);
             }
         }
     }
     
     private void registerGlobalVariable(ObjectClassType object) {
         log.trace("registerGlobalVariable {}", object.getName().getValue());
-        
         final String classPath = gateway.getObjectModel().getClassPath(object);
-        
-        if (!getGldObjectNames(object).isEmpty()) {
-            log.warn("GridLAB-D object names were associated with global variables in {}", classPath);
-        }
         
         try {
             String instanceName = gateway.registerObjectInstance(classPath);
-            // store this somehow for updates
+            //registeredObjectNames.put(classPath, instanceName);
             log.info("registered object {} with class {} to publish global variables", instanceName, classPath);
         } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished e) {
-            throw new GridLabDException(e);
+            throw new RTIAmbassadorException(e);
         }
     }
     
-    private void registerGldObjects(ObjectClassType object) {
+    private void registerObjectInstances(ObjectClassType object) {
         log.trace("registerGldObjects {}", object.getName().getValue());
+        final String classPath = gateway.getObjectModel().getClassPath(object);
         
-        String classPath = gateway.getObjectModel().getClassPath(object);
-        Set<String> publishedObjectNames = getGldObjectNames(object);
+        Set<String> publishedObjectNames = objectModelHelper.getPublishedNames(object);
         
         if (publishedObjectNames.isEmpty()) {
             log.warn("no GridLAB-D object names were defined for published object {}", classPath);
@@ -346,44 +230,29 @@ public class GridLabDFederate implements GatewayCallback {
         }
     }
     
-    private Set<String> getGldObjectNames(ObjectClassType object) {
-        log.trace("getGldObjectNames {}", object.getName().getValue());
+    private void waitForSimTime() {
+        log.trace("waitForSimTime");
         
-        Set<String> publishedObjectNames = new HashSet<String>();
+        if (!objectModelHelper.isSubscribed(INTERACTION_SIM_TIME)) {
+            throw new GridLabDException("no subscription for " + INTERACTION_SIM_TIME);
+        }
         
-        for (FeatureMap.Entry feature : object.getAny()) {
-            if (feature.getValue() instanceof ObjectClassConfigType) {
-                ObjectClassConfigType objectConfig = (ObjectClassConfigType) feature.getValue();
+        while (!receivedSimTime) {
+            try {
+                log.info("waiting {} ms to receive {}", configuration.getWaitTimeMs(), INTERACTION_SIM_TIME);
+                Thread.sleep(configuration.getWaitTimeMs());
+                gateway.tick();
                 
-                PublishedObjectsType gridlabdObjectNames = objectConfig.getPublishedObjects();
-                if (gridlabdObjectNames == null) {
-                    log.debug("no GridLAB-D objects defined for {}", object.getName().getValue());
-                    continue;
+                if (receivedSimEnd) {
+                    log.error("received {} prior to initialization", INTERACTION_SIM_END);
+                    throw new GridLabDException("unexpected " + INTERACTION_SIM_END);
                 }
-                publishedObjectNames.addAll(gridlabdObjectNames.getObjectName());
+            } catch (FederateNotExecutionMember e) {
+                throw new RTIAmbassadorException(e);
+            } catch (InterruptedException e) {
+                throw new GridLabDException(e);
             }
         }
-        return publishedObjectNames;
-    }
-    
-    private Set<String> getGldObjectNames(InteractionClassType interaction) {
-        log.trace("getGldObjectNames {}", interaction.getName().getValue());
-        
-        Set<String> publishedObjectNames = new HashSet<String>();
-        
-        for (FeatureMap.Entry feature : interaction.getAny()) {
-            if (feature.getValue() instanceof InteractionClassConfigType) {
-                InteractionClassConfigType interactionConfig = (InteractionClassConfigType) feature.getValue();
-                
-                PublishedObjectsType gridlabdObjectNames = interactionConfig.getPublishedObjects();
-                if (gridlabdObjectNames == null) {
-                    log.debug("no GridLAB-D objects defined for {}", interaction.getName().getValue());
-                    continue;
-                }
-                publishedObjectNames.addAll(gridlabdObjectNames.getObjectName());
-            }
-        }
-        return publishedObjectNames;
     }
     
     private void startGld()
@@ -399,7 +268,7 @@ public class GridLabDFederate implements GatewayCallback {
         ProcessBuilder builder = new ProcessBuilder();
         builder.inheritIO(); // maybe replace
         
-        builder.directory(new File(configuration.getWorkingDirectory()));
+        builder.directory(new File(configuration.getWorkingDirectory())); // null is okay
         log.debug("directory: {}", configuration.getWorkingDirectory());
         
         builder.command(
@@ -448,14 +317,80 @@ public class GridLabDFederate implements GatewayCallback {
             try {
                 log.info("waiting {} ms on connection to {}", configuration.getWaitTimeMs(), client);
                 Thread.sleep(configuration.getWaitTimeMs());
-                connected = client.isPaused();
-                if (!connected) {
-                    log.info("GridLAB-D model not yet initialized");
-                }
+                connected = client.isPaused(); // true when GridLAB-D model initialized
             } catch (IOException e) {
                 log.warn("failed to connect to GridLAB-D server");
             }
         }
+    }
+    
+    private String toTimeStamp(long unixTime) {
+        log.trace("toTimeStamp {}", unixTime);
+        return dateFormat.format(new Date(unixTime*1000));
+    }
+    
+    private long toUnixTime(String timeStamp)
+            throws ParseException {
+        log.trace("toUnixTime {}", timeStamp);
+        return dateFormat.parse(timeStamp).getTime()/1000;
+    }
+    
+    @Override
+    public void receiveInteraction(Double timeStep, String className, Map<String, String> parameters) {
+        log.trace("receiveInteraction {} {} {}", timeStep, className, parameters.toString());
+        
+        if (className.equals(INTERACTION_SIM_END)) {
+            receivedSimEnd = true;
+        } else if (className.equals(INTERACTION_SIM_TIME)) {
+            configuration.setUnixTimeStart(Long.valueOf(parameters.get("unixTimeStart")));
+            configuration.setUnixTimeStop(Long.valueOf(parameters.get("unixTimeStop")));
+            configuration.setSimulationTimeScale(Double.valueOf(parameters.get("timeScale")));
+            configuration.setSimulationTimeZone(parameters.get("timeZone"));
+            receivedSimTime = true;
+        } else if (isGridLabDRunning) {
+            handleInteraction(className, parameters);
+        } else {
+            log.warn("dropped interaction " + className);
+        }
+    }
+
+    @Override
+    public void receiveObject(Double timeStep, String className, String instanceName, Map<String, String> attributes) {
+        log.trace("receiveObject {} {} {} {}", timeStep, className, instanceName, attributes.toString());
+        
+        handleObjectReflection(className, instanceName, attributes);
+    }
+    
+    @Override
+    public void doTimeStep(Double timeStep) {
+        log.trace("doTimeStep {}", timeStep);
+        
+        try {
+            int code = gridlabd.exitValue();
+            log.info("GridLAB-D done with exit value {}", code);
+            gateway.requestExit();
+        } catch (IllegalThreadStateException e) {
+            // maybe check if GridLAB-D advanced to the expected time ?
+            
+            sendPublications();
+            
+            double elapsedTime = (timeStep + configuration.getStepSize()) * configuration.getSimulationTimeScale();
+            long nextPauseTime = configuration.getUnixTimeStart() + Double.valueOf(elapsedTime).longValue();
+            if (nextPauseTime > configuration.getUnixTimeStop()) {
+                nextPauseTime = configuration.getUnixTimeStop();
+            }
+            try {
+                advanceSimulationTime(nextPauseTime);
+            } catch (InterruptedException | IOException e2) {
+                throw new GridLabDException(e2);
+            } 
+        }
+    }
+    
+    @Override
+    public void terminate() {
+        log.trace("terminate");
+        // clean shutdown for early exit
     }
     
     private void advanceSimulationTime(long unixTime)
@@ -475,16 +410,8 @@ public class GridLabDFederate implements GatewayCallback {
     private void handleInteraction(String className, Map<String, String> parameters) {
         log.trace("handleInteraction {} {}", className, parameters.toString());
         
-        InteractionClassType root = gateway.getObjectModel().getInteraction(INTERACTION_ROOT);
-        Set<ParameterType> rootParameters = gateway.getObjectModel().getParameters(root);
-        
-        Set<String> rootParameterNames = new HashSet<String>();
-        for (ParameterType parameter : rootParameters) {
-            rootParameterNames.add(parameter.getName().getValue());
-        }
-        
         InteractionClassType interaction = gateway.getObjectModel().getInteraction(className);
-        if (isGlobalVariable(interaction)) {
+        if (objectModelHelper.isGlobalVariable(interaction)) {
             log.warn("update for global variables defined in {} not supported", className);
             return;
         }
@@ -493,15 +420,15 @@ public class GridLabDFederate implements GatewayCallback {
         log.debug("received update for {}", gldObjectName);
         
         for (Map.Entry<String, String> parameter : parameters.entrySet()) {
-            if (rootParameterNames.contains(parameter.getKey())) {
-                log.debug("skipping parameter {} from {}", parameter.getKey(), INTERACTION_ROOT);
+            if (objectModelHelper.isRootParameter(parameter.getKey())) {
+                log.debug("skipping parameter {}", parameter.getKey());
                 continue;
             }
             if (parameter.getKey().equals("name")) {
                 continue;
             }
             ParameterType param = gateway.getObjectModel().getParameter(interaction, parameter.getKey());
-            String unit = doNameConversion(param);
+            String unit = objectModelHelper.getNameConversion(param);
             try {
                 if (unit != null) {
                     double value = Double.parseDouble(parameter.getValue());
@@ -509,7 +436,11 @@ public class GridLabDFederate implements GatewayCallback {
                     client.setObjectProperty(gldObjectName, parameter.getKey(), value, unit);
                     log.debug("set {}:{}={} [{}]", gldObjectName, parameter.getKey(), value, unit);
                 } else {
-                    String gldValue = doLinearConversion(param, parameter.getValue());
+                    LinearConversionType conversionRule = objectModelHelper.getLinearConversion(param);
+                    String gldValue = parameter.getValue();
+                    if (conversionRule != null) {
+                       gldValue = doLinearConversion(conversionRule, parameter.getValue()); 
+                    }
                     // this cannot be more efficient due to the limitations of GridLAB-D
                     client.setObjectProperty(gldObjectName, parameter.getKey(), gldValue);
                     log.debug("set {}:{}={}", gldObjectName, parameter.getKey(), gldValue);
@@ -518,66 +449,6 @@ public class GridLabDFederate implements GatewayCallback {
                 log.error("could not set value for {}:{}", gldObjectName, parameter.getKey());
             }
         }
-    }
-    
-    private String doNameConversion(AttributeType attribute) {
-        log.trace("doNameConversion {}", attribute.getName().getValue());
-        
-        // unit conversion only works with type double in GridLAb-D ; how to check ?
-        
-        for (FeatureMap.Entry feature : attribute.getAny()) {
-            if (feature.getValue() instanceof AttributeConfigType) {
-                AttributeConfigType attributeConfig = (AttributeConfigType) feature.getValue();
-                
-                UnitConversionType unitConversion = attributeConfig.getUnitConversion();
-                
-                if (unitConversion.getNameConversion() != null) {
-                    return unitConversion.getNameConversion();
-                }
-            }
-        }
-        log.debug("no conversion rule defined");
-        return null;
-    }
-    
-    private String doLinearConversion(AttributeType attribute, String hlaValue) {
-        log.trace("doLinearConversion {} {}", attribute.getName().getValue(), hlaValue);
-        
-        // unit conversion only works with type double in GridLAb-D ; how to check ?
-        
-        for (FeatureMap.Entry feature : attribute.getAny()) {
-            if (feature.getValue() instanceof AttributeConfigType) {
-                AttributeConfigType attributeConfig = (AttributeConfigType) feature.getValue();
-                
-                UnitConversionType unitConversion = attributeConfig.getUnitConversion();
-                
-                if (unitConversion.getLinearConversion() != null) {
-                    return doLinearConversion(unitConversion.getLinearConversion(), hlaValue);
-                }
-            }
-        }
-        log.debug("no conversion rule defined");
-        return hlaValue;
-    }
-    
-    private String doNameConversion(ParameterType parameter) {
-        log.trace("doNameConversion {}", parameter.getName().getValue());
-        
-        // unit conversion only works with type double in GridLAb-D ; how to check ?
-        
-        for (FeatureMap.Entry feature : parameter.getAny()) {
-            if (feature.getValue() instanceof ParameterConfigType) {
-                ParameterConfigType parameterConfig = (ParameterConfigType) feature.getValue();
-                
-                UnitConversionType unitConversion = parameterConfig.getUnitConversion();
-                
-                if (unitConversion.getNameConversion() != null) {
-                    return unitConversion.getNameConversion();
-                }
-            }
-        }
-        log.debug("no conversion rule defined");
-        return null;
     }
     
     private String doLinearConversion(LinearConversionType conversion, String value){
@@ -590,25 +461,7 @@ public class GridLabDFederate implements GatewayCallback {
         return Double.toString(x);
     }
     
-    private String doLinearConversion(ParameterType parameter, String hlaValue) {
-        log.trace("doLinearConversion {} {}", parameter.getName().getValue(), hlaValue);
-        
-        // unit conversion only works with type double in GridLAb-D ; how to check ?
-        
-        for (FeatureMap.Entry feature : parameter.getAny()) {
-            if (feature.getValue() instanceof ParameterConfigType) {
-                ParameterConfigType parameterConfig = (ParameterConfigType) feature.getValue();
-                
-                UnitConversionType unitConversion = parameterConfig.getUnitConversion();
-                
-                if (unitConversion.getLinearConversion() != null) {
-                    return doLinearConversion(unitConversion.getLinearConversion(), hlaValue);
-                }
-            }
-        }
-        log.debug("no conversion rule defined");
-        return hlaValue;
-    }
+    
     
     private void handleObjectReflection(String className, String instanceName, Map<String, String> attributes) {
         log.trace("handleObjectReflection {} {} {}", className, instanceName, attributes.toString());
@@ -625,7 +478,7 @@ public class GridLabDFederate implements GatewayCallback {
         }
         
         ObjectClassType object = gateway.getObjectModel().getObject(className);
-        if (isGlobalVariable(object)) {
+        if (objectModelHelper.isGlobalVariable(object)) {
             log.warn("update for global variables defined in {} not supported", className);
             return;
         }
@@ -638,7 +491,7 @@ public class GridLabDFederate implements GatewayCallback {
                 continue;
             }
             AttributeType attr = gateway.getObjectModel().getAttribute(object, attribute.getKey());
-            String unit = doNameConversion(attr);
+            String unit = objectModelHelper.getNameConversion(attr);
             try {
                 if (unit != null) {
                     double value = Double.parseDouble(attribute.getValue());
@@ -646,7 +499,11 @@ public class GridLabDFederate implements GatewayCallback {
                     client.setObjectProperty(name, attribute.getKey(), value, unit);
                     log.debug("set {}:{}={} [{}]", name, attribute.getKey(), value, unit);
                 } else {
-                    String gldValue = doLinearConversion(attr, attribute.getValue());
+                    LinearConversionType conversionRule = objectModelHelper.getLinearConversion(attr);
+                    String gldValue = attribute.getValue();
+                    if (conversionRule != null) {
+                       gldValue = doLinearConversion(conversionRule, attribute.getValue()); 
+                    }
                     // this cannot be more efficient due to the limitations of GridLAB-D
                     client.setObjectProperty(name, attribute.getKey(), gldValue);
                     log.debug("set {}:{}={}", name, attribute.getKey(), gldValue);
@@ -660,28 +517,19 @@ public class GridLabDFederate implements GatewayCallback {
     private void sendPublications() {
         log.trace("sendPublications");
         
-        InteractionClassType root = gateway.getObjectModel().getInteraction(INTERACTION_ROOT);
-        Set<ParameterType> rootParameters = gateway.getObjectModel().getParameters(root);
-        
-        Set<String> rootParameterNames = new HashSet<String>();
-        for (ParameterType parameter : rootParameters) {
-            rootParameterNames.add(parameter.getName().getValue());
-        }
-        
         // need to check for global variables 
         for (InteractionClassType interaction : gateway.getObjectModel().getPublishedInteractions()) {
-            for (String objectName : getGldObjectNames(interaction)) {
+            if (objectModelHelper.isGlobalVariable(interaction)) {
                 Map<String, String> updatedValues = new HashMap<String, String>();
                 for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
-                    // can a derived re-define a root parameter with same name / different class? uhh...
-                    if (rootParameterNames.contains(parameter.getName().getValue())) {
+                    if (objectModelHelper.isRootParameter(parameter.getName().getValue())) {
                         // we probably need to set these to some reasonable default value
-                        log.debug("skipping parameter " + parameter.getName().getValue() + " from " + INTERACTION_ROOT);
+                        log.debug("skipping parameter " + parameter.getName().getValue());
                         continue;
                     }
-                    // need to do data conversion
+                    
                     try {
-                        String value = client.getObjectProperty(objectName, parameter.getName().getValue());
+                        String value = client.getGlobalVariable(parameter.getName().getValue());
                         // need to check if double and strip units
                         updatedValues.put(parameter.getName().getValue(), value);
                     } catch (IOException e) {
@@ -696,6 +544,49 @@ public class GridLabDFederate implements GatewayCallback {
                         | InvalidFederationTime e) {
                     // TODO Auto-generated catch block
                     log.warn(e);
+                }
+            } else {
+                for (String objectName : objectModelHelper.getPublishedNames(interaction)) {
+                    Map<String, String> updatedValues = new HashMap<String, String>();
+                    for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
+                        // can a derived re-define a root parameter with same name / different class? uhh...
+                        if (objectModelHelper.isRootParameter(parameter.getName().getValue())) {
+                            // we probably need to set these to some reasonable default value
+                            log.debug("skipping parameter " + parameter.getName().getValue());
+                            continue;
+                        }
+                        String unit = objectModelHelper.getNameConversion(parameter);
+                        if (unit != null) {
+                            try {
+                                double value = client.getObjectProperty(objectName, parameter.getName().getValue(), unit);
+                                updatedValues.put(parameter.getName().getValue(), Double.toString(value));
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                log.warn(e);
+                            }
+                        } else {
+                            try {
+                                String value = client.getObjectProperty(objectName, parameter.getName().getValue());
+                                // need to check if double and strip units
+                                LinearConversionType conversionRule = objectModelHelper.getLinearConversion(parameter);
+                                if (conversionRule != null) {
+                                    value = doLinearConversion(conversionRule, value); 
+                                }
+                                updatedValues.put(parameter.getName().getValue(), value);
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                log.warn(e);
+                            }
+                        }
+                    }
+                    String className = gateway.getObjectModel().getClassPath(interaction);
+                    try {
+                        gateway.sendInteraction(className, updatedValues, gateway.getTimeStamp());
+                    } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished
+                            | InvalidFederationTime e) {
+                        // TODO Auto-generated catch block
+                        log.warn(e);
+                    }
                 }
             }
         }

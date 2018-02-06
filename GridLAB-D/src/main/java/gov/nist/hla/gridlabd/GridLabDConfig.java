@@ -60,7 +60,7 @@ public class GridLabDConfig extends GatewayFederateConfig {
     
     public void setWaitTimeMs(int wait) {
         if (wait < 0) {
-            throw new RuntimeException("invalid time advance wait time " + wait);
+            throw new RuntimeException("invalid wait time " + wait);
         }
         this.waitTimeMs = wait;
     }
@@ -78,6 +78,9 @@ public class GridLabDConfig extends GatewayFederateConfig {
     }
     
     public void setUnixTimeStart(long unixTime) {
+        if (unixTime < 0) {
+            throw new RuntimeException("invalid unix time start " + unixTime);
+        }
         this.unixTimeStart = unixTime;
         this.unixTimeStartSet = true;
     }
@@ -102,6 +105,9 @@ public class GridLabDConfig extends GatewayFederateConfig {
     }
     
     public void setSimulationTimeScale(double scale) {
+        if (scale <= 0) {
+            throw new RuntimeException("invalid simulation time scale " + scale);
+        }
         this.simulationTimeScale = scale;
         this.simulationTimeScaleSet = true;
     }
