@@ -84,6 +84,8 @@ public class GridLabDFederate implements GatewayCallback {
     
     private Map<String, Double> nextUpdateTime = new HashMap<String, Double>();
     
+    private Set<String> thingsToUpdate = new HashSet<String>(); // need a better way
+    
     public static GridLabDConfig readConfiguration(String filePath)
             throws IOException {
         log.info("reading JSON configuration file " + filePath);
@@ -593,6 +595,7 @@ public class GridLabDFederate implements GatewayCallback {
             // maybe check if GridLAB-D advanced to the expected time ?
             
             sendPublications();
+            thingsToUpdate.clear();
             
             double elapsedTime = (timeStep + configuration.getStepSize()) * configuration.getSimulationTimeScale();
             long nextPauseTime = configuration.getUnixTimeStart() + Double.valueOf(elapsedTime).longValue();
@@ -641,14 +644,17 @@ public class GridLabDFederate implements GatewayCallback {
             nextUpdateTime.put(classPath, gateway.getLogicalTime());
         }
         
-        double updateTime = nextUpdateTime.get(classPath);
-        if (updateTime > gateway.getLogicalTime()) {
-            log.debug("skipping {} until {}", classPath, updateTime);
-            return;
+        if (!thingsToUpdate.contains(classPath)) {
+            double updateTime = nextUpdateTime.get(classPath);
+            if (updateTime > gateway.getLogicalTime()) {
+                log.debug("skipping {} until {}", classPath, updateTime);
+                return;
+            }
+            
+            double updatePeriod = objectModelHelper.getUpdatePeriod(interaction);
+            nextUpdateTime.put(classPath, updateTime + updatePeriod);
+            thingsToUpdate.add(classPath);
         }
-        
-        double updatePeriod = objectModelHelper.getUpdatePeriod(interaction);
-        nextUpdateTime.put(classPath, updateTime + updatePeriod);
         
         Map<String, String> updatedValues = new HashMap<String, String>();
         for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
@@ -701,14 +707,17 @@ public class GridLabDFederate implements GatewayCallback {
                 nextUpdateTime.put(classPath + ":" + attributeName, gateway.getLogicalTime());
             }
             
-            double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
-            if (updateTime > gateway.getLogicalTime()) {
-                log.debug("skipping {}:{} until {}", classPath, attributeName, updateTime);
-                continue;
+            if (!thingsToUpdate.contains(classPath + ":" + attributeName)) {
+                double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
+                if (updateTime > gateway.getLogicalTime()) {
+                    log.debug("skipping {}:{} until {}", classPath, attributeName, updateTime);
+                    continue;
+                }
+                
+                double updatePeriod = objectModelHelper.getUpdatePeriod(attribute);
+                nextUpdateTime.put(classPath + ":" + attributeName, updateTime + updatePeriod);
+                thingsToUpdate.add(classPath + ":" + attributeName);
             }
-            
-            double updatePeriod = objectModelHelper.getUpdatePeriod(attribute);
-            nextUpdateTime.put(classPath + ":" + attributeName, updateTime + updatePeriod);
             
             try {
                 // no support for double or unit conversion for global variables
@@ -742,14 +751,17 @@ public class GridLabDFederate implements GatewayCallback {
             nextUpdateTime.put(classPath, gateway.getLogicalTime());
         }
         
-        double updateTime = nextUpdateTime.get(classPath);
-        if (updateTime > gateway.getLogicalTime()) {
-            log.debug("skipping {} until {}", classPath, updateTime);
-            return;
+        if (!thingsToUpdate.contains(classPath)) {
+            double updateTime = nextUpdateTime.get(classPath);
+            if (updateTime > gateway.getLogicalTime()) {
+                log.debug("skipping {} until {}", classPath, updateTime);
+                return;
+            }
+            
+            double updatePeriod = objectModelHelper.getUpdatePeriod(interaction);
+            nextUpdateTime.put(classPath, updateTime + updatePeriod);
+            thingsToUpdate.add(classPath);
         }
-        
-        double updatePeriod = objectModelHelper.getUpdatePeriod(interaction);
-        nextUpdateTime.put(classPath, updateTime + updatePeriod);
         
         for (String gldObjectName : objectModelHelper.getPublishedNames(interaction)) {
             Map<String, String> updatedValues = new HashMap<String, String>();
@@ -757,7 +769,7 @@ public class GridLabDFederate implements GatewayCallback {
                 final String parameterName = parameter.getName().getValue();
                 log.trace("on parameter {}", parameterName);
                 
-                if (objectModelHelper.isRootParameter(parameterName)) {
+                if (objectModelHelper.isRootParameter(parameterName) || parameterName.equals("name")) {
                     // these should be set to a reasonable default value
                     log.debug("skipping parameter {}", parameterName);
                     continue;
@@ -795,6 +807,8 @@ public class GridLabDFederate implements GatewayCallback {
                 return;
             }
             
+            updatedValues.put("name", gldObjectName);
+            
             try {
                 gateway.sendInteraction(classPath, updatedValues, gateway.getTimeStamp());
             } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished
@@ -814,7 +828,7 @@ public class GridLabDFederate implements GatewayCallback {
                 final String attributeName = attribute.getName().getValue();
                 log.trace("on attribute {}", attributeName);
                 
-                if (objectModelHelper.isRootAttribute(attributeName)) {
+                if (objectModelHelper.isRootAttribute(attributeName) || attributeName.equals("name")) {
                     log.debug("skipping attribute {}", attributeName);
                     continue;
                 }
@@ -823,14 +837,17 @@ public class GridLabDFederate implements GatewayCallback {
                     nextUpdateTime.put(classPath + ":" + attributeName, gateway.getLogicalTime());
                 }
                 
-                double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
-                if (updateTime > gateway.getLogicalTime()) {
-                    log.debug("skipping {}:{} until {}", classPath, attributeName, updateTime);
-                    continue;
+                if (!thingsToUpdate.contains(classPath + ":" + attributeName)) {
+                    double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
+                    if (updateTime > gateway.getLogicalTime()) {
+                        log.debug("skipping {}:{} until {}", classPath, attributeName, updateTime);
+                        continue;
+                    }
+                    
+                    double updatePeriod = objectModelHelper.getUpdatePeriod(attribute);
+                    nextUpdateTime.put(classPath + ":" + attributeName, updateTime + updatePeriod);
+                    thingsToUpdate.add(classPath + ":" + attributeName);
                 }
-                
-                double updatePeriod = objectModelHelper.getUpdatePeriod(attribute);
-                nextUpdateTime.put(classPath + ":" + attributeName, updateTime + updatePeriod);
                 
                 try {
                     String unit = objectModelHelper.getNameConversion(attribute);
