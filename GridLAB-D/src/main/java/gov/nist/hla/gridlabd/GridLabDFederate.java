@@ -82,6 +82,8 @@ public class GridLabDFederate implements GatewayCallback {
     
     private Map<String, Map<String, String>> pendingInstances = new HashMap<String, Map<String, String>>();
     
+    private Map<String, Double> nextUpdateTime = new HashMap<String, Double>();
+    
     public static GridLabDConfig readConfiguration(String filePath)
             throws IOException {
         log.info("reading JSON configuration file " + filePath);
@@ -629,7 +631,18 @@ public class GridLabDFederate implements GatewayCallback {
         final String classPath = gateway.getObjectModel().getClassPath(interaction);
         log.trace("publishGlobalVariable {}", classPath);
         
-        // check update period
+        if (!nextUpdateTime.containsKey(classPath)) {
+            nextUpdateTime.put(classPath, gateway.getLogicalTime());
+        }
+        
+        double updateTime = nextUpdateTime.get(classPath);
+        if (updateTime > gateway.getLogicalTime()) {
+            log.debug("skipping {} until {}", classPath, updateTime);
+            return;
+        }
+        
+        double updatePeriod = objectModelHelper.getUpdatePeriod(interaction);
+        nextUpdateTime.put(classPath, updateTime + updatePeriod);
         
         Map<String, String> updatedValues = new HashMap<String, String>();
         for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
@@ -678,7 +691,18 @@ public class GridLabDFederate implements GatewayCallback {
                 continue;
             }
             
-            // check update period
+            if (!nextUpdateTime.containsKey(classPath + ":" + attributeName)) {
+                nextUpdateTime.put(classPath, gateway.getLogicalTime());
+            }
+            
+            double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
+            if (updateTime > gateway.getLogicalTime()) {
+                log.debug("skipping {}:{} until {}", classPath, attributeName, updateTime);
+                continue;
+            }
+            
+            double updatePeriod = objectModelHelper.getUpdatePeriod(attribute);
+            nextUpdateTime.put(classPath + ":" + attributeName, updateTime + updatePeriod);
             
             try {
                 // no support for double or unit conversion for global variables
@@ -708,7 +732,18 @@ public class GridLabDFederate implements GatewayCallback {
         final String classPath = gateway.getObjectModel().getClassPath(interaction);
         log.trace("publishGldObject {}", classPath);
         
-        // check update period
+        if (!nextUpdateTime.containsKey(classPath)) {
+            nextUpdateTime.put(classPath, gateway.getLogicalTime());
+        }
+        
+        double updateTime = nextUpdateTime.get(classPath);
+        if (updateTime > gateway.getLogicalTime()) {
+            log.debug("skipping {} until {}", classPath, updateTime);
+            return;
+        }
+        
+        double updatePeriod = objectModelHelper.getUpdatePeriod(interaction);
+        nextUpdateTime.put(classPath, updateTime + updatePeriod);
         
         for (String gldObjectName : objectModelHelper.getPublishedNames(interaction)) {
             Map<String, String> updatedValues = new HashMap<String, String>();
@@ -778,7 +813,18 @@ public class GridLabDFederate implements GatewayCallback {
                     continue;
                 }
                 
-                // check update period
+                if (!nextUpdateTime.containsKey(classPath + ":" + attributeName)) {
+                    nextUpdateTime.put(classPath, gateway.getLogicalTime());
+                }
+                
+                double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
+                if (updateTime > gateway.getLogicalTime()) {
+                    log.debug("skipping {}:{} until {}", classPath, attributeName, updateTime);
+                    continue;
+                }
+                
+                double updatePeriod = objectModelHelper.getUpdatePeriod(attribute);
+                nextUpdateTime.put(classPath + ":" + attributeName, updateTime + updatePeriod);
                 
                 try {
                     String unit = objectModelHelper.getNameConversion(attribute);
