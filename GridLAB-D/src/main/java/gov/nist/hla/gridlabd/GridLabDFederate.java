@@ -576,7 +576,7 @@ public class GridLabDFederate implements GatewayCallback {
         log.trace("convertToHla");
         double scale = conversion.getScale();
         double offset = conversion.getOffset();
-        double result = scale * value - offset;
+        double result = scale * value + offset;
         log.debug("linear conversion {} = {} * {} - {}", result, scale, value, offset);
         return result;
     }

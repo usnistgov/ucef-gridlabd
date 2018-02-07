@@ -18,11 +18,14 @@
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
-<ucef:attributeConfig>
-    <ucef:unitConversion>
-        <ucef:nameConversion>degC</ucef:nameConversion>
-    </ucef:unitConversion>
-</ucef:attributeConfig>
+                <ucef:attributeConfig>
+                    <ucef:unitConversion>
+                        <ucef:linearConversion>
+                            <ucef:scale>0.5556</ucef:scale>
+                            <ucef:offset>-17.7778</ucef:offset>
+                        </ucef:linearConversion>
+                    </ucef:unitConversion>
+                </ucef:attributeConfig>
             </attribute>
 
             <attribute>
@@ -60,6 +63,15 @@
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
+                <ucef:attributeConfig>
+                    <ucef:unitConversion>
+                        <ucef:linearConversion>
+                            <ucef:scale>0.5556</ucef:scale>
+                            <ucef:offset>-17.7778</ucef:offset>
+                        </ucef:linearConversion>
+                    </ucef:unitConversion>
+                    <ucef:updatePeriod>1.5</ucef:updatePeriod>
+                </ucef:attributeConfig>
             </attribute>
 
             <attribute>
@@ -69,6 +81,9 @@
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
+                <ucef:attributeConfig>
+                    <ucef:updatePeriod>1.0</ucef:updatePeriod>
+                </ucef:attributeConfig>
             </attribute>
 
             <attribute>
@@ -78,6 +93,9 @@
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
+                <ucef:attributeConfig>
+                    <ucef:updatePeriod>0.5</ucef:updatePeriod>
+                </ucef:attributeConfig>
             </attribute>
 
             <attribute>
@@ -88,12 +106,12 @@
                 <order>TimeStamp</order>
                 <semantics></semantics>
             </attribute>
-<ucef:objectClassConfig>
-    <ucef:publishedObjects>
-        <ucef:objectName>house2</ucef:objectName>
-        <ucef:objectName>house3</ucef:objectName>
-    </ucef:publishedObjects>
-</ucef:objectClassConfig>
+            <ucef:objectClassConfig>
+                <ucef:publishedObjects>
+                    <ucef:objectName>house2</ucef:objectName>
+                    <ucef:objectName>house3</ucef:objectName>
+                </ucef:publishedObjects>
+            </ucef:objectClassConfig>
         </objectClass>
         </objectClass>
     </objects>
@@ -232,11 +250,11 @@
                 <name>cooling_setpoint</name>
                 <dataType>double</dataType>
                 <semantics></semantics>
-<ucef:parameterConfig>
-    <ucef:unitConversion>
-        <ucef:nameConversion>degC</ucef:nameConversion>
-    </ucef:unitConversion>
-</ucef:parameterConfig>
+                <ucef:parameterConfig>
+                    <ucef:unitConversion>
+                        <ucef:nameConversion>degC</ucef:nameConversion>
+                    </ucef:unitConversion>
+                </ucef:parameterConfig>
             </parameter>
 
             <parameter> 
@@ -267,6 +285,11 @@
                 <name>air_temperature</name>
                 <dataType>double</dataType>
                 <semantics></semantics>
+                <ucef:parameterConfig>
+                    <ucef:unitConversion>
+                        <ucef:nameConversion>degC</ucef:nameConversion>
+                    </ucef:unitConversion>
+                </ucef:parameterConfig>
             </parameter>
 
             <parameter> 
@@ -286,11 +309,12 @@
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
-<ucef:interactionClassConfig>
-    <ucef:publishedObjects>
-        <ucef:objectName>house1</ucef:objectName>
-    </ucef:publishedObjects>
-</ucef:interactionClassConfig>
+            <ucef:interactionClassConfig>
+                <ucef:updatePeriod>2</ucef:updatePeriod>
+                <ucef:publishedObjects>
+                    <ucef:objectName>house1</ucef:objectName>
+                </ucef:publishedObjects>
+            </ucef:interactionClassConfig>
         </interactionClass>
         </interactionClass>
         </interactionClass>

@@ -81,7 +81,7 @@ public class GridLabDClient {
             valueWithUnits = getObjectProperty(objectName, propertyName);
             log.debug("received {}.{}={}", objectName, propertyName, valueWithUnits);
         } else {
-            String xmlResponse = get("/xml/" + objectName + "/" + propertyName + "[" + unit + "]");
+            String xmlResponse = get("/xml/" + objectName + "/" + propertyName + "%5B" + unit + "%5D");
             log.debug("XML response from GridLAB-D: {}", xmlResponse);
             // GridLAB-D response format:
             // <property>
@@ -126,7 +126,7 @@ public class GridLabDClient {
     public void setObjectProperty(String objectName, String propertyName, double value, String unit)
             throws IOException {
         log.trace("setObjectProperty {} {} {} {} (double)", objectName, propertyName, value, unit);
-        if (unit == null | unit.isEmpty()) {
+        if (unit == null || unit.isEmpty()) {
             setObjectProperty(objectName, propertyName, Double.toString(value));
         } else {
             get("/xml/" + objectName + "/" + propertyName + "=" + value + "%20" + unit);
