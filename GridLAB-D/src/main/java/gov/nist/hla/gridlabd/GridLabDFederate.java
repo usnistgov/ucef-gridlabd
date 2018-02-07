@@ -611,6 +611,12 @@ public class GridLabDFederate implements GatewayCallback {
         log.trace("sendPublications");
         
         for (InteractionClassType interaction : gateway.getObjectModel().getPublishedInteractions()) {
+            String classPath = gateway.getObjectModel().getClassPath(interaction);
+            if (classPath.equals("InteractionRoot.C2WInteractionRoot.FederateJoinInteraction")
+                    || classPath.equals("InteractionRoot.C2WInteractionRoot.FederateResignInteraction")) {
+                log.debug("skipping gateway interaction {}", classPath);
+                continue;
+            }
             if (objectModelHelper.isGlobalVariable(interaction)) {
                 publishGlobalVariable(interaction);
             } else {
@@ -692,7 +698,7 @@ public class GridLabDFederate implements GatewayCallback {
             }
             
             if (!nextUpdateTime.containsKey(classPath + ":" + attributeName)) {
-                nextUpdateTime.put(classPath, gateway.getLogicalTime());
+                nextUpdateTime.put(classPath + ":" + attributeName, gateway.getLogicalTime());
             }
             
             double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
@@ -814,7 +820,7 @@ public class GridLabDFederate implements GatewayCallback {
                 }
                 
                 if (!nextUpdateTime.containsKey(classPath + ":" + attributeName)) {
-                    nextUpdateTime.put(classPath, gateway.getLogicalTime());
+                    nextUpdateTime.put(classPath + ":" + attributeName, gateway.getLogicalTime());
                 }
                 
                 double updateTime = nextUpdateTime.get(classPath + ":" + attributeName);
