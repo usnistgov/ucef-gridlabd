@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -66,10 +67,20 @@ public class GridLabDFederate implements GatewayCallback {
     private Process gridlabd = null;
     
     private boolean isGridLabDRunning = false;
+    
     private boolean receivedSimTime = false;
+    
     private boolean receivedSimEnd = false;
     
-    private Map<String, String> gldObjectName = new HashMap<String, String>();
+    private Map<String, String> registeredGlobals = new HashMap<String, String>();
+    
+    private Map<String, String> registeredObjects = new HashMap<String, String>();
+    
+    private Map<String, String> discoveredInstances = new HashMap<String, String>();
+    
+    private Map<String, String> discoveredInstanceClass = new HashMap<String, String>();
+    
+    private Map<String, Map<String, String>> pendingInstances = new HashMap<String, Map<String, String>>();
     
     public static GridLabDConfig readConfiguration(String filePath)
             throws IOException {
@@ -178,6 +189,8 @@ public class GridLabDFederate implements GatewayCallback {
             throw new GridLabDException(e);
         }
         
+        doPendingObjectUpdates();
+        
         log.info("Initialized.");
     }
     
@@ -194,12 +207,12 @@ public class GridLabDFederate implements GatewayCallback {
     }
     
     private void registerGlobalVariable(ObjectClassType object) {
-        log.trace("registerGlobalVariable {}", object.getName().getValue());
         final String classPath = gateway.getObjectModel().getClassPath(object);
+        log.trace("registerGlobalVariable {}", classPath);
         
         try {
             String instanceName = gateway.registerObjectInstance(classPath);
-            //registeredObjectNames.put(classPath, instanceName);
+            registeredGlobals.put(classPath, instanceName);
             log.info("registered object {} with class {} to publish global variables", instanceName, classPath);
         } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished e) {
             throw new RTIAmbassadorException(e);
@@ -207,8 +220,9 @@ public class GridLabDFederate implements GatewayCallback {
     }
     
     private void registerObjectInstances(ObjectClassType object) {
-        log.trace("registerGldObjects {}", object.getName().getValue());
         final String classPath = gateway.getObjectModel().getClassPath(object);
+        log.trace("registerObjectInstances {}", classPath);
+        
         
         Set<String> publishedObjectNames = objectModelHelper.getPublishedNames(object);
         
@@ -221,11 +235,11 @@ public class GridLabDFederate implements GatewayCallback {
                 Map<String, String> initialValues = new HashMap<String, String>();
                 initialValues.put("name", objectName);
                 gateway.updateObject(instanceName, initialValues);
-                //publishedObjectInstances.put(instanceName, objectName);
+                registeredObjects.put(objectName, instanceName);
                 log.info("registered object {} with class {} to publish {}", instanceName, classPath, objectName);
             } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished | ObjectNotKnown
                     | AttributeNotOwned e) {
-                throw new GridLabDException(e);
+                throw new RTIAmbassadorException(e);
             }
         }
     }
@@ -342,24 +356,231 @@ public class GridLabDFederate implements GatewayCallback {
         if (className.equals(INTERACTION_SIM_END)) {
             receivedSimEnd = true;
         } else if (className.equals(INTERACTION_SIM_TIME)) {
+            if (receivedSimTime) {
+                log.warn("received duplicate {}", INTERACTION_SIM_TIME);
+            }
             configuration.setUnixTimeStart(Long.valueOf(parameters.get("unixTimeStart")));
             configuration.setUnixTimeStop(Long.valueOf(parameters.get("unixTimeStop")));
             configuration.setSimulationTimeScale(Double.valueOf(parameters.get("timeScale")));
             configuration.setSimulationTimeZone(parameters.get("timeZone"));
             receivedSimTime = true;
-        } else if (isGridLabDRunning) {
-            handleInteraction(className, parameters);
         } else {
-            log.warn("dropped interaction " + className);
+            handleInteraction(className, parameters);
+        }
+    }
+    
+    private void handleInteraction(String className, Map<String, String> parameters) {
+        log.trace("handleInteraction {} {}", className, parameters.toString());
+        
+        if (!isGridLabDRunning) {
+            log.warn("dropped interaction {}: GridLAB-D simulation not started", className);
+            return;
+        }
+        
+        InteractionClassType interaction = gateway.getObjectModel().getInteraction(className);
+        if (objectModelHelper.isGlobalVariable(interaction)) {
+            log.warn("subscriptions for global variables not supported: {}", className);
+            return;
+        }
+        
+        String gldObjectName = parameters.get("name");
+        log.debug("received update for {}", gldObjectName);
+        
+        for (Map.Entry<String, String> parameter : parameters.entrySet()) {
+            final String parameterName = parameter.getKey();
+            log.trace("on parameter {}", parameterName);
+            
+            if (objectModelHelper.isRootParameter(parameterName) || parameterName.equals("name")) {
+                log.debug("skipping parameter {}", parameterName);
+                continue;
+            }
+            
+            try {
+                ParameterType parameterType = gateway.getObjectModel().getParameter(interaction, parameterName);
+                String unit = objectModelHelper.getNameConversion(parameterType);
+                if (unit != null) {
+                    log.trace("unit conversion with unit {}", unit);
+                    double value = Double.parseDouble(parameter.getValue());
+                    client.setObjectProperty(gldObjectName, parameterName, value, unit);
+                    log.debug("set {}:{}={} [{}]", gldObjectName, parameterName, value, unit);
+                } else {
+                    LinearConversionType conversionRule = objectModelHelper.getLinearConversion(parameterType);
+                    if (conversionRule != null) {
+                        log.trace("linear conversion");
+                        double value = Double.parseDouble(parameter.getValue());
+                        value = convertToGld(conversionRule, value);
+                        client.setObjectProperty(gldObjectName, parameterName, value, null);
+                        log.debug("set {}:{}={}", gldObjectName, parameterName, value);
+                    } else {
+                        log.trace("no conversion");
+                        client.setObjectProperty(gldObjectName, parameterName, parameter.getValue());
+                        log.debug("set {}:{}={}", gldObjectName, parameterName, parameter.getValue());
+                    }
+                }
+            } catch (IOException e) {
+                log.error("unable to set {}:{}", gldObjectName, parameterName);
+            }
         }
     }
 
     @Override
     public void receiveObject(Double timeStep, String className, String instanceName, Map<String, String> attributes) {
         log.trace("receiveObject {} {} {} {}", timeStep, className, instanceName, attributes.toString());
-        
         handleObjectReflection(className, instanceName, attributes);
     }
+    
+    private void handleObjectReflection(String className, String instanceName, Map<String, String> attributes) {
+        log.trace("handleObjectReflection {} {} {}", className, instanceName, attributes.toString());
+        
+        ObjectClassType object = gateway.getObjectModel().getObject(className);
+        if (objectModelHelper.isGlobalVariable(object)) {
+            log.warn("subscriptions for global variables not supported: {}", className);
+            return;
+        }
+        
+        if (!discoveredInstanceClass.containsKey(instanceName)) {
+            discoveredInstanceClass.put(instanceName, className);
+        }
+        
+        Map<String, String> previousUpdate = pendingInstances.get(instanceName);
+        
+        if (!isGridLabDRunning) {
+            if (previousUpdate == null) {
+                log.info("delayed update for {}:{} until GridLAB-D is started", className, instanceName);
+                pendingInstances.put(instanceName, new HashMap<String, String>(attributes));
+            } else {
+                log.debug("received update values for delayed update {}:{}", className, instanceName);
+                previousUpdate.putAll(attributes);
+            }
+            return;
+        }
+        
+        if (!discoveredInstances.containsKey(instanceName) && !attributes.containsKey("name")) {
+            log.info("delayed update for {}:{} until GridLAB-D object name received", className, instanceName);
+            if (previousUpdate == null) {
+                pendingInstances.put(instanceName, new HashMap<String, String>(attributes));
+            } else {
+                previousUpdate.putAll(attributes);
+            }
+            return;
+        }
+        
+        if (attributes.containsKey("name")) {
+            discoveredInstances.put(instanceName, attributes.get("name"));
+            log.debug("using name {} for object instance {}", attributes.get("name"), instanceName);
+        }
+        
+        String gldObjectName = discoveredInstances.get(instanceName);
+        log.debug("received update for {}", gldObjectName);
+        
+        Map<String, String> updatedAttributes = new HashMap<String, String>();
+        if (previousUpdate != null) {
+            updatedAttributes.putAll(previousUpdate);
+        }
+        updatedAttributes.putAll(attributes);
+        updateGridLabDObject(className, gldObjectName, updatedAttributes);
+    }
+    
+    private void updateGridLabDObject(String className, String gldObjectName, Map<String, String> attributes) {
+        log.trace("updateGridLabDObject {} {} {}", className, gldObjectName, attributes.toString());
+        
+        for (Map.Entry<String, String> attribute : attributes.entrySet()) {
+            final String attributeName = attribute.getKey();
+            log.trace("on attribute {}", attributeName);
+            
+            if (attributeName.equals("name")) {
+                log.debug("skipping attribute {}", attributeName);
+                continue;
+            }
+            
+            try {
+                ObjectClassType object = gateway.getObjectModel().getObject(className);
+                AttributeType attributeType = gateway.getObjectModel().getAttribute(object, attributeName);
+                String unit = objectModelHelper.getNameConversion(attributeType);
+                if (unit != null) {
+                    log.trace("unit conversion with unit {}", unit);
+                    double value = Double.parseDouble(attribute.getValue());
+                    client.setObjectProperty(gldObjectName, attributeName, value, unit);
+                    log.debug("set {}:{}={} [{}]", gldObjectName, attributeName, value, unit);
+                } else {
+                    LinearConversionType conversionRule = objectModelHelper.getLinearConversion(attributeType);
+                    if (conversionRule != null) {
+                        log.trace("linear conversion");
+                        double value = Double.parseDouble(attribute.getValue());
+                        value = convertToGld(conversionRule, value);
+                        client.setObjectProperty(gldObjectName, attributeName, value, null);
+                        log.debug("set {}:{}={}", gldObjectName, attributeName, value);
+                    } else {
+                        log.trace("no conversion");
+                        client.setObjectProperty(gldObjectName, attributeName, attribute.getValue());
+                        log.debug("set {}:{}={}", gldObjectName, attributeName, attribute.getValue());
+                    }
+                }
+            } catch (IOException e) {
+                log.error("unable to set {}:{}", gldObjectName, attributeName);
+            }
+        }
+    }
+    
+    private void doPendingObjectUpdates() {
+        log.trace("doPendingObjectUpdates");
+        
+        Set<String> processedInstances = new HashSet<String>();
+        for (Map.Entry<String, Map<String, String>> entry : pendingInstances.entrySet()) {
+            final String instanceName = entry.getKey();
+            final Map<String, String> attributes = entry.getValue();
+            
+            if (attributes.containsKey("name")) {
+                updateGridLabDObject(discoveredInstanceClass.get(instanceName), attributes.get("name"), attributes);
+                processedInstances.add(instanceName);
+            }
+        }
+        
+        for (String instanceName : processedInstances) {
+            pendingInstances.remove(instanceName);
+        }
+    }
+    
+    @Override
+    public void terminate() {
+        log.trace("terminate");
+        // clean shutdown for early exit
+    }
+    
+    private void advanceSimulationTime(long unixTime)
+            throws InterruptedException, IOException {
+        log.trace("advanceSimulationTime {}", unixTime);
+        
+        final String timeStamp = toTimeStamp(unixTime);
+        client.pauseat(timeStamp);
+        
+        while (!client.isPaused()) {
+            log.debug("waiting {} ms for GridLAB-D clock to advance", configuration.getWaitTimeMs());
+            Thread.sleep(configuration.getWaitTimeMs());
+        }
+        log.info("advanced GridLAB-D simulation to {}", timeStamp);
+    }
+    
+    private double convertToGld(LinearConversionType conversion, double value){
+        log.trace("convertToGld");
+        double scale = conversion.getScale();
+        double offset = conversion.getOffset();
+        double result = (value - offset) / scale;
+        log.debug("linear conversion {} = ({} - {}) / {}", result, value, offset, scale);
+        return result;
+    }
+    
+    private double convertToHla(LinearConversionType conversion, double value){
+        log.trace("convertToHla");
+        double scale = conversion.getScale();
+        double offset = conversion.getOffset();
+        double result = scale * value - offset;
+        log.debug("linear conversion {} = {} * {} - {}", result, scale, value, offset);
+        return result;
+    }
+    
+    
+    
     
     @Override
     public void doTimeStep(Double timeStep) {
@@ -384,133 +605,6 @@ public class GridLabDFederate implements GatewayCallback {
             } catch (InterruptedException | IOException e2) {
                 throw new GridLabDException(e2);
             } 
-        }
-    }
-    
-    @Override
-    public void terminate() {
-        log.trace("terminate");
-        // clean shutdown for early exit
-    }
-    
-    private void advanceSimulationTime(long unixTime)
-            throws InterruptedException, IOException {
-        log.trace("advanceSimulationTime {}", unixTime);
-        
-        final String timeStamp = toTimeStamp(unixTime);
-        client.pauseat(timeStamp);
-        
-        while (!client.isPaused()) {
-            log.debug("waiting {} ms for GridLAB-D clock to advance", configuration.getWaitTimeMs());
-            Thread.sleep(configuration.getWaitTimeMs());
-        }
-        log.info("advanced GridLAB-D simulation to {}", timeStamp);
-    }
-    
-    private void handleInteraction(String className, Map<String, String> parameters) {
-        log.trace("handleInteraction {} {}", className, parameters.toString());
-        
-        InteractionClassType interaction = gateway.getObjectModel().getInteraction(className);
-        if (objectModelHelper.isGlobalVariable(interaction)) {
-            log.warn("update for global variables defined in {} not supported", className);
-            return;
-        }
-        
-        String gldObjectName = parameters.get("name");
-        log.debug("received update for {}", gldObjectName);
-        
-        for (Map.Entry<String, String> parameter : parameters.entrySet()) {
-            if (objectModelHelper.isRootParameter(parameter.getKey())) {
-                log.debug("skipping parameter {}", parameter.getKey());
-                continue;
-            }
-            if (parameter.getKey().equals("name")) {
-                continue;
-            }
-            ParameterType param = gateway.getObjectModel().getParameter(interaction, parameter.getKey());
-            String unit = objectModelHelper.getNameConversion(param);
-            try {
-                if (unit != null) {
-                    double value = Double.parseDouble(parameter.getValue());
-                    // this cannot be more efficient due to the limitations of GridLAB-D
-                    client.setObjectProperty(gldObjectName, parameter.getKey(), value, unit);
-                    log.debug("set {}:{}={} [{}]", gldObjectName, parameter.getKey(), value, unit);
-                } else {
-                    LinearConversionType conversionRule = objectModelHelper.getLinearConversion(param);
-                    String gldValue = parameter.getValue();
-                    if (conversionRule != null) {
-                       gldValue = doLinearConversion(conversionRule, parameter.getValue()); 
-                    }
-                    // this cannot be more efficient due to the limitations of GridLAB-D
-                    client.setObjectProperty(gldObjectName, parameter.getKey(), gldValue);
-                    log.debug("set {}:{}={}", gldObjectName, parameter.getKey(), gldValue);
-                }
-            } catch (IOException e) {
-                log.error("could not set value for {}:{}", gldObjectName, parameter.getKey());
-            }
-        }
-    }
-    
-    private String doLinearConversion(LinearConversionType conversion, String value){
-        log.trace("doLinearConversion");
-        double scale = conversion.getScale();
-        double offset = conversion.getOffset();
-        double y = Double.parseDouble(value);
-        double x = (y - offset) / scale;
-        log.debug("linear conversion {} = ({} - {}) / {}", x, y, offset, scale);
-        return Double.toString(x);
-    }
-    
-    
-    
-    private void handleObjectReflection(String className, String instanceName, Map<String, String> attributes) {
-        log.trace("handleObjectReflection {} {} {}", className, instanceName, attributes.toString());
-        
-        if (!gldObjectName.containsKey(instanceName) && !attributes.containsKey("name")) {
-            // might be better to store this to retrieve later when we get a name
-            log.warn("skipped update for {} - missing name", instanceName);
-            return;
-        }
-        
-        if (attributes.containsKey("name")) {
-            gldObjectName.put(instanceName, attributes.get("name"));
-            log.debug("using {} for object instance {}", attributes.get("name"), instanceName);
-        }
-        
-        ObjectClassType object = gateway.getObjectModel().getObject(className);
-        if (objectModelHelper.isGlobalVariable(object)) {
-            log.warn("update for global variables defined in {} not supported", className);
-            return;
-        }
-        
-        String name = gldObjectName.get(instanceName);
-        log.debug("received update for {}", name);
-        
-        for (Map.Entry<String, String> attribute : attributes.entrySet()) {
-            if (attribute.getKey().equals("name")) {
-                continue;
-            }
-            AttributeType attr = gateway.getObjectModel().getAttribute(object, attribute.getKey());
-            String unit = objectModelHelper.getNameConversion(attr);
-            try {
-                if (unit != null) {
-                    double value = Double.parseDouble(attribute.getValue());
-                    // this cannot be more efficient due to the limitations of GridLAB-D
-                    client.setObjectProperty(name, attribute.getKey(), value, unit);
-                    log.debug("set {}:{}={} [{}]", name, attribute.getKey(), value, unit);
-                } else {
-                    LinearConversionType conversionRule = objectModelHelper.getLinearConversion(attr);
-                    String gldValue = attribute.getValue();
-                    if (conversionRule != null) {
-                       gldValue = doLinearConversion(conversionRule, attribute.getValue()); 
-                    }
-                    // this cannot be more efficient due to the limitations of GridLAB-D
-                    client.setObjectProperty(name, attribute.getKey(), gldValue);
-                    log.debug("set {}:{}={}", name, attribute.getKey(), gldValue);
-                }
-            } catch (IOException e) {
-                log.error("could not set value for {}:{}", name, attribute.getKey());
-            }
         }
     }
 
@@ -570,7 +664,7 @@ public class GridLabDFederate implements GatewayCallback {
                                 // need to check if double and strip units
                                 LinearConversionType conversionRule = objectModelHelper.getLinearConversion(parameter);
                                 if (conversionRule != null) {
-                                    value = doLinearConversion(conversionRule, value); 
+                                    value = Double.toString(convertToHla(conversionRule, Double.parseDouble(value))); 
                                 }
                                 updatedValues.put(parameter.getName().getValue(), value);
                             } catch (IOException e) {
