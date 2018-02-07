@@ -257,13 +257,13 @@ public class ObjectModelHelper {
         return -1;
     }
     
-    private boolean isDouble(ParameterType parameter) {
+    public boolean isDouble(ParameterType parameter) {
         log.trace("isDouble {}", parameter.getName().getValue());
         final String dataType = parameter.getDataType().getValue();
         return dataType.equals("double"); // float not supported in GridLAB-D
     }
     
-    private boolean isDouble(AttributeType attribute) {
+    public boolean isDouble(AttributeType attribute) {
         log.trace("isDouble {}", attribute.getName().getValue());
         final String dataType = attribute.getDataType().getValue();
         return dataType.equals("double"); // float not supported in GridLAB-D

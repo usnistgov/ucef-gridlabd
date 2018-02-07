@@ -235,7 +235,7 @@ public class GridLabDFederate implements GatewayCallback {
                 Map<String, String> initialValues = new HashMap<String, String>();
                 initialValues.put("name", objectName);
                 gateway.updateObject(instanceName, initialValues);
-                registeredObjects.put(objectName, instanceName);
+                registeredObjects.put(classPath + ":" + objectName, instanceName);
                 log.info("registered object {} with class {} to publish {}", instanceName, classPath, objectName);
             } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished | ObjectNotKnown
                     | AttributeNotOwned e) {
@@ -579,9 +579,6 @@ public class GridLabDFederate implements GatewayCallback {
         return result;
     }
     
-    
-    
-    
     @Override
     public void doTimeStep(Double timeStep) {
         log.trace("doTimeStep {}", timeStep);
@@ -611,79 +608,217 @@ public class GridLabDFederate implements GatewayCallback {
     private void sendPublications() {
         log.trace("sendPublications");
         
-        // need to check for global variables 
         for (InteractionClassType interaction : gateway.getObjectModel().getPublishedInteractions()) {
             if (objectModelHelper.isGlobalVariable(interaction)) {
-                Map<String, String> updatedValues = new HashMap<String, String>();
-                for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
-                    if (objectModelHelper.isRootParameter(parameter.getName().getValue())) {
-                        // we probably need to set these to some reasonable default value
-                        log.debug("skipping parameter " + parameter.getName().getValue());
-                        continue;
-                    }
-                    
-                    try {
-                        String value = client.getGlobalVariable(parameter.getName().getValue());
-                        // need to check if double and strip units
-                        updatedValues.put(parameter.getName().getValue(), value);
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        log.warn(e);
-                    }
-                }
-                String className = gateway.getObjectModel().getClassPath(interaction);
-                try {
-                    gateway.sendInteraction(className, updatedValues, gateway.getTimeStamp());
-                } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished
-                        | InvalidFederationTime e) {
-                    // TODO Auto-generated catch block
-                    log.warn(e);
-                }
+                publishGlobalVariable(interaction);
             } else {
-                for (String objectName : objectModelHelper.getPublishedNames(interaction)) {
-                    Map<String, String> updatedValues = new HashMap<String, String>();
-                    for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
-                        // can a derived re-define a root parameter with same name / different class? uhh...
-                        if (objectModelHelper.isRootParameter(parameter.getName().getValue())) {
-                            // we probably need to set these to some reasonable default value
-                            log.debug("skipping parameter " + parameter.getName().getValue());
-                            continue;
-                        }
-                        String unit = objectModelHelper.getNameConversion(parameter);
-                        if (unit != null) {
-                            try {
-                                double value = client.getObjectProperty(objectName, parameter.getName().getValue(), unit);
-                                updatedValues.put(parameter.getName().getValue(), Double.toString(value));
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                log.warn(e);
-                            }
-                        } else {
-                            try {
-                                String value = client.getObjectProperty(objectName, parameter.getName().getValue());
-                                // need to check if double and strip units
-                                LinearConversionType conversionRule = objectModelHelper.getLinearConversion(parameter);
-                                if (conversionRule != null) {
-                                    value = Double.toString(convertToHla(conversionRule, Double.parseDouble(value))); 
-                                }
-                                updatedValues.put(parameter.getName().getValue(), value);
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                log.warn(e);
-                            }
-                        }
-                    }
-                    String className = gateway.getObjectModel().getClassPath(interaction);
-                    try {
-                        gateway.sendInteraction(className, updatedValues, gateway.getTimeStamp());
-                    } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished
-                            | InvalidFederationTime e) {
-                        // TODO Auto-generated catch block
-                        log.warn(e);
-                    }
-                }
+                publishGldObject(interaction);
             }
         }
-        // missing object updates
+        
+        for (ObjectClassType object : gateway.getObjectModel().getPublishedObjects()) {
+            if (objectModelHelper.isGlobalVariable(object)) {
+                publishGlobalVariable(object);
+            } else {
+                publishGldObject(object);
+            }
+        }
+    }
+    
+    private void publishGlobalVariable(InteractionClassType interaction) {
+        final String classPath = gateway.getObjectModel().getClassPath(interaction);
+        log.trace("publishGlobalVariable {}", classPath);
+        
+        // check update period
+        
+        Map<String, String> updatedValues = new HashMap<String, String>();
+        for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
+            final String parameterName = parameter.getName().getValue();
+            log.trace("on parameter {}", parameterName);
+            
+            if (objectModelHelper.isRootParameter(parameterName)) {
+                // these should be set to a reasonable default value
+                log.debug("skipping parameter {}", parameterName);
+                continue;
+            }
+            
+            try {
+                // no support for double or unit conversion for global variables
+                String value = client.getGlobalVariable(parameterName);
+                updatedValues.put(parameterName, value);
+                log.debug("got :{}={}", parameterName, value);
+            } catch (IOException e) {
+                log.error("unable to get global variable {}", parameterName);
+            }
+        }
+        
+        if (updatedValues.isEmpty()) {
+            log.warn("no values to update for {}", classPath);
+            return;
+        }
+        
+        try {
+            gateway.sendInteraction(classPath, updatedValues, gateway.getTimeStamp());
+        } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished | InvalidFederationTime e) {
+            throw new RTIAmbassadorException(e);
+        } 
+    }
+    
+    private void publishGlobalVariable(ObjectClassType object) {
+        final String classPath = gateway.getObjectModel().getClassPath(object);
+        log.trace("publishGlobalVariable {}", classPath);
+        
+        Map<String, String> updatedValues = new HashMap<String, String>();
+        for (AttributeType attribute : gateway.getObjectModel().getAttributes(object)) {
+            final String attributeName = attribute.getName().getValue();
+            log.trace("on attribute {}", attributeName);
+            
+            if (objectModelHelper.isRootAttribute(attributeName)) {
+                log.debug("skipping attribute {}", attributeName);
+                continue;
+            }
+            
+            // check update period
+            
+            try {
+                // no support for double or unit conversion for global variables
+                String value = client.getGlobalVariable(attributeName);
+                updatedValues.put(attributeName, value);
+                log.debug("got :{}={}", attributeName, value);
+            } catch (IOException e) {
+                log.error("unable to get global variable {}", attributeName);
+            }
+        }
+        
+        if (updatedValues.isEmpty()) {
+            log.warn("no values to update for {}", classPath);
+            return;
+        }
+        
+        try {
+            String instanceName = registeredGlobals.get(classPath);
+            gateway.updateObject(instanceName, updatedValues, gateway.getTimeStamp());
+        } catch (FederateNotExecutionMember | ObjectNotKnown | NameNotFound | AttributeNotOwned
+                | InvalidFederationTime e) {
+            throw new RTIAmbassadorException(e);
+        } 
+    }
+    
+    private void publishGldObject(InteractionClassType interaction) {
+        final String classPath = gateway.getObjectModel().getClassPath(interaction);
+        log.trace("publishGldObject {}", classPath);
+        
+        // check update period
+        
+        for (String gldObjectName : objectModelHelper.getPublishedNames(interaction)) {
+            Map<String, String> updatedValues = new HashMap<String, String>();
+            for (ParameterType parameter : gateway.getObjectModel().getParameters(interaction)) {
+                final String parameterName = parameter.getName().getValue();
+                log.trace("on parameter {}", parameterName);
+                
+                if (objectModelHelper.isRootParameter(parameterName)) {
+                    // these should be set to a reasonable default value
+                    log.debug("skipping parameter {}", parameterName);
+                    continue;
+                }
+                
+                try {
+                    String unit = objectModelHelper.getNameConversion(parameter);
+                    if (unit != null) {
+                        log.trace("unit conversion with unit {}", unit);
+                        double value = client.getObjectProperty(gldObjectName, parameterName, unit);
+                        updatedValues.put(parameterName, Double.toString(value));
+                        log.debug("got {}:{}={} [{}]", gldObjectName, parameterName, value, unit);
+                    } else if (objectModelHelper.isDouble(parameter)) {
+                        log.trace("flagged as double");
+                        double value = client.getObjectProperty(gldObjectName, parameterName, null);
+                        LinearConversionType conversionRule = objectModelHelper.getLinearConversion(parameter);
+                        if (conversionRule != null) {
+                            log.trace("linear conversion");
+                            value = convertToHla(conversionRule, value);
+                        }
+                        updatedValues.put(parameterName, Double.toString(value));
+                        log.debug("got {}:{}={}", gldObjectName, parameterName, value);
+                    } else {
+                        String value = client.getObjectProperty(gldObjectName, parameterName);
+                        updatedValues.put(parameterName, value);
+                        log.debug("got {}:{}={}", gldObjectName, parameterName, value);
+                    }
+                } catch (IOException e) {
+                    log.error("unable to get {}:{}", gldObjectName, parameterName);
+                }
+            }
+            
+            if (updatedValues.isEmpty()) {
+                log.warn("no values to update for {} ({})", classPath, gldObjectName);
+                return;
+            }
+            
+            try {
+                gateway.sendInteraction(classPath, updatedValues, gateway.getTimeStamp());
+            } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished
+                    | InvalidFederationTime e) {
+                throw new RTIAmbassadorException(e);
+            } 
+        }
+    }
+    
+    private void publishGldObject(ObjectClassType object) {
+        final String classPath = gateway.getObjectModel().getClassPath(object);
+        log.trace("publishGldObject {}", classPath);
+        
+        for (String gldObjectName : objectModelHelper.getPublishedNames(object)) {
+            Map<String, String> updatedValues = new HashMap<String, String>();
+            for (AttributeType attribute : gateway.getObjectModel().getAttributes(object)) {
+                final String attributeName = attribute.getName().getValue();
+                log.trace("on attribute {}", attributeName);
+                
+                if (objectModelHelper.isRootAttribute(attributeName)) {
+                    log.debug("skipping attribute {}", attributeName);
+                    continue;
+                }
+                
+                // check update period
+                
+                try {
+                    String unit = objectModelHelper.getNameConversion(attribute);
+                    if (unit != null) {
+                        log.trace("unit conversion with unit {}", unit);
+                        double value = client.getObjectProperty(gldObjectName, attributeName, unit);
+                        updatedValues.put(attributeName, Double.toString(value));
+                        log.debug("got {}:{}={} [{}]", gldObjectName, attributeName, value, unit);
+                    } else if (objectModelHelper.isDouble(attribute)) {
+                        log.trace("flagged as double");
+                        double value = client.getObjectProperty(gldObjectName, attributeName, null);
+                        LinearConversionType conversionRule = objectModelHelper.getLinearConversion(attribute);
+                        if (conversionRule != null) {
+                            log.trace("linear conversion");
+                            value = convertToHla(conversionRule, value);
+                        }
+                        updatedValues.put(attributeName, Double.toString(value));
+                        log.debug("got {}:{}={}", gldObjectName, attributeName, value);
+                    } else {
+                        String value = client.getObjectProperty(gldObjectName, attributeName);
+                        updatedValues.put(attributeName, value);
+                        log.debug("got {}:{}={}", gldObjectName, attributeName, value);
+                    }
+                } catch (IOException e) {
+                    log.error("unable to get {}:{}", gldObjectName, attributeName);
+                }
+            }
+            
+            if (updatedValues.isEmpty()) {
+                log.warn("no values to update for {} ({})", classPath, gldObjectName);
+                return;
+            }
+            
+            try {
+                String instanceName = registeredObjects.get(classPath + ":" + gldObjectName);
+                gateway.updateObject(instanceName, updatedValues, gateway.getTimeStamp());
+            } catch (FederateNotExecutionMember | ObjectNotKnown | NameNotFound | AttributeNotOwned
+                    | InvalidFederationTime e) {
+                throw new RTIAmbassadorException(e);
+            } 
+        }
     }
 }
