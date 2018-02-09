@@ -26,6 +26,7 @@ public class TestFederateBase extends SynchronizedFederate {
 
 		enableTimeConstrained();
 
+		enableTimeRegulation(getLookAhead());
 		enableAsynchronousDelivery();
         // interaction pubsub
         
