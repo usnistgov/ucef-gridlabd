@@ -31,6 +31,8 @@ public class TestFederate extends TestFederateBase {
     }
 
     private void CheckReceivedSubscriptions(String s) {
+        log.trace("CheckReceivedSubscriptions {}", s);
+        
         InteractionRoot interaction = null;
         while ((interaction = getNextInteractionNoWait()) != null) {
             if (interaction instanceof GlobalVariables) {
@@ -39,7 +41,6 @@ public class TestFederate extends TestFederateBase {
             else if (interaction instanceof House) {
                 handleInteractionClass((House) interaction);
             }
-            log.info("Interaction received and handled: " + s);
         }
  
         ObjectReflector reflector = null;
@@ -52,7 +53,6 @@ public class TestFederate extends TestFederateBase {
             else if (object instanceof HouseObject) {
                 handleObjectClass((HouseObject) object);
             }
-            log.info("Object received and handled: " + s);
         }
     }
 
@@ -89,8 +89,9 @@ public class TestFederate extends TestFederateBase {
             atr.requestSyncStart();
             enteredTimeGrantedState();
             
+            log.info("t={}", getLRC().queryFederateTime());
             CheckReceivedSubscriptions("Main Loop");
-            updateCoolingControl();
+            updateCoolingSetpoints();
 
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // DO NOT MODIFY FILE BEYOND THIS LINE
@@ -110,39 +111,42 @@ public class TestFederate extends TestFederateBase {
     }
     
     private void handleInteractionClass(GlobalVariables interaction) {
-        log.trace("handleInteractionClass GlobalVariables");
-        
-        String clock = interaction.get_clock();
-        log.info("clock interaction {}", clock);
-        updateWorkHours(clock);
+        log.info("received {}", interaction.toString());
+        updateWorkHours(interaction.get_clock());
     }
     
     private void handleInteractionClass(House interaction) {
-        log.trace("handleInteractionClass House");
-        
-        log.info("house interaction [name={}, air_temperature={}, compressor_count={}, compressor_on={}]",
-                interaction.get_name(),
-                interaction.get_air_temperature(),
-                interaction.get_compressor_count(),
-                interaction.get_compressor_on());
+        log.info("received {}", interaction.toString());
     }
     
     private void handleObjectClass(GlobalVariablesObject object) {
-        log.trace("handleObjectClass GlobalVariablesObject");
-        
-        String clock = object.get_clock();
-        log.info("clock object {}", clock);
-        updateWorkHours(clock);
+        log.info("received {}", object.toString());
+        updateWorkHours(object.get_clock());
     }
     
     private void handleObjectClass(HouseObject object) {
-        log.trace("handleObjectClass HouseObject");
-        
-        log.info("house object [name={}, air_temperature={}, compressor_count={}, compressor_on={}]",
-                object.get_name(),
-                object.get_air_temperature(),
-                object.get_compressor_count(),
-                object.get_compressor_on());
+        log.info("received {}", object.toString());
+    }
+    
+    private double getCoolingSetpoint1() {
+        if (useCelsius) {
+            return workSchedule ? 24 : 21;
+        }
+        return workSchedule ? 75 : 69;
+    }
+    
+    private double getCoolingSetpoint2() {
+        if (useCelsius) {
+            return workSchedule ? 25 : 23;
+        }
+        return workSchedule ? 77 : 73;
+    }
+    
+    private double getCoolingSetpoint3() {
+        if (useCelsius) {
+            return 22;
+        }
+        return 71;
     }
     
     private void createObjects() {
@@ -151,16 +155,16 @@ public class TestFederate extends TestFederateBase {
         house2 = new CoolingControlObject();
         house2.registerObject(getLRC());
         house2.set_name("house2");
-        house2.set_cooling_setpoint(useCelsius ? 24 : 75); // sadly we need this for CPSWT
+        house2.set_cooling_setpoint(getCoolingSetpoint2());
         house2.updateAttributeValues(getLRC());
-        log.debug("created CoolingControlObject for house2");
+        log.debug("created {}", house2.toString());
         
         house3 = new CoolingControlObject();
         house3.registerObject(getLRC());
         house3.set_name("house3");
-        house3.set_cooling_setpoint(useCelsius ? 24 : 75); // sadly we need this for CPSWT
+        house3.set_cooling_setpoint(getCoolingSetpoint3());
         house3.updateAttributeValues(getLRC());
-        log.debug("created CoolingControlObject for house3");
+        log.debug("created {}", house3.toString());
     }
     
     private void sendSimTime()
@@ -173,52 +177,30 @@ public class TestFederate extends TestFederateBase {
         time.set_timeScale(900);            // 15 minutes
         time.set_timeZone("US/MD/Baltimore");
         time.sendInteraction(getLRC());
-        log.debug("sent {}", time.toString());
+        log.info("sent {}", time.toString());
     }
     
-    private void updateCoolingControl()
+    private void updateCoolingSetpoints()
             throws Exception {
         log.trace("updateCoolingSetpoints");
         
-        double cooling_setpoint1;
-        double cooling_setpoint2;
-        double cooling_setpoint3;
+        double cooling_setpoint1 = getCoolingSetpoint1();
+        double cooling_setpoint2 = getCoolingSetpoint2();
+        double cooling_setpoint3 = getCoolingSetpoint3();
         
-        if (useCelsius) {
-            cooling_setpoint1 = (workSchedule ? 24 : 21);
-            cooling_setpoint2 = (workSchedule ? 25 : 23);
-            cooling_setpoint3 = 22; 
-        } else {
-            cooling_setpoint1 = (workSchedule ? 75 : 69);
-            cooling_setpoint2 = (workSchedule ? 77 : 73);
-            cooling_setpoint3 = 71; 
-        }
-        
-        CoolingControl cooling = create_CoolingControl();
-        cooling.set_name("house1");
-        cooling.set_cooling_setpoint(cooling_setpoint1);
-        cooling.sendInteraction(getLRC(), currentTime);
-        log.debug("set cooling_setpoint1 to {}", cooling_setpoint1);
+        CoolingControl coolingControl = create_CoolingControl();
+        coolingControl.set_name("house1");
+        coolingControl.set_cooling_setpoint(cooling_setpoint1);
+        coolingControl.sendInteraction(getLRC(), currentTime);
+        log.info("set house1.cooling_setpoint={}", cooling_setpoint1);
         
         house2.set_cooling_setpoint(cooling_setpoint2);
         house2.updateAttributeValues(getLRC(), currentTime);
-        log.debug("set cooling_setpoint2 to {}", cooling_setpoint2);
+        log.info("set house2.cooling_setpoint={}", cooling_setpoint2);
         
         house3.set_cooling_setpoint(cooling_setpoint3);
         house3.updateAttributeValues(getLRC(), currentTime);
-        log.debug("set cooling_setpoint3 to {}", cooling_setpoint3);
-    }
-    
-    private boolean isDuringWorkHours(String timestamp) {
-        log.trace("isDuringWorkHours {}", timestamp);
-        
-        // timestamp format is 'YYYY-MM-DD hh:mm:ss ZZZ'
-        int hourStartIndex = timestamp.indexOf(' ') + 1;
-        int hourEndIndex   = timestamp.indexOf(':');
-        String hourString  = timestamp.substring(hourStartIndex, hourEndIndex);
-        
-        int hourValue = Integer.parseInt(hourString);
-        return hourValue >= 8 && hourValue < 17;
+        log.info("set house3.cooling_setpoint={}", cooling_setpoint3);
     }
     
     private void updateWorkHours(String clock) {
@@ -232,6 +214,19 @@ public class TestFederate extends TestFederateBase {
             log.info("turning off work schedule at {}", clock);
             workSchedule = false;
         }
+    }
+    
+    private boolean isDuringWorkHours(String timestamp) {
+        log.trace("isDuringWorkHours {}", timestamp);
+        
+        // timestamp format is 'YYYY-MM-DD hh:mm:ss ZZZ'
+        int hourStartIndex = timestamp.indexOf(' ') + 1;
+        int hourEndIndex   = timestamp.indexOf(':');
+        String hourString  = timestamp.substring(hourStartIndex, hourEndIndex);
+        log.debug("extracted hour={} from {}", hourString, timestamp);
+        
+        int hourValue = Integer.parseInt(hourString);
+        return hourValue >= 8 && hourValue < 17;
     }
     
     public static void main(String[] args) {
