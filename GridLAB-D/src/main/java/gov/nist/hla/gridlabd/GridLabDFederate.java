@@ -459,6 +459,7 @@ public class GridLabDFederate implements GatewayCallback {
             return;
         }
         
+        // maybe race condition here
         if (!discoveredInstances.containsKey(instanceName) && !attributes.containsKey("name")) {
             log.info("delayed update for {}:{} until GridLAB-D object name received", className, instanceName);
             if (previousUpdate == null) {
@@ -535,6 +536,8 @@ public class GridLabDFederate implements GatewayCallback {
             final Map<String, String> attributes = entry.getValue();
             
             if (attributes.containsKey("name")) {
+                discoveredInstances.put(instanceName, attributes.get("name"));
+                log.debug("using name {} for object instance {}", attributes.get("name"), instanceName);
                 updateGridLabDObject(discoveredInstanceClass.get(instanceName), attributes.get("name"), attributes);
                 processedInstances.add(instanceName);
             }
