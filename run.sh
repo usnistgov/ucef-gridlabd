@@ -32,6 +32,8 @@ curl -o /dev/null -s -X POST http://127.0.0.1:8083/fedmgr --data '{"action": "ST
 cd $root_directory/GridLAB-D
 xterm -fg green -bg black -l -lf $logs_directory/gridlab-d-${timestamp}.log -T "GridLAB-D" -geometry 140x40+180+60 -e "./run.sh" &
 
+sleep 2
+
 cd $root_directory/TestFederate
 xterm -fg cyan -bg black -l -lf $logs_directory/test-federate-${timestamp}.log -T "TestFederate" -geometry 140x40+360+120 -e "./run.sh" &
 
