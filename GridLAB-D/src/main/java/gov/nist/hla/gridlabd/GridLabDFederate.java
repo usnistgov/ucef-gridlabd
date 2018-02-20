@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -81,6 +83,13 @@ public class GridLabDFederate implements GatewayCallback {
     private Map<String, String> discoveredInstanceClass = new HashMap<String, String>();
     
     private Map<String, Map<String, String>> pendingInstances = new HashMap<String, Map<String, String>>();
+    
+    private class InteractionData {
+        public String className;
+        public Map<String, String> parameters;
+    }
+    
+    private List<InteractionData> pendingInteractions = new LinkedList<InteractionData>();
     
     private Map<String, Double> nextUpdateTime = new HashMap<String, Double>();
     
@@ -377,7 +386,11 @@ public class GridLabDFederate implements GatewayCallback {
         log.trace("handleInteraction {} {}", className, parameters.toString());
         
         if (!isGridLabDRunning) {
-            log.warn("dropped interaction {}: GridLAB-D simulation not started", className);
+            InteractionData data = new InteractionData();
+            data.className = className;
+            data.parameters = new HashMap(parameters);
+            pendingInteractions.add(data);
+            log.debug("stored interaction {}: GridLAB-D simulation not started", className);
             return;
         }
         
@@ -546,6 +559,11 @@ public class GridLabDFederate implements GatewayCallback {
         for (String instanceName : processedInstances) {
             pendingInstances.remove(instanceName);
         }
+        
+        for (InteractionData data : pendingInteractions) {
+            handleInteraction(data.className, data.parameters);
+        }
+        pendingInteractions.clear();
     }
     
     @Override

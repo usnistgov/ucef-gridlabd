@@ -69,7 +69,7 @@ public class TestFederate extends TestFederateBase {
             readyToPopulate();
         }
         
-        createObjects();
+        sendInitialValues();
         sendSimTime();
         
         if(!super.isLateJoiner()) {
@@ -149,8 +149,15 @@ public class TestFederate extends TestFederateBase {
         return 71;
     }
     
-    private void createObjects() {
-        log.trace("createObjects");
+    private void sendInitialValues()
+            throws Exception {
+        log.trace("sendInitialValues");
+        
+        CoolingControl house1 = create_CoolingControl();
+        house1.set_name("house1");
+        house1.set_cooling_setpoint(getCoolingSetpoint1());
+        house1.sendInteraction(getLRC());
+        log.debug("sent {}", house1.toString());
         
         house2 = new CoolingControlObject();
         house2.registerObject(getLRC());
