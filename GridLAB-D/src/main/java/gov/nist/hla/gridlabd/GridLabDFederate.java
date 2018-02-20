@@ -577,6 +577,20 @@ public class GridLabDFederate implements GatewayCallback {
         log.trace("advanceSimulationTime {}", unixTime);
         
         final String timeStamp = toTimeStamp(unixTime);
+        
+        if (unixTime >= configuration.getUnixTimeStop()) {
+            log.info("running last timestep (GridLAB-D will crash)");
+            try {
+                client.pauseat(timeStamp);
+                // the GridLAB-D server will not respond to this HTTP GET request
+                // the pauseat command should throw an exception in response to this
+                throw new GridLabDException("unreachable code");
+            } catch (IOException e) {
+                log.info("GridLAB-D simulation complete");
+            }
+            return;
+        }
+        
         client.pauseat(timeStamp);
         
         while (!client.isPaused()) {
