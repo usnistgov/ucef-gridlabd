@@ -6,21 +6,21 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Object Class Config Type</b></em>'.
+ * A representation of the model object '<em><b>Object Details Type</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link gov.nist.pages.ucef.ObjectClassConfigType#getPublishedObjects <em>Published Objects</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.ObjectDetailsType#getPublishedObjects <em>Published Objects</em>}</li>
  * </ul>
  *
- * @see gov.nist.pages.ucef.ucefPackage#getObjectClassConfigType()
- * @model extendedMetaData="name='objectClassConfigType' kind='elementOnly'"
+ * @see gov.nist.pages.ucef.ucefPackage#getObjectDetailsType()
+ * @model extendedMetaData="name='objectDetailsType' kind='elementOnly'"
  * @generated
  */
-public interface ObjectClassConfigType extends EObject {
+public interface ObjectDetailsType extends EObject {
     /**
      * Returns the value of the '<em><b>Published Objects</b></em>' containment reference.
      * <!-- begin-user-doc -->
@@ -30,7 +30,7 @@ public interface ObjectClassConfigType extends EObject {
      * <!-- end-model-doc -->
      * @return the value of the '<em>Published Objects</em>' containment reference.
      * @see #setPublishedObjects(PublishedObjectsType)
-     * @see gov.nist.pages.ucef.ucefPackage#getObjectClassConfigType_PublishedObjects()
+     * @see gov.nist.pages.ucef.ucefPackage#getObjectDetailsType_PublishedObjects()
      * @model containment="true"
      *        extendedMetaData="kind='element' name='publishedObjects' namespace='##targetNamespace'"
      * @generated
@@ -38,7 +38,7 @@ public interface ObjectClassConfigType extends EObject {
     PublishedObjectsType getPublishedObjects();
 
     /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.ObjectClassConfigType#getPublishedObjects <em>Published Objects</em>}' containment reference.
+     * Sets the value of the '{@link gov.nist.pages.ucef.ObjectDetailsType#getPublishedObjects <em>Published Objects</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Published Objects</em>' containment reference.
@@ -47,4 +47,4 @@ public interface ObjectClassConfigType extends EObject {
      */
     void setPublishedObjects(PublishedObjectsType value);
 
-} // ObjectClassConfigType
+} // ObjectDetailsType

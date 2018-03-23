@@ -2,12 +2,12 @@
  */
 package gov.nist.pages.ucef.impl;
 
-import gov.nist.pages.ucef.AttributeConfigType;
+import gov.nist.pages.ucef.AttributeDetailsType;
 import gov.nist.pages.ucef.DocumentRoot;
-import gov.nist.pages.ucef.InteractionClassConfigType;
+import gov.nist.pages.ucef.InteractionDetailsType;
 import gov.nist.pages.ucef.LinearConversionType;
-import gov.nist.pages.ucef.ObjectClassConfigType;
-import gov.nist.pages.ucef.ParameterConfigType;
+import gov.nist.pages.ucef.ObjectDetailsType;
+import gov.nist.pages.ucef.ParameterDetailsType;
 import gov.nist.pages.ucef.PublishedObjectsType;
 import gov.nist.pages.ucef.UnitConversionType;
 import gov.nist.pages.ucef.ucefPackage;
@@ -40,14 +40,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getMixed <em>Mixed</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getAttributeConfig <em>Attribute Config</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getInteractionClassConfig <em>Interaction Class Config</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getAttributeDetails <em>Attribute Details</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#isIgnored <em>Ignored</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getInteractionDetails <em>Interaction Details</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getLinearConversion <em>Linear Conversion</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getNameConversion <em>Name Conversion</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getObjectClassConfig <em>Object Class Config</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getParameterConfig <em>Parameter Config</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getObjectDetails <em>Object Details</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getParameterDetails <em>Parameter Details</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getPropertyName <em>Property Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getPublishedObjects <em>Published Objects</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getUnitConversion <em>Unit Conversion</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getUnitName <em>Unit Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getUpdatePeriod <em>Update Period</em>}</li>
  * </ul>
  *
@@ -85,14 +87,34 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
     protected EMap<String, String> xSISchemaLocation;
 
     /**
-     * The default value of the '{@link #getNameConversion() <em>Name Conversion</em>}' attribute.
+     * The default value of the '{@link #isIgnored() <em>Ignored</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getNameConversion()
+     * @see #isIgnored()
      * @generated
      * @ordered
      */
-    protected static final String NAME_CONVERSION_EDEFAULT = null;
+    protected static final boolean IGNORED_EDEFAULT = false;
+
+    /**
+     * The default value of the '{@link #getPropertyName() <em>Property Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getPropertyName()
+     * @generated
+     * @ordered
+     */
+    protected static final String PROPERTY_NAME_EDEFAULT = null;
+
+    /**
+     * The default value of the '{@link #getUnitName() <em>Unit Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getUnitName()
+     * @generated
+     * @ordered
+     */
+    protected static final String UNIT_NAME_EDEFAULT = null;
 
     /**
      * The default value of the '{@link #getUpdatePeriod() <em>Update Period</em>}' attribute.
@@ -164,8 +186,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public AttributeConfigType getAttributeConfig() {
-        return (AttributeConfigType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__ATTRIBUTE_CONFIG, true);
+    public AttributeDetailsType getAttributeDetails() {
+        return (AttributeDetailsType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__ATTRIBUTE_DETAILS, true);
     }
 
     /**
@@ -173,8 +195,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetAttributeConfig(AttributeConfigType newAttributeConfig, NotificationChain msgs) {
-        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__ATTRIBUTE_CONFIG, newAttributeConfig, msgs);
+    public NotificationChain basicSetAttributeDetails(AttributeDetailsType newAttributeDetails, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__ATTRIBUTE_DETAILS, newAttributeDetails, msgs);
     }
 
     /**
@@ -182,8 +204,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAttributeConfig(AttributeConfigType newAttributeConfig) {
-        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__ATTRIBUTE_CONFIG, newAttributeConfig);
+    public void setAttributeDetails(AttributeDetailsType newAttributeDetails) {
+        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__ATTRIBUTE_DETAILS, newAttributeDetails);
     }
 
     /**
@@ -191,8 +213,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public InteractionClassConfigType getInteractionClassConfig() {
-        return (InteractionClassConfigType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG, true);
+    public boolean isIgnored() {
+        return (Boolean)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__IGNORED, true);
     }
 
     /**
@@ -200,8 +222,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetInteractionClassConfig(InteractionClassConfigType newInteractionClassConfig, NotificationChain msgs) {
-        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG, newInteractionClassConfig, msgs);
+    public void setIgnored(boolean newIgnored) {
+        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__IGNORED, newIgnored);
     }
 
     /**
@@ -209,8 +231,26 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setInteractionClassConfig(InteractionClassConfigType newInteractionClassConfig) {
-        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG, newInteractionClassConfig);
+    public InteractionDetailsType getInteractionDetails() {
+        return (InteractionDetailsType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__INTERACTION_DETAILS, true);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetInteractionDetails(InteractionDetailsType newInteractionDetails, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__INTERACTION_DETAILS, newInteractionDetails, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setInteractionDetails(InteractionDetailsType newInteractionDetails) {
+        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__INTERACTION_DETAILS, newInteractionDetails);
     }
 
     /**
@@ -245,8 +285,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getNameConversion() {
-        return (String)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__NAME_CONVERSION, true);
+    public ObjectDetailsType getObjectDetails() {
+        return (ObjectDetailsType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__OBJECT_DETAILS, true);
     }
 
     /**
@@ -254,8 +294,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setNameConversion(String newNameConversion) {
-        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__NAME_CONVERSION, newNameConversion);
+    public NotificationChain basicSetObjectDetails(ObjectDetailsType newObjectDetails, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__OBJECT_DETAILS, newObjectDetails, msgs);
     }
 
     /**
@@ -263,8 +303,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public ObjectClassConfigType getObjectClassConfig() {
-        return (ObjectClassConfigType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG, true);
+    public void setObjectDetails(ObjectDetailsType newObjectDetails) {
+        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__OBJECT_DETAILS, newObjectDetails);
     }
 
     /**
@@ -272,8 +312,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetObjectClassConfig(ObjectClassConfigType newObjectClassConfig, NotificationChain msgs) {
-        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG, newObjectClassConfig, msgs);
+    public ParameterDetailsType getParameterDetails() {
+        return (ParameterDetailsType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__PARAMETER_DETAILS, true);
     }
 
     /**
@@ -281,8 +321,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setObjectClassConfig(ObjectClassConfigType newObjectClassConfig) {
-        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG, newObjectClassConfig);
+    public NotificationChain basicSetParameterDetails(ParameterDetailsType newParameterDetails, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__PARAMETER_DETAILS, newParameterDetails, msgs);
     }
 
     /**
@@ -290,8 +330,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public ParameterConfigType getParameterConfig() {
-        return (ParameterConfigType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__PARAMETER_CONFIG, true);
+    public void setParameterDetails(ParameterDetailsType newParameterDetails) {
+        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__PARAMETER_DETAILS, newParameterDetails);
     }
 
     /**
@@ -299,8 +339,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetParameterConfig(ParameterConfigType newParameterConfig, NotificationChain msgs) {
-        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__PARAMETER_CONFIG, newParameterConfig, msgs);
+    public String getPropertyName() {
+        return (String)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__PROPERTY_NAME, true);
     }
 
     /**
@@ -308,8 +348,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setParameterConfig(ParameterConfigType newParameterConfig) {
-        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__PARAMETER_CONFIG, newParameterConfig);
+    public void setPropertyName(String newPropertyName) {
+        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__PROPERTY_NAME, newPropertyName);
     }
 
     /**
@@ -371,6 +411,24 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getUnitName() {
+        return (String)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__UNIT_NAME, true);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setUnitName(String newUnitName) {
+        ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__UNIT_NAME, newUnitName);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public double getUpdatePeriod() {
         return (Double)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__UPDATE_PERIOD, true);
     }
@@ -398,16 +456,16 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 return ((InternalEList<?>)getXMLNSPrefixMap()).basicRemove(otherEnd, msgs);
             case ucefPackage.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
                 return ((InternalEList<?>)getXSISchemaLocation()).basicRemove(otherEnd, msgs);
-            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_CONFIG:
-                return basicSetAttributeConfig(null, msgs);
-            case ucefPackage.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG:
-                return basicSetInteractionClassConfig(null, msgs);
+            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
+                return basicSetAttributeDetails(null, msgs);
+            case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
+                return basicSetInteractionDetails(null, msgs);
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:
                 return basicSetLinearConversion(null, msgs);
-            case ucefPackage.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG:
-                return basicSetObjectClassConfig(null, msgs);
-            case ucefPackage.DOCUMENT_ROOT__PARAMETER_CONFIG:
-                return basicSetParameterConfig(null, msgs);
+            case ucefPackage.DOCUMENT_ROOT__OBJECT_DETAILS:
+                return basicSetObjectDetails(null, msgs);
+            case ucefPackage.DOCUMENT_ROOT__PARAMETER_DETAILS:
+                return basicSetParameterDetails(null, msgs);
             case ucefPackage.DOCUMENT_ROOT__PUBLISHED_OBJECTS:
                 return basicSetPublishedObjects(null, msgs);
             case ucefPackage.DOCUMENT_ROOT__UNIT_CONVERSION:
@@ -433,22 +491,26 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
             case ucefPackage.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
                 if (coreType) return getXSISchemaLocation();
                 else return getXSISchemaLocation().map();
-            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_CONFIG:
-                return getAttributeConfig();
-            case ucefPackage.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG:
-                return getInteractionClassConfig();
+            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
+                return getAttributeDetails();
+            case ucefPackage.DOCUMENT_ROOT__IGNORED:
+                return isIgnored();
+            case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
+                return getInteractionDetails();
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:
                 return getLinearConversion();
-            case ucefPackage.DOCUMENT_ROOT__NAME_CONVERSION:
-                return getNameConversion();
-            case ucefPackage.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG:
-                return getObjectClassConfig();
-            case ucefPackage.DOCUMENT_ROOT__PARAMETER_CONFIG:
-                return getParameterConfig();
+            case ucefPackage.DOCUMENT_ROOT__OBJECT_DETAILS:
+                return getObjectDetails();
+            case ucefPackage.DOCUMENT_ROOT__PARAMETER_DETAILS:
+                return getParameterDetails();
+            case ucefPackage.DOCUMENT_ROOT__PROPERTY_NAME:
+                return getPropertyName();
             case ucefPackage.DOCUMENT_ROOT__PUBLISHED_OBJECTS:
                 return getPublishedObjects();
             case ucefPackage.DOCUMENT_ROOT__UNIT_CONVERSION:
                 return getUnitConversion();
+            case ucefPackage.DOCUMENT_ROOT__UNIT_NAME:
+                return getUnitName();
             case ucefPackage.DOCUMENT_ROOT__UPDATE_PERIOD:
                 return getUpdatePeriod();
         }
@@ -472,29 +534,35 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
             case ucefPackage.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
                 ((EStructuralFeature.Setting)getXSISchemaLocation()).set(newValue);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_CONFIG:
-                setAttributeConfig((AttributeConfigType)newValue);
+            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
+                setAttributeDetails((AttributeDetailsType)newValue);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG:
-                setInteractionClassConfig((InteractionClassConfigType)newValue);
+            case ucefPackage.DOCUMENT_ROOT__IGNORED:
+                setIgnored((Boolean)newValue);
+                return;
+            case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
+                setInteractionDetails((InteractionDetailsType)newValue);
                 return;
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:
                 setLinearConversion((LinearConversionType)newValue);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__NAME_CONVERSION:
-                setNameConversion((String)newValue);
+            case ucefPackage.DOCUMENT_ROOT__OBJECT_DETAILS:
+                setObjectDetails((ObjectDetailsType)newValue);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG:
-                setObjectClassConfig((ObjectClassConfigType)newValue);
+            case ucefPackage.DOCUMENT_ROOT__PARAMETER_DETAILS:
+                setParameterDetails((ParameterDetailsType)newValue);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__PARAMETER_CONFIG:
-                setParameterConfig((ParameterConfigType)newValue);
+            case ucefPackage.DOCUMENT_ROOT__PROPERTY_NAME:
+                setPropertyName((String)newValue);
                 return;
             case ucefPackage.DOCUMENT_ROOT__PUBLISHED_OBJECTS:
                 setPublishedObjects((PublishedObjectsType)newValue);
                 return;
             case ucefPackage.DOCUMENT_ROOT__UNIT_CONVERSION:
                 setUnitConversion((UnitConversionType)newValue);
+                return;
+            case ucefPackage.DOCUMENT_ROOT__UNIT_NAME:
+                setUnitName((String)newValue);
                 return;
             case ucefPackage.DOCUMENT_ROOT__UPDATE_PERIOD:
                 setUpdatePeriod((Double)newValue);
@@ -520,29 +588,35 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
             case ucefPackage.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
                 getXSISchemaLocation().clear();
                 return;
-            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_CONFIG:
-                setAttributeConfig((AttributeConfigType)null);
+            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
+                setAttributeDetails((AttributeDetailsType)null);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG:
-                setInteractionClassConfig((InteractionClassConfigType)null);
+            case ucefPackage.DOCUMENT_ROOT__IGNORED:
+                setIgnored(IGNORED_EDEFAULT);
+                return;
+            case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
+                setInteractionDetails((InteractionDetailsType)null);
                 return;
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:
                 setLinearConversion((LinearConversionType)null);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__NAME_CONVERSION:
-                setNameConversion(NAME_CONVERSION_EDEFAULT);
+            case ucefPackage.DOCUMENT_ROOT__OBJECT_DETAILS:
+                setObjectDetails((ObjectDetailsType)null);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG:
-                setObjectClassConfig((ObjectClassConfigType)null);
+            case ucefPackage.DOCUMENT_ROOT__PARAMETER_DETAILS:
+                setParameterDetails((ParameterDetailsType)null);
                 return;
-            case ucefPackage.DOCUMENT_ROOT__PARAMETER_CONFIG:
-                setParameterConfig((ParameterConfigType)null);
+            case ucefPackage.DOCUMENT_ROOT__PROPERTY_NAME:
+                setPropertyName(PROPERTY_NAME_EDEFAULT);
                 return;
             case ucefPackage.DOCUMENT_ROOT__PUBLISHED_OBJECTS:
                 setPublishedObjects((PublishedObjectsType)null);
                 return;
             case ucefPackage.DOCUMENT_ROOT__UNIT_CONVERSION:
                 setUnitConversion((UnitConversionType)null);
+                return;
+            case ucefPackage.DOCUMENT_ROOT__UNIT_NAME:
+                setUnitName(UNIT_NAME_EDEFAULT);
                 return;
             case ucefPackage.DOCUMENT_ROOT__UPDATE_PERIOD:
                 setUpdatePeriod(UPDATE_PERIOD_EDEFAULT);
@@ -565,22 +639,26 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 return xMLNSPrefixMap != null && !xMLNSPrefixMap.isEmpty();
             case ucefPackage.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
                 return xSISchemaLocation != null && !xSISchemaLocation.isEmpty();
-            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_CONFIG:
-                return getAttributeConfig() != null;
-            case ucefPackage.DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG:
-                return getInteractionClassConfig() != null;
+            case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
+                return getAttributeDetails() != null;
+            case ucefPackage.DOCUMENT_ROOT__IGNORED:
+                return isIgnored() != IGNORED_EDEFAULT;
+            case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
+                return getInteractionDetails() != null;
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:
                 return getLinearConversion() != null;
-            case ucefPackage.DOCUMENT_ROOT__NAME_CONVERSION:
-                return NAME_CONVERSION_EDEFAULT == null ? getNameConversion() != null : !NAME_CONVERSION_EDEFAULT.equals(getNameConversion());
-            case ucefPackage.DOCUMENT_ROOT__OBJECT_CLASS_CONFIG:
-                return getObjectClassConfig() != null;
-            case ucefPackage.DOCUMENT_ROOT__PARAMETER_CONFIG:
-                return getParameterConfig() != null;
+            case ucefPackage.DOCUMENT_ROOT__OBJECT_DETAILS:
+                return getObjectDetails() != null;
+            case ucefPackage.DOCUMENT_ROOT__PARAMETER_DETAILS:
+                return getParameterDetails() != null;
+            case ucefPackage.DOCUMENT_ROOT__PROPERTY_NAME:
+                return PROPERTY_NAME_EDEFAULT == null ? getPropertyName() != null : !PROPERTY_NAME_EDEFAULT.equals(getPropertyName());
             case ucefPackage.DOCUMENT_ROOT__PUBLISHED_OBJECTS:
                 return getPublishedObjects() != null;
             case ucefPackage.DOCUMENT_ROOT__UNIT_CONVERSION:
                 return getUnitConversion() != null;
+            case ucefPackage.DOCUMENT_ROOT__UNIT_NAME:
+                return UNIT_NAME_EDEFAULT == null ? getUnitName() != null : !UNIT_NAME_EDEFAULT.equals(getUnitName());
             case ucefPackage.DOCUMENT_ROOT__UPDATE_PERIOD:
                 return getUpdatePeriod() != UPDATE_PERIOD_EDEFAULT;
         }

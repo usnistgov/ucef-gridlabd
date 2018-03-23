@@ -58,14 +58,32 @@ public interface ucefPackage extends EPackage {
     ucefPackage eINSTANCE = gov.nist.pages.ucef.impl.ucefPackageImpl.init();
 
     /**
-     * The meta object id for the '{@link gov.nist.pages.ucef.impl.AttributeConfigTypeImpl <em>Attribute Config Type</em>}' class.
+     * The meta object id for the '{@link gov.nist.pages.ucef.impl.AttributeDetailsTypeImpl <em>Attribute Details Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see gov.nist.pages.ucef.impl.AttributeConfigTypeImpl
-     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getAttributeConfigType()
+     * @see gov.nist.pages.ucef.impl.AttributeDetailsTypeImpl
+     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getAttributeDetailsType()
      * @generated
      */
-    int ATTRIBUTE_CONFIG_TYPE = 0;
+    int ATTRIBUTE_DETAILS_TYPE = 0;
+
+    /**
+     * The feature id for the '<em><b>Ignored</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE_DETAILS_TYPE__IGNORED = 0;
+
+    /**
+     * The feature id for the '<em><b>Property Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE_DETAILS_TYPE__PROPERTY_NAME = 1;
 
     /**
      * The feature id for the '<em><b>Update Period</b></em>' attribute.
@@ -74,7 +92,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_CONFIG_TYPE__UPDATE_PERIOD = 0;
+    int ATTRIBUTE_DETAILS_TYPE__UPDATE_PERIOD = 2;
 
     /**
      * The feature id for the '<em><b>Unit Conversion</b></em>' containment reference.
@@ -83,25 +101,25 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_CONFIG_TYPE__UNIT_CONVERSION = 1;
+    int ATTRIBUTE_DETAILS_TYPE__UNIT_CONVERSION = 3;
 
     /**
-     * The number of structural features of the '<em>Attribute Config Type</em>' class.
+     * The number of structural features of the '<em>Attribute Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_CONFIG_TYPE_FEATURE_COUNT = 2;
+    int ATTRIBUTE_DETAILS_TYPE_FEATURE_COUNT = 4;
 
     /**
-     * The number of operations of the '<em>Attribute Config Type</em>' class.
+     * The number of operations of the '<em>Attribute Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_CONFIG_TYPE_OPERATION_COUNT = 0;
+    int ATTRIBUTE_DETAILS_TYPE_OPERATION_COUNT = 0;
 
     /**
      * The meta object id for the '{@link gov.nist.pages.ucef.impl.DocumentRootImpl <em>Document Root</em>}' class.
@@ -141,22 +159,31 @@ public interface ucefPackage extends EPackage {
     int DOCUMENT_ROOT__XSI_SCHEMA_LOCATION = 2;
 
     /**
-     * The feature id for the '<em><b>Attribute Config</b></em>' containment reference.
+     * The feature id for the '<em><b>Attribute Details</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__ATTRIBUTE_CONFIG = 3;
+    int DOCUMENT_ROOT__ATTRIBUTE_DETAILS = 3;
 
     /**
-     * The feature id for the '<em><b>Interaction Class Config</b></em>' containment reference.
+     * The feature id for the '<em><b>Ignored</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG = 4;
+    int DOCUMENT_ROOT__IGNORED = 4;
+
+    /**
+     * The feature id for the '<em><b>Interaction Details</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT__INTERACTION_DETAILS = 5;
 
     /**
      * The feature id for the '<em><b>Linear Conversion</b></em>' containment reference.
@@ -165,34 +192,34 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__LINEAR_CONVERSION = 5;
+    int DOCUMENT_ROOT__LINEAR_CONVERSION = 6;
 
     /**
-     * The feature id for the '<em><b>Name Conversion</b></em>' attribute.
+     * The feature id for the '<em><b>Object Details</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__NAME_CONVERSION = 6;
+    int DOCUMENT_ROOT__OBJECT_DETAILS = 7;
 
     /**
-     * The feature id for the '<em><b>Object Class Config</b></em>' containment reference.
+     * The feature id for the '<em><b>Parameter Details</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__OBJECT_CLASS_CONFIG = 7;
+    int DOCUMENT_ROOT__PARAMETER_DETAILS = 8;
 
     /**
-     * The feature id for the '<em><b>Parameter Config</b></em>' containment reference.
+     * The feature id for the '<em><b>Property Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__PARAMETER_CONFIG = 8;
+    int DOCUMENT_ROOT__PROPERTY_NAME = 9;
 
     /**
      * The feature id for the '<em><b>Published Objects</b></em>' containment reference.
@@ -201,7 +228,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__PUBLISHED_OBJECTS = 9;
+    int DOCUMENT_ROOT__PUBLISHED_OBJECTS = 10;
 
     /**
      * The feature id for the '<em><b>Unit Conversion</b></em>' containment reference.
@@ -210,7 +237,16 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__UNIT_CONVERSION = 10;
+    int DOCUMENT_ROOT__UNIT_CONVERSION = 11;
+
+    /**
+     * The feature id for the '<em><b>Unit Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT__UNIT_NAME = 12;
 
     /**
      * The feature id for the '<em><b>Update Period</b></em>' attribute.
@@ -219,7 +255,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT__UPDATE_PERIOD = 11;
+    int DOCUMENT_ROOT__UPDATE_PERIOD = 13;
 
     /**
      * The number of structural features of the '<em>Document Root</em>' class.
@@ -228,7 +264,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT_FEATURE_COUNT = 12;
+    int DOCUMENT_ROOT_FEATURE_COUNT = 14;
 
     /**
      * The number of operations of the '<em>Document Root</em>' class.
@@ -240,14 +276,14 @@ public interface ucefPackage extends EPackage {
     int DOCUMENT_ROOT_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link gov.nist.pages.ucef.impl.InteractionClassConfigTypeImpl <em>Interaction Class Config Type</em>}' class.
+     * The meta object id for the '{@link gov.nist.pages.ucef.impl.InteractionDetailsTypeImpl <em>Interaction Details Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see gov.nist.pages.ucef.impl.InteractionClassConfigTypeImpl
-     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getInteractionClassConfigType()
+     * @see gov.nist.pages.ucef.impl.InteractionDetailsTypeImpl
+     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getInteractionDetailsType()
      * @generated
      */
-    int INTERACTION_CLASS_CONFIG_TYPE = 2;
+    int INTERACTION_DETAILS_TYPE = 2;
 
     /**
      * The feature id for the '<em><b>Update Period</b></em>' attribute.
@@ -256,7 +292,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INTERACTION_CLASS_CONFIG_TYPE__UPDATE_PERIOD = 0;
+    int INTERACTION_DETAILS_TYPE__UPDATE_PERIOD = 0;
 
     /**
      * The feature id for the '<em><b>Published Objects</b></em>' containment reference.
@@ -265,25 +301,25 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INTERACTION_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS = 1;
+    int INTERACTION_DETAILS_TYPE__PUBLISHED_OBJECTS = 1;
 
     /**
-     * The number of structural features of the '<em>Interaction Class Config Type</em>' class.
+     * The number of structural features of the '<em>Interaction Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INTERACTION_CLASS_CONFIG_TYPE_FEATURE_COUNT = 2;
+    int INTERACTION_DETAILS_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The number of operations of the '<em>Interaction Class Config Type</em>' class.
+     * The number of operations of the '<em>Interaction Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INTERACTION_CLASS_CONFIG_TYPE_OPERATION_COUNT = 0;
+    int INTERACTION_DETAILS_TYPE_OPERATION_COUNT = 0;
 
     /**
      * The meta object id for the '{@link gov.nist.pages.ucef.impl.LinearConversionTypeImpl <em>Linear Conversion Type</em>}' class.
@@ -332,14 +368,14 @@ public interface ucefPackage extends EPackage {
     int LINEAR_CONVERSION_TYPE_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link gov.nist.pages.ucef.impl.ObjectClassConfigTypeImpl <em>Object Class Config Type</em>}' class.
+     * The meta object id for the '{@link gov.nist.pages.ucef.impl.ObjectDetailsTypeImpl <em>Object Details Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see gov.nist.pages.ucef.impl.ObjectClassConfigTypeImpl
-     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getObjectClassConfigType()
+     * @see gov.nist.pages.ucef.impl.ObjectDetailsTypeImpl
+     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getObjectDetailsType()
      * @generated
      */
-    int OBJECT_CLASS_CONFIG_TYPE = 4;
+    int OBJECT_DETAILS_TYPE = 4;
 
     /**
      * The feature id for the '<em><b>Published Objects</b></em>' containment reference.
@@ -348,35 +384,53 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS = 0;
+    int OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS = 0;
 
     /**
-     * The number of structural features of the '<em>Object Class Config Type</em>' class.
+     * The number of structural features of the '<em>Object Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int OBJECT_CLASS_CONFIG_TYPE_FEATURE_COUNT = 1;
+    int OBJECT_DETAILS_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The number of operations of the '<em>Object Class Config Type</em>' class.
+     * The number of operations of the '<em>Object Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int OBJECT_CLASS_CONFIG_TYPE_OPERATION_COUNT = 0;
+    int OBJECT_DETAILS_TYPE_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link gov.nist.pages.ucef.impl.ParameterConfigTypeImpl <em>Parameter Config Type</em>}' class.
+     * The meta object id for the '{@link gov.nist.pages.ucef.impl.ParameterDetailsTypeImpl <em>Parameter Details Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see gov.nist.pages.ucef.impl.ParameterConfigTypeImpl
-     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getParameterConfigType()
+     * @see gov.nist.pages.ucef.impl.ParameterDetailsTypeImpl
+     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getParameterDetailsType()
      * @generated
      */
-    int PARAMETER_CONFIG_TYPE = 5;
+    int PARAMETER_DETAILS_TYPE = 5;
+
+    /**
+     * The feature id for the '<em><b>Ignored</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARAMETER_DETAILS_TYPE__IGNORED = 0;
+
+    /**
+     * The feature id for the '<em><b>Property Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARAMETER_DETAILS_TYPE__PROPERTY_NAME = 1;
 
     /**
      * The feature id for the '<em><b>Unit Conversion</b></em>' containment reference.
@@ -385,25 +439,25 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PARAMETER_CONFIG_TYPE__UNIT_CONVERSION = 0;
+    int PARAMETER_DETAILS_TYPE__UNIT_CONVERSION = 2;
 
     /**
-     * The number of structural features of the '<em>Parameter Config Type</em>' class.
+     * The number of structural features of the '<em>Parameter Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PARAMETER_CONFIG_TYPE_FEATURE_COUNT = 1;
+    int PARAMETER_DETAILS_TYPE_FEATURE_COUNT = 3;
 
     /**
-     * The number of operations of the '<em>Parameter Config Type</em>' class.
+     * The number of operations of the '<em>Parameter Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PARAMETER_CONFIG_TYPE_OPERATION_COUNT = 0;
+    int PARAMETER_DETAILS_TYPE_OPERATION_COUNT = 0;
 
     /**
      * The meta object id for the '{@link gov.nist.pages.ucef.impl.PublishedObjectsTypeImpl <em>Published Objects Type</em>}' class.
@@ -453,13 +507,13 @@ public interface ucefPackage extends EPackage {
     int UNIT_CONVERSION_TYPE = 7;
 
     /**
-     * The feature id for the '<em><b>Name Conversion</b></em>' attribute.
+     * The feature id for the '<em><b>Unit Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UNIT_CONVERSION_TYPE__NAME_CONVERSION = 0;
+    int UNIT_CONVERSION_TYPE__UNIT_NAME = 0;
 
     /**
      * The feature id for the '<em><b>Linear Conversion</b></em>' containment reference.
@@ -489,14 +543,24 @@ public interface ucefPackage extends EPackage {
     int UNIT_CONVERSION_TYPE_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '<em>Name Conversion Type</em>' data type.
+     * The meta object id for the '<em>Property Name Type</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see java.lang.String
-     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getNameConversionType()
+     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getPropertyNameType()
      * @generated
      */
-    int NAME_CONVERSION_TYPE = 8;
+    int PROPERTY_NAME_TYPE = 8;
+
+    /**
+     * The meta object id for the '<em>Unit Name Type</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.lang.String
+     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUnitNameType()
+     * @generated
+     */
+    int UNIT_NAME_TYPE = 9;
 
     /**
      * The meta object id for the '<em>Update Period Type</em>' data type.
@@ -505,7 +569,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUpdatePeriodType()
      * @generated
      */
-    int UPDATE_PERIOD_TYPE = 9;
+    int UPDATE_PERIOD_TYPE = 10;
 
     /**
      * The meta object id for the '<em>Update Period Type Object</em>' data type.
@@ -515,40 +579,62 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUpdatePeriodTypeObject()
      * @generated
      */
-    int UPDATE_PERIOD_TYPE_OBJECT = 10;
+    int UPDATE_PERIOD_TYPE_OBJECT = 11;
 
 
     /**
-     * Returns the meta object for class '{@link gov.nist.pages.ucef.AttributeConfigType <em>Attribute Config Type</em>}'.
+     * Returns the meta object for class '{@link gov.nist.pages.ucef.AttributeDetailsType <em>Attribute Details Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Attribute Config Type</em>'.
-     * @see gov.nist.pages.ucef.AttributeConfigType
+     * @return the meta object for class '<em>Attribute Details Type</em>'.
+     * @see gov.nist.pages.ucef.AttributeDetailsType
      * @generated
      */
-    EClass getAttributeConfigType();
+    EClass getAttributeDetailsType();
 
     /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeConfigType#getUpdatePeriod <em>Update Period</em>}'.
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeDetailsType#isIgnored <em>Ignored</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Ignored</em>'.
+     * @see gov.nist.pages.ucef.AttributeDetailsType#isIgnored()
+     * @see #getAttributeDetailsType()
+     * @generated
+     */
+    EAttribute getAttributeDetailsType_Ignored();
+
+    /**
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeDetailsType#getPropertyName <em>Property Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Property Name</em>'.
+     * @see gov.nist.pages.ucef.AttributeDetailsType#getPropertyName()
+     * @see #getAttributeDetailsType()
+     * @generated
+     */
+    EAttribute getAttributeDetailsType_PropertyName();
+
+    /**
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeDetailsType#getUpdatePeriod <em>Update Period</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Update Period</em>'.
-     * @see gov.nist.pages.ucef.AttributeConfigType#getUpdatePeriod()
-     * @see #getAttributeConfigType()
+     * @see gov.nist.pages.ucef.AttributeDetailsType#getUpdatePeriod()
+     * @see #getAttributeDetailsType()
      * @generated
      */
-    EAttribute getAttributeConfigType_UpdatePeriod();
+    EAttribute getAttributeDetailsType_UpdatePeriod();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.AttributeConfigType#getUnitConversion <em>Unit Conversion</em>}'.
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.AttributeDetailsType#getUnitConversion <em>Unit Conversion</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Unit Conversion</em>'.
-     * @see gov.nist.pages.ucef.AttributeConfigType#getUnitConversion()
-     * @see #getAttributeConfigType()
+     * @see gov.nist.pages.ucef.AttributeDetailsType#getUnitConversion()
+     * @see #getAttributeDetailsType()
      * @generated
      */
-    EReference getAttributeConfigType_UnitConversion();
+    EReference getAttributeDetailsType_UnitConversion();
 
     /**
      * Returns the meta object for class '{@link gov.nist.pages.ucef.DocumentRoot <em>Document Root</em>}'.
@@ -594,26 +680,37 @@ public interface ucefPackage extends EPackage {
     EReference getDocumentRoot_XSISchemaLocation();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getAttributeConfig <em>Attribute Config</em>}'.
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getAttributeDetails <em>Attribute Details</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Attribute Config</em>'.
-     * @see gov.nist.pages.ucef.DocumentRoot#getAttributeConfig()
+     * @return the meta object for the containment reference '<em>Attribute Details</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#getAttributeDetails()
      * @see #getDocumentRoot()
      * @generated
      */
-    EReference getDocumentRoot_AttributeConfig();
+    EReference getDocumentRoot_AttributeDetails();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getInteractionClassConfig <em>Interaction Class Config</em>}'.
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.DocumentRoot#isIgnored <em>Ignored</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Interaction Class Config</em>'.
-     * @see gov.nist.pages.ucef.DocumentRoot#getInteractionClassConfig()
+     * @return the meta object for the attribute '<em>Ignored</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#isIgnored()
      * @see #getDocumentRoot()
      * @generated
      */
-    EReference getDocumentRoot_InteractionClassConfig();
+    EAttribute getDocumentRoot_Ignored();
+
+    /**
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getInteractionDetails <em>Interaction Details</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Interaction Details</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#getInteractionDetails()
+     * @see #getDocumentRoot()
+     * @generated
+     */
+    EReference getDocumentRoot_InteractionDetails();
 
     /**
      * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getLinearConversion <em>Linear Conversion</em>}'.
@@ -627,37 +724,37 @@ public interface ucefPackage extends EPackage {
     EReference getDocumentRoot_LinearConversion();
 
     /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.DocumentRoot#getNameConversion <em>Name Conversion</em>}'.
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getObjectDetails <em>Object Details</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Name Conversion</em>'.
-     * @see gov.nist.pages.ucef.DocumentRoot#getNameConversion()
+     * @return the meta object for the containment reference '<em>Object Details</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#getObjectDetails()
      * @see #getDocumentRoot()
      * @generated
      */
-    EAttribute getDocumentRoot_NameConversion();
+    EReference getDocumentRoot_ObjectDetails();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getObjectClassConfig <em>Object Class Config</em>}'.
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getParameterDetails <em>Parameter Details</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Object Class Config</em>'.
-     * @see gov.nist.pages.ucef.DocumentRoot#getObjectClassConfig()
+     * @return the meta object for the containment reference '<em>Parameter Details</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#getParameterDetails()
      * @see #getDocumentRoot()
      * @generated
      */
-    EReference getDocumentRoot_ObjectClassConfig();
+    EReference getDocumentRoot_ParameterDetails();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getParameterConfig <em>Parameter Config</em>}'.
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.DocumentRoot#getPropertyName <em>Property Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Parameter Config</em>'.
-     * @see gov.nist.pages.ucef.DocumentRoot#getParameterConfig()
+     * @return the meta object for the attribute '<em>Property Name</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#getPropertyName()
      * @see #getDocumentRoot()
      * @generated
      */
-    EReference getDocumentRoot_ParameterConfig();
+    EAttribute getDocumentRoot_PropertyName();
 
     /**
      * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getPublishedObjects <em>Published Objects</em>}'.
@@ -682,6 +779,17 @@ public interface ucefPackage extends EPackage {
     EReference getDocumentRoot_UnitConversion();
 
     /**
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.DocumentRoot#getUnitName <em>Unit Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Unit Name</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#getUnitName()
+     * @see #getDocumentRoot()
+     * @generated
+     */
+    EAttribute getDocumentRoot_UnitName();
+
+    /**
      * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.DocumentRoot#getUpdatePeriod <em>Update Period</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -693,36 +801,36 @@ public interface ucefPackage extends EPackage {
     EAttribute getDocumentRoot_UpdatePeriod();
 
     /**
-     * Returns the meta object for class '{@link gov.nist.pages.ucef.InteractionClassConfigType <em>Interaction Class Config Type</em>}'.
+     * Returns the meta object for class '{@link gov.nist.pages.ucef.InteractionDetailsType <em>Interaction Details Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Interaction Class Config Type</em>'.
-     * @see gov.nist.pages.ucef.InteractionClassConfigType
+     * @return the meta object for class '<em>Interaction Details Type</em>'.
+     * @see gov.nist.pages.ucef.InteractionDetailsType
      * @generated
      */
-    EClass getInteractionClassConfigType();
+    EClass getInteractionDetailsType();
 
     /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.InteractionClassConfigType#getUpdatePeriod <em>Update Period</em>}'.
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.InteractionDetailsType#getUpdatePeriod <em>Update Period</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Update Period</em>'.
-     * @see gov.nist.pages.ucef.InteractionClassConfigType#getUpdatePeriod()
-     * @see #getInteractionClassConfigType()
+     * @see gov.nist.pages.ucef.InteractionDetailsType#getUpdatePeriod()
+     * @see #getInteractionDetailsType()
      * @generated
      */
-    EAttribute getInteractionClassConfigType_UpdatePeriod();
+    EAttribute getInteractionDetailsType_UpdatePeriod();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.InteractionClassConfigType#getPublishedObjects <em>Published Objects</em>}'.
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.InteractionDetailsType#getPublishedObjects <em>Published Objects</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Published Objects</em>'.
-     * @see gov.nist.pages.ucef.InteractionClassConfigType#getPublishedObjects()
-     * @see #getInteractionClassConfigType()
+     * @see gov.nist.pages.ucef.InteractionDetailsType#getPublishedObjects()
+     * @see #getInteractionDetailsType()
      * @generated
      */
-    EReference getInteractionClassConfigType_PublishedObjects();
+    EReference getInteractionDetailsType_PublishedObjects();
 
     /**
      * Returns the meta object for class '{@link gov.nist.pages.ucef.LinearConversionType <em>Linear Conversion Type</em>}'.
@@ -757,46 +865,68 @@ public interface ucefPackage extends EPackage {
     EAttribute getLinearConversionType_Offset();
 
     /**
-     * Returns the meta object for class '{@link gov.nist.pages.ucef.ObjectClassConfigType <em>Object Class Config Type</em>}'.
+     * Returns the meta object for class '{@link gov.nist.pages.ucef.ObjectDetailsType <em>Object Details Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Object Class Config Type</em>'.
-     * @see gov.nist.pages.ucef.ObjectClassConfigType
+     * @return the meta object for class '<em>Object Details Type</em>'.
+     * @see gov.nist.pages.ucef.ObjectDetailsType
      * @generated
      */
-    EClass getObjectClassConfigType();
+    EClass getObjectDetailsType();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.ObjectClassConfigType#getPublishedObjects <em>Published Objects</em>}'.
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.ObjectDetailsType#getPublishedObjects <em>Published Objects</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Published Objects</em>'.
-     * @see gov.nist.pages.ucef.ObjectClassConfigType#getPublishedObjects()
-     * @see #getObjectClassConfigType()
+     * @see gov.nist.pages.ucef.ObjectDetailsType#getPublishedObjects()
+     * @see #getObjectDetailsType()
      * @generated
      */
-    EReference getObjectClassConfigType_PublishedObjects();
+    EReference getObjectDetailsType_PublishedObjects();
 
     /**
-     * Returns the meta object for class '{@link gov.nist.pages.ucef.ParameterConfigType <em>Parameter Config Type</em>}'.
+     * Returns the meta object for class '{@link gov.nist.pages.ucef.ParameterDetailsType <em>Parameter Details Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Parameter Config Type</em>'.
-     * @see gov.nist.pages.ucef.ParameterConfigType
+     * @return the meta object for class '<em>Parameter Details Type</em>'.
+     * @see gov.nist.pages.ucef.ParameterDetailsType
      * @generated
      */
-    EClass getParameterConfigType();
+    EClass getParameterDetailsType();
 
     /**
-     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.ParameterConfigType#getUnitConversion <em>Unit Conversion</em>}'.
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.ParameterDetailsType#isIgnored <em>Ignored</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Ignored</em>'.
+     * @see gov.nist.pages.ucef.ParameterDetailsType#isIgnored()
+     * @see #getParameterDetailsType()
+     * @generated
+     */
+    EAttribute getParameterDetailsType_Ignored();
+
+    /**
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.ParameterDetailsType#getPropertyName <em>Property Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Property Name</em>'.
+     * @see gov.nist.pages.ucef.ParameterDetailsType#getPropertyName()
+     * @see #getParameterDetailsType()
+     * @generated
+     */
+    EAttribute getParameterDetailsType_PropertyName();
+
+    /**
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.ParameterDetailsType#getUnitConversion <em>Unit Conversion</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Unit Conversion</em>'.
-     * @see gov.nist.pages.ucef.ParameterConfigType#getUnitConversion()
-     * @see #getParameterConfigType()
+     * @see gov.nist.pages.ucef.ParameterDetailsType#getUnitConversion()
+     * @see #getParameterDetailsType()
      * @generated
      */
-    EReference getParameterConfigType_UnitConversion();
+    EReference getParameterDetailsType_UnitConversion();
 
     /**
      * Returns the meta object for class '{@link gov.nist.pages.ucef.PublishedObjectsType <em>Published Objects Type</em>}'.
@@ -830,15 +960,15 @@ public interface ucefPackage extends EPackage {
     EClass getUnitConversionType();
 
     /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.UnitConversionType#getNameConversion <em>Name Conversion</em>}'.
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.UnitConversionType#getUnitName <em>Unit Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Name Conversion</em>'.
-     * @see gov.nist.pages.ucef.UnitConversionType#getNameConversion()
+     * @return the meta object for the attribute '<em>Unit Name</em>'.
+     * @see gov.nist.pages.ucef.UnitConversionType#getUnitName()
      * @see #getUnitConversionType()
      * @generated
      */
-    EAttribute getUnitConversionType_NameConversion();
+    EAttribute getUnitConversionType_UnitName();
 
     /**
      * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.UnitConversionType#getLinearConversion <em>Linear Conversion</em>}'.
@@ -852,16 +982,28 @@ public interface ucefPackage extends EPackage {
     EReference getUnitConversionType_LinearConversion();
 
     /**
-     * Returns the meta object for data type '{@link java.lang.String <em>Name Conversion Type</em>}'.
+     * Returns the meta object for data type '{@link java.lang.String <em>Property Name Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Name Conversion Type</em>'.
+     * @return the meta object for data type '<em>Property Name Type</em>'.
      * @see java.lang.String
      * @model instanceClass="java.lang.String"
-     *        extendedMetaData="name='nameConversionType' baseType='http://www.eclipse.org/emf/2003/XMLType#string' whiteSpace='collapse' minLength='1'"
+     *        extendedMetaData="name='propertyNameType' baseType='http://www.eclipse.org/emf/2003/XMLType#string' pattern='[a-zA-Z0-9_.]+'"
      * @generated
      */
-    EDataType getNameConversionType();
+    EDataType getPropertyNameType();
+
+    /**
+     * Returns the meta object for data type '{@link java.lang.String <em>Unit Name Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Unit Name Type</em>'.
+     * @see java.lang.String
+     * @model instanceClass="java.lang.String"
+     *        extendedMetaData="name='unitNameType' baseType='http://www.eclipse.org/emf/2003/XMLType#string' whiteSpace='collapse' minLength='1'"
+     * @generated
+     */
+    EDataType getUnitNameType();
 
     /**
      * Returns the meta object for data type '<em>Update Period Type</em>'.
@@ -910,14 +1052,30 @@ public interface ucefPackage extends EPackage {
      */
     interface Literals {
         /**
-         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.AttributeConfigTypeImpl <em>Attribute Config Type</em>}' class.
+         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.AttributeDetailsTypeImpl <em>Attribute Details Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see gov.nist.pages.ucef.impl.AttributeConfigTypeImpl
-         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getAttributeConfigType()
+         * @see gov.nist.pages.ucef.impl.AttributeDetailsTypeImpl
+         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getAttributeDetailsType()
          * @generated
          */
-        EClass ATTRIBUTE_CONFIG_TYPE = eINSTANCE.getAttributeConfigType();
+        EClass ATTRIBUTE_DETAILS_TYPE = eINSTANCE.getAttributeDetailsType();
+
+        /**
+         * The meta object literal for the '<em><b>Ignored</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ATTRIBUTE_DETAILS_TYPE__IGNORED = eINSTANCE.getAttributeDetailsType_Ignored();
+
+        /**
+         * The meta object literal for the '<em><b>Property Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ATTRIBUTE_DETAILS_TYPE__PROPERTY_NAME = eINSTANCE.getAttributeDetailsType_PropertyName();
 
         /**
          * The meta object literal for the '<em><b>Update Period</b></em>' attribute feature.
@@ -925,7 +1083,7 @@ public interface ucefPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute ATTRIBUTE_CONFIG_TYPE__UPDATE_PERIOD = eINSTANCE.getAttributeConfigType_UpdatePeriod();
+        EAttribute ATTRIBUTE_DETAILS_TYPE__UPDATE_PERIOD = eINSTANCE.getAttributeDetailsType_UpdatePeriod();
 
         /**
          * The meta object literal for the '<em><b>Unit Conversion</b></em>' containment reference feature.
@@ -933,7 +1091,7 @@ public interface ucefPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference ATTRIBUTE_CONFIG_TYPE__UNIT_CONVERSION = eINSTANCE.getAttributeConfigType_UnitConversion();
+        EReference ATTRIBUTE_DETAILS_TYPE__UNIT_CONVERSION = eINSTANCE.getAttributeDetailsType_UnitConversion();
 
         /**
          * The meta object literal for the '{@link gov.nist.pages.ucef.impl.DocumentRootImpl <em>Document Root</em>}' class.
@@ -970,20 +1128,28 @@ public interface ucefPackage extends EPackage {
         EReference DOCUMENT_ROOT__XSI_SCHEMA_LOCATION = eINSTANCE.getDocumentRoot_XSISchemaLocation();
 
         /**
-         * The meta object literal for the '<em><b>Attribute Config</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Attribute Details</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference DOCUMENT_ROOT__ATTRIBUTE_CONFIG = eINSTANCE.getDocumentRoot_AttributeConfig();
+        EReference DOCUMENT_ROOT__ATTRIBUTE_DETAILS = eINSTANCE.getDocumentRoot_AttributeDetails();
 
         /**
-         * The meta object literal for the '<em><b>Interaction Class Config</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Ignored</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG = eINSTANCE.getDocumentRoot_InteractionClassConfig();
+        EAttribute DOCUMENT_ROOT__IGNORED = eINSTANCE.getDocumentRoot_Ignored();
+
+        /**
+         * The meta object literal for the '<em><b>Interaction Details</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DOCUMENT_ROOT__INTERACTION_DETAILS = eINSTANCE.getDocumentRoot_InteractionDetails();
 
         /**
          * The meta object literal for the '<em><b>Linear Conversion</b></em>' containment reference feature.
@@ -994,28 +1160,28 @@ public interface ucefPackage extends EPackage {
         EReference DOCUMENT_ROOT__LINEAR_CONVERSION = eINSTANCE.getDocumentRoot_LinearConversion();
 
         /**
-         * The meta object literal for the '<em><b>Name Conversion</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Object Details</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute DOCUMENT_ROOT__NAME_CONVERSION = eINSTANCE.getDocumentRoot_NameConversion();
+        EReference DOCUMENT_ROOT__OBJECT_DETAILS = eINSTANCE.getDocumentRoot_ObjectDetails();
 
         /**
-         * The meta object literal for the '<em><b>Object Class Config</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Parameter Details</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference DOCUMENT_ROOT__OBJECT_CLASS_CONFIG = eINSTANCE.getDocumentRoot_ObjectClassConfig();
+        EReference DOCUMENT_ROOT__PARAMETER_DETAILS = eINSTANCE.getDocumentRoot_ParameterDetails();
 
         /**
-         * The meta object literal for the '<em><b>Parameter Config</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Property Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference DOCUMENT_ROOT__PARAMETER_CONFIG = eINSTANCE.getDocumentRoot_ParameterConfig();
+        EAttribute DOCUMENT_ROOT__PROPERTY_NAME = eINSTANCE.getDocumentRoot_PropertyName();
 
         /**
          * The meta object literal for the '<em><b>Published Objects</b></em>' containment reference feature.
@@ -1034,6 +1200,14 @@ public interface ucefPackage extends EPackage {
         EReference DOCUMENT_ROOT__UNIT_CONVERSION = eINSTANCE.getDocumentRoot_UnitConversion();
 
         /**
+         * The meta object literal for the '<em><b>Unit Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DOCUMENT_ROOT__UNIT_NAME = eINSTANCE.getDocumentRoot_UnitName();
+
+        /**
          * The meta object literal for the '<em><b>Update Period</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -1042,14 +1216,14 @@ public interface ucefPackage extends EPackage {
         EAttribute DOCUMENT_ROOT__UPDATE_PERIOD = eINSTANCE.getDocumentRoot_UpdatePeriod();
 
         /**
-         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.InteractionClassConfigTypeImpl <em>Interaction Class Config Type</em>}' class.
+         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.InteractionDetailsTypeImpl <em>Interaction Details Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see gov.nist.pages.ucef.impl.InteractionClassConfigTypeImpl
-         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getInteractionClassConfigType()
+         * @see gov.nist.pages.ucef.impl.InteractionDetailsTypeImpl
+         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getInteractionDetailsType()
          * @generated
          */
-        EClass INTERACTION_CLASS_CONFIG_TYPE = eINSTANCE.getInteractionClassConfigType();
+        EClass INTERACTION_DETAILS_TYPE = eINSTANCE.getInteractionDetailsType();
 
         /**
          * The meta object literal for the '<em><b>Update Period</b></em>' attribute feature.
@@ -1057,7 +1231,7 @@ public interface ucefPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute INTERACTION_CLASS_CONFIG_TYPE__UPDATE_PERIOD = eINSTANCE.getInteractionClassConfigType_UpdatePeriod();
+        EAttribute INTERACTION_DETAILS_TYPE__UPDATE_PERIOD = eINSTANCE.getInteractionDetailsType_UpdatePeriod();
 
         /**
          * The meta object literal for the '<em><b>Published Objects</b></em>' containment reference feature.
@@ -1065,7 +1239,7 @@ public interface ucefPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference INTERACTION_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS = eINSTANCE.getInteractionClassConfigType_PublishedObjects();
+        EReference INTERACTION_DETAILS_TYPE__PUBLISHED_OBJECTS = eINSTANCE.getInteractionDetailsType_PublishedObjects();
 
         /**
          * The meta object literal for the '{@link gov.nist.pages.ucef.impl.LinearConversionTypeImpl <em>Linear Conversion Type</em>}' class.
@@ -1094,14 +1268,14 @@ public interface ucefPackage extends EPackage {
         EAttribute LINEAR_CONVERSION_TYPE__OFFSET = eINSTANCE.getLinearConversionType_Offset();
 
         /**
-         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.ObjectClassConfigTypeImpl <em>Object Class Config Type</em>}' class.
+         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.ObjectDetailsTypeImpl <em>Object Details Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see gov.nist.pages.ucef.impl.ObjectClassConfigTypeImpl
-         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getObjectClassConfigType()
+         * @see gov.nist.pages.ucef.impl.ObjectDetailsTypeImpl
+         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getObjectDetailsType()
          * @generated
          */
-        EClass OBJECT_CLASS_CONFIG_TYPE = eINSTANCE.getObjectClassConfigType();
+        EClass OBJECT_DETAILS_TYPE = eINSTANCE.getObjectDetailsType();
 
         /**
          * The meta object literal for the '<em><b>Published Objects</b></em>' containment reference feature.
@@ -1109,17 +1283,33 @@ public interface ucefPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS = eINSTANCE.getObjectClassConfigType_PublishedObjects();
+        EReference OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS = eINSTANCE.getObjectDetailsType_PublishedObjects();
 
         /**
-         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.ParameterConfigTypeImpl <em>Parameter Config Type</em>}' class.
+         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.ParameterDetailsTypeImpl <em>Parameter Details Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see gov.nist.pages.ucef.impl.ParameterConfigTypeImpl
-         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getParameterConfigType()
+         * @see gov.nist.pages.ucef.impl.ParameterDetailsTypeImpl
+         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getParameterDetailsType()
          * @generated
          */
-        EClass PARAMETER_CONFIG_TYPE = eINSTANCE.getParameterConfigType();
+        EClass PARAMETER_DETAILS_TYPE = eINSTANCE.getParameterDetailsType();
+
+        /**
+         * The meta object literal for the '<em><b>Ignored</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute PARAMETER_DETAILS_TYPE__IGNORED = eINSTANCE.getParameterDetailsType_Ignored();
+
+        /**
+         * The meta object literal for the '<em><b>Property Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute PARAMETER_DETAILS_TYPE__PROPERTY_NAME = eINSTANCE.getParameterDetailsType_PropertyName();
 
         /**
          * The meta object literal for the '<em><b>Unit Conversion</b></em>' containment reference feature.
@@ -1127,7 +1317,7 @@ public interface ucefPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference PARAMETER_CONFIG_TYPE__UNIT_CONVERSION = eINSTANCE.getParameterConfigType_UnitConversion();
+        EReference PARAMETER_DETAILS_TYPE__UNIT_CONVERSION = eINSTANCE.getParameterDetailsType_UnitConversion();
 
         /**
          * The meta object literal for the '{@link gov.nist.pages.ucef.impl.PublishedObjectsTypeImpl <em>Published Objects Type</em>}' class.
@@ -1158,12 +1348,12 @@ public interface ucefPackage extends EPackage {
         EClass UNIT_CONVERSION_TYPE = eINSTANCE.getUnitConversionType();
 
         /**
-         * The meta object literal for the '<em><b>Name Conversion</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Unit Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute UNIT_CONVERSION_TYPE__NAME_CONVERSION = eINSTANCE.getUnitConversionType_NameConversion();
+        EAttribute UNIT_CONVERSION_TYPE__UNIT_NAME = eINSTANCE.getUnitConversionType_UnitName();
 
         /**
          * The meta object literal for the '<em><b>Linear Conversion</b></em>' containment reference feature.
@@ -1174,14 +1364,24 @@ public interface ucefPackage extends EPackage {
         EReference UNIT_CONVERSION_TYPE__LINEAR_CONVERSION = eINSTANCE.getUnitConversionType_LinearConversion();
 
         /**
-         * The meta object literal for the '<em>Name Conversion Type</em>' data type.
+         * The meta object literal for the '<em>Property Name Type</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @see java.lang.String
-         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getNameConversionType()
+         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getPropertyNameType()
          * @generated
          */
-        EDataType NAME_CONVERSION_TYPE = eINSTANCE.getNameConversionType();
+        EDataType PROPERTY_NAME_TYPE = eINSTANCE.getPropertyNameType();
+
+        /**
+         * The meta object literal for the '<em>Unit Name Type</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.lang.String
+         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUnitNameType()
+         * @generated
+         */
+        EDataType UNIT_NAME_TYPE = eINSTANCE.getUnitNameType();
 
         /**
          * The meta object literal for the '<em>Update Period Type</em>' data type.

@@ -66,9 +66,9 @@ public class ucefSwitch<T> extends Switch<T> {
     @Override
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
-            case ucefPackage.ATTRIBUTE_CONFIG_TYPE: {
-                AttributeConfigType attributeConfigType = (AttributeConfigType)theEObject;
-                T result = caseAttributeConfigType(attributeConfigType);
+            case ucefPackage.ATTRIBUTE_DETAILS_TYPE: {
+                AttributeDetailsType attributeDetailsType = (AttributeDetailsType)theEObject;
+                T result = caseAttributeDetailsType(attributeDetailsType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -78,9 +78,9 @@ public class ucefSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ucefPackage.INTERACTION_CLASS_CONFIG_TYPE: {
-                InteractionClassConfigType interactionClassConfigType = (InteractionClassConfigType)theEObject;
-                T result = caseInteractionClassConfigType(interactionClassConfigType);
+            case ucefPackage.INTERACTION_DETAILS_TYPE: {
+                InteractionDetailsType interactionDetailsType = (InteractionDetailsType)theEObject;
+                T result = caseInteractionDetailsType(interactionDetailsType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -90,15 +90,15 @@ public class ucefSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE: {
-                ObjectClassConfigType objectClassConfigType = (ObjectClassConfigType)theEObject;
-                T result = caseObjectClassConfigType(objectClassConfigType);
+            case ucefPackage.OBJECT_DETAILS_TYPE: {
+                ObjectDetailsType objectDetailsType = (ObjectDetailsType)theEObject;
+                T result = caseObjectDetailsType(objectDetailsType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ucefPackage.PARAMETER_CONFIG_TYPE: {
-                ParameterConfigType parameterConfigType = (ParameterConfigType)theEObject;
-                T result = caseParameterConfigType(parameterConfigType);
+            case ucefPackage.PARAMETER_DETAILS_TYPE: {
+                ParameterDetailsType parameterDetailsType = (ParameterDetailsType)theEObject;
+                T result = caseParameterDetailsType(parameterDetailsType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -119,17 +119,17 @@ public class ucefSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Attribute Config Type</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Attribute Details Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Attribute Config Type</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Attribute Details Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseAttributeConfigType(AttributeConfigType object) {
+    public T caseAttributeDetailsType(AttributeDetailsType object) {
         return null;
     }
 
@@ -149,17 +149,17 @@ public class ucefSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Interaction Class Config Type</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Interaction Details Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Interaction Class Config Type</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Interaction Details Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseInteractionClassConfigType(InteractionClassConfigType object) {
+    public T caseInteractionDetailsType(InteractionDetailsType object) {
         return null;
     }
 
@@ -179,32 +179,32 @@ public class ucefSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Object Class Config Type</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Object Details Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Object Class Config Type</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Object Details Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseObjectClassConfigType(ObjectClassConfigType object) {
+    public T caseObjectDetailsType(ObjectDetailsType object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Parameter Config Type</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Parameter Details Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Parameter Config Type</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Parameter Details Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseParameterConfigType(ParameterConfigType object) {
+    public T caseParameterDetailsType(ParameterDetailsType object) {
         return null;
     }
 

@@ -27,8 +27,8 @@ public class GridLabDConfig extends GatewayFederateConfig {
     private String simulationTimeZone;
     private boolean simulationTimeZoneSet = false;
 
-    public void setModelFilePath(String filepath) {
-        this.modelFilePath = filepath;
+    public void setModelFilePath(String filePath) {
+        this.modelFilePath = filePath;
         this.modelFilePathSet = true;
     }
     
@@ -39,8 +39,8 @@ public class GridLabDConfig extends GatewayFederateConfig {
         return modelFilePath;
     }
     
-    public void setWorkingDirectory(String filepath) {
-        this.workingDirectory = filepath;
+    public void setWorkingDirectory(String filePath) {
+        this.workingDirectory = filePath;
     }
     
     public String getWorkingDirectory() {
@@ -58,11 +58,11 @@ public class GridLabDConfig extends GatewayFederateConfig {
         return serverPortNumber;
     }
     
-    public void setWaitTimeMs(int wait) {
-        if (wait < 0) {
-            throw new RuntimeException("invalid wait time " + wait);
+    public void setWaitTimeMs(int milliseconds) {
+        if (milliseconds < 0) {
+            throw new RuntimeException("invalid wait time " + milliseconds);
         }
-        this.waitTimeMs = wait;
+        this.waitTimeMs = milliseconds;
     }
     
     public int getWaitTimeMs() {
@@ -79,7 +79,7 @@ public class GridLabDConfig extends GatewayFederateConfig {
     
     public void setUnixTimeStart(long unixTime) {
         if (unixTime < 0) {
-            throw new RuntimeException("invalid unix time start " + unixTime);
+            throw new RuntimeException("invalid unix time " + unixTime);
         }
         this.unixTimeStart = unixTime;
         this.unixTimeStartSet = true;
@@ -93,6 +93,7 @@ public class GridLabDConfig extends GatewayFederateConfig {
     }
     
     public void setUnixTimeStop(long unixTime) {
+        // negative values are valid and indicate to run forever
         this.unixTimeStop = unixTime;
         this.unixTimestopSet = true;
     }
@@ -106,7 +107,7 @@ public class GridLabDConfig extends GatewayFederateConfig {
     
     public void setSimulationTimeScale(double scale) {
         if (scale <= 0) {
-            throw new RuntimeException("invalid simulation time scale " + scale);
+            throw new RuntimeException("invalid time scale " + scale);
         }
         this.simulationTimeScale = scale;
         this.simulationTimeScaleSet = true;

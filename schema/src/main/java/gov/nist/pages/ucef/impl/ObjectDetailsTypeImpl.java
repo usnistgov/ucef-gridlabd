@@ -2,7 +2,7 @@
  */
 package gov.nist.pages.ucef.impl;
 
-import gov.nist.pages.ucef.ObjectClassConfigType;
+import gov.nist.pages.ucef.ObjectDetailsType;
 import gov.nist.pages.ucef.PublishedObjectsType;
 import gov.nist.pages.ucef.ucefPackage;
 
@@ -17,18 +17,18 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Object Class Config Type</b></em>'.
+ * An implementation of the model object '<em><b>Object Details Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link gov.nist.pages.ucef.impl.ObjectClassConfigTypeImpl#getPublishedObjects <em>Published Objects</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.ObjectDetailsTypeImpl#getPublishedObjects <em>Published Objects</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container implements ObjectClassConfigType {
+public class ObjectDetailsTypeImpl extends MinimalEObjectImpl.Container implements ObjectDetailsType {
     /**
      * The cached value of the '{@link #getPublishedObjects() <em>Published Objects</em>}' containment reference.
      * <!-- begin-user-doc -->
@@ -44,7 +44,7 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
-    protected ObjectClassConfigTypeImpl() {
+    protected ObjectDetailsTypeImpl() {
         super();
     }
 
@@ -55,7 +55,7 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
      */
     @Override
     protected EClass eStaticClass() {
-        return ucefPackage.Literals.OBJECT_CLASS_CONFIG_TYPE;
+        return ucefPackage.Literals.OBJECT_DETAILS_TYPE;
     }
 
     /**
@@ -76,7 +76,7 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
         PublishedObjectsType oldPublishedObjects = publishedObjects;
         publishedObjects = newPublishedObjects;
         if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS, oldPublishedObjects, newPublishedObjects);
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS, oldPublishedObjects, newPublishedObjects);
             if (msgs == null) msgs = notification; else msgs.add(notification);
         }
         return msgs;
@@ -91,14 +91,14 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
         if (newPublishedObjects != publishedObjects) {
             NotificationChain msgs = null;
             if (publishedObjects != null)
-                msgs = ((InternalEObject)publishedObjects).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS, null, msgs);
+                msgs = ((InternalEObject)publishedObjects).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS, null, msgs);
             if (newPublishedObjects != null)
-                msgs = ((InternalEObject)newPublishedObjects).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS, null, msgs);
+                msgs = ((InternalEObject)newPublishedObjects).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS, null, msgs);
             msgs = basicSetPublishedObjects(newPublishedObjects, msgs);
             if (msgs != null) msgs.dispatch();
         }
         else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS, newPublishedObjects, newPublishedObjects));
+            eNotify(new ENotificationImpl(this, Notification.SET, ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS, newPublishedObjects, newPublishedObjects));
     }
 
     /**
@@ -109,7 +109,7 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS:
+            case ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS:
                 return basicSetPublishedObjects(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -123,7 +123,7 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS:
+            case ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS:
                 return getPublishedObjects();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -137,7 +137,7 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS:
+            case ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS:
                 setPublishedObjects((PublishedObjectsType)newValue);
                 return;
         }
@@ -152,7 +152,7 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS:
+            case ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS:
                 setPublishedObjects((PublishedObjectsType)null);
                 return;
         }
@@ -167,10 +167,10 @@ public class ObjectClassConfigTypeImpl extends MinimalEObjectImpl.Container impl
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS:
+            case ucefPackage.OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS:
                 return publishedObjects != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //ObjectClassConfigTypeImpl
+} //ObjectDetailsTypeImpl

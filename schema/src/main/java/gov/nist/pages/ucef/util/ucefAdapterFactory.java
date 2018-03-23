@@ -68,28 +68,28 @@ public class ucefAdapterFactory extends AdapterFactoryImpl {
     protected ucefSwitch<Adapter> modelSwitch =
         new ucefSwitch<Adapter>() {
             @Override
-            public Adapter caseAttributeConfigType(AttributeConfigType object) {
-                return createAttributeConfigTypeAdapter();
+            public Adapter caseAttributeDetailsType(AttributeDetailsType object) {
+                return createAttributeDetailsTypeAdapter();
             }
             @Override
             public Adapter caseDocumentRoot(DocumentRoot object) {
                 return createDocumentRootAdapter();
             }
             @Override
-            public Adapter caseInteractionClassConfigType(InteractionClassConfigType object) {
-                return createInteractionClassConfigTypeAdapter();
+            public Adapter caseInteractionDetailsType(InteractionDetailsType object) {
+                return createInteractionDetailsTypeAdapter();
             }
             @Override
             public Adapter caseLinearConversionType(LinearConversionType object) {
                 return createLinearConversionTypeAdapter();
             }
             @Override
-            public Adapter caseObjectClassConfigType(ObjectClassConfigType object) {
-                return createObjectClassConfigTypeAdapter();
+            public Adapter caseObjectDetailsType(ObjectDetailsType object) {
+                return createObjectDetailsTypeAdapter();
             }
             @Override
-            public Adapter caseParameterConfigType(ParameterConfigType object) {
-                return createParameterConfigTypeAdapter();
+            public Adapter caseParameterDetailsType(ParameterDetailsType object) {
+                return createParameterDetailsTypeAdapter();
             }
             @Override
             public Adapter casePublishedObjectsType(PublishedObjectsType object) {
@@ -120,16 +120,16 @@ public class ucefAdapterFactory extends AdapterFactoryImpl {
 
 
     /**
-     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.AttributeConfigType <em>Attribute Config Type</em>}'.
+     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.AttributeDetailsType <em>Attribute Details Type</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see gov.nist.pages.ucef.AttributeConfigType
+     * @see gov.nist.pages.ucef.AttributeDetailsType
      * @generated
      */
-    public Adapter createAttributeConfigTypeAdapter() {
+    public Adapter createAttributeDetailsTypeAdapter() {
         return null;
     }
 
@@ -148,16 +148,16 @@ public class ucefAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.InteractionClassConfigType <em>Interaction Class Config Type</em>}'.
+     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.InteractionDetailsType <em>Interaction Details Type</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see gov.nist.pages.ucef.InteractionClassConfigType
+     * @see gov.nist.pages.ucef.InteractionDetailsType
      * @generated
      */
-    public Adapter createInteractionClassConfigTypeAdapter() {
+    public Adapter createInteractionDetailsTypeAdapter() {
         return null;
     }
 
@@ -176,30 +176,30 @@ public class ucefAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.ObjectClassConfigType <em>Object Class Config Type</em>}'.
+     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.ObjectDetailsType <em>Object Details Type</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see gov.nist.pages.ucef.ObjectClassConfigType
+     * @see gov.nist.pages.ucef.ObjectDetailsType
      * @generated
      */
-    public Adapter createObjectClassConfigTypeAdapter() {
+    public Adapter createObjectDetailsTypeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.ParameterConfigType <em>Parameter Config Type</em>}'.
+     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.ParameterDetailsType <em>Parameter Details Type</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see gov.nist.pages.ucef.ParameterConfigType
+     * @see gov.nist.pages.ucef.ParameterDetailsType
      * @generated
      */
-    public Adapter createParameterConfigTypeAdapter() {
+    public Adapter createParameterDetailsTypeAdapter() {
         return null;
     }
 

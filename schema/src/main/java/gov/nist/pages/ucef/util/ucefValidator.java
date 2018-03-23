@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.EObjectValidator;
 
+import org.eclipse.emf.ecore.xml.type.util.XMLTypeUtil;
 import org.eclipse.emf.ecore.xml.type.util.XMLTypeValidator;
 
 /**
@@ -96,24 +97,26 @@ public class ucefValidator extends EObjectValidator {
     @Override
     protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {
         switch (classifierID) {
-            case ucefPackage.ATTRIBUTE_CONFIG_TYPE:
-                return validateAttributeConfigType((AttributeConfigType)value, diagnostics, context);
+            case ucefPackage.ATTRIBUTE_DETAILS_TYPE:
+                return validateAttributeDetailsType((AttributeDetailsType)value, diagnostics, context);
             case ucefPackage.DOCUMENT_ROOT:
                 return validateDocumentRoot((DocumentRoot)value, diagnostics, context);
-            case ucefPackage.INTERACTION_CLASS_CONFIG_TYPE:
-                return validateInteractionClassConfigType((InteractionClassConfigType)value, diagnostics, context);
+            case ucefPackage.INTERACTION_DETAILS_TYPE:
+                return validateInteractionDetailsType((InteractionDetailsType)value, diagnostics, context);
             case ucefPackage.LINEAR_CONVERSION_TYPE:
                 return validateLinearConversionType((LinearConversionType)value, diagnostics, context);
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE:
-                return validateObjectClassConfigType((ObjectClassConfigType)value, diagnostics, context);
-            case ucefPackage.PARAMETER_CONFIG_TYPE:
-                return validateParameterConfigType((ParameterConfigType)value, diagnostics, context);
+            case ucefPackage.OBJECT_DETAILS_TYPE:
+                return validateObjectDetailsType((ObjectDetailsType)value, diagnostics, context);
+            case ucefPackage.PARAMETER_DETAILS_TYPE:
+                return validateParameterDetailsType((ParameterDetailsType)value, diagnostics, context);
             case ucefPackage.PUBLISHED_OBJECTS_TYPE:
                 return validatePublishedObjectsType((PublishedObjectsType)value, diagnostics, context);
             case ucefPackage.UNIT_CONVERSION_TYPE:
                 return validateUnitConversionType((UnitConversionType)value, diagnostics, context);
-            case ucefPackage.NAME_CONVERSION_TYPE:
-                return validateNameConversionType((String)value, diagnostics, context);
+            case ucefPackage.PROPERTY_NAME_TYPE:
+                return validatePropertyNameType((String)value, diagnostics, context);
+            case ucefPackage.UNIT_NAME_TYPE:
+                return validateUnitNameType((String)value, diagnostics, context);
             case ucefPackage.UPDATE_PERIOD_TYPE:
                 return validateUpdatePeriodType((Double)value, diagnostics, context);
             case ucefPackage.UPDATE_PERIOD_TYPE_OBJECT:
@@ -128,8 +131,8 @@ public class ucefValidator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean validateAttributeConfigType(AttributeConfigType attributeConfigType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        return validate_EveryDefaultConstraint(attributeConfigType, diagnostics, context);
+    public boolean validateAttributeDetailsType(AttributeDetailsType attributeDetailsType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(attributeDetailsType, diagnostics, context);
     }
 
     /**
@@ -146,8 +149,8 @@ public class ucefValidator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean validateInteractionClassConfigType(InteractionClassConfigType interactionClassConfigType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        return validate_EveryDefaultConstraint(interactionClassConfigType, diagnostics, context);
+    public boolean validateInteractionDetailsType(InteractionDetailsType interactionDetailsType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(interactionDetailsType, diagnostics, context);
     }
 
     /**
@@ -164,8 +167,8 @@ public class ucefValidator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean validateObjectClassConfigType(ObjectClassConfigType objectClassConfigType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        return validate_EveryDefaultConstraint(objectClassConfigType, diagnostics, context);
+    public boolean validateObjectDetailsType(ObjectDetailsType objectDetailsType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(objectDetailsType, diagnostics, context);
     }
 
     /**
@@ -173,8 +176,8 @@ public class ucefValidator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean validateParameterConfigType(ParameterConfigType parameterConfigType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        return validate_EveryDefaultConstraint(parameterConfigType, diagnostics, context);
+    public boolean validateParameterDetailsType(ParameterDetailsType parameterDetailsType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(parameterDetailsType, diagnostics, context);
     }
 
     /**
@@ -200,22 +203,55 @@ public class ucefValidator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean validateNameConversionType(String nameConversionType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        boolean result = validateNameConversionType_MinLength(nameConversionType, diagnostics, context);
+    public boolean validatePropertyNameType(String propertyNameType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        boolean result = validatePropertyNameType_Pattern(propertyNameType, diagnostics, context);
         return result;
     }
 
     /**
-     * Validates the MinLength constraint of '<em>Name Conversion Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @see #validatePropertyNameType_Pattern
+     */
+    public static final  PatternMatcher [][] PROPERTY_NAME_TYPE__PATTERN__VALUES =
+        new PatternMatcher [][] {
+            new PatternMatcher [] {
+                XMLTypeUtil.createPatternMatcher("[a-zA-Z0-9_.]+")
+            }
+        };
+
+    /**
+     * Validates the Pattern constraint of '<em>Property Name Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean validateNameConversionType_MinLength(String nameConversionType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        int length = nameConversionType.length();
+    public boolean validatePropertyNameType_Pattern(String propertyNameType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validatePattern(ucefPackage.Literals.PROPERTY_NAME_TYPE, propertyNameType, PROPERTY_NAME_TYPE__PATTERN__VALUES, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateUnitNameType(String unitNameType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        boolean result = validateUnitNameType_MinLength(unitNameType, diagnostics, context);
+        return result;
+    }
+
+    /**
+     * Validates the MinLength constraint of '<em>Unit Name Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateUnitNameType_MinLength(String unitNameType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        int length = unitNameType.length();
         boolean result = length >= 1;
         if (!result && diagnostics != null)
-            reportMinLengthViolation(ucefPackage.Literals.NAME_CONVERSION_TYPE, nameConversionType, length, 1, diagnostics, context);
+            reportMinLengthViolation(ucefPackage.Literals.UNIT_NAME_TYPE, unitNameType, length, 1, diagnostics, context);
         return result;
     }
 
