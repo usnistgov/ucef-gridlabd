@@ -1,7 +1,17 @@
 package gov.nist.hla.gridlabd;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,85 +20,38 @@ import org.ieee.standards.ieee1516._2010.AttributeType;
 import org.ieee.standards.ieee1516._2010.InteractionClassType;
 import org.ieee.standards.ieee1516._2010.ObjectClassType;
 import org.ieee.standards.ieee1516._2010.ParameterType;
+import org.xml.sax.SAXException;
 
 import gov.nist.hla.gateway.ObjectModel;
+import gov.nist.hla.gridlabd.exception.SchemaValidationException;
 import gov.nist.pages.ucef.AttributeDetailsType;
 import gov.nist.pages.ucef.InteractionDetailsType;
 import gov.nist.pages.ucef.LinearConversionType;
 import gov.nist.pages.ucef.ObjectDetailsType;
 import gov.nist.pages.ucef.ParameterDetailsType;
+import gov.nist.pages.ucef.ucefPackage;
+import gov.nist.sds4emf.Deserialize;
 
-public class ObjectModelHelper {
+public class ExtendedObjectModel extends ObjectModel {
+    public static final String SIMULATION_TIME = ObjectModel.INTERACTION_CPSWT + ".SimulationControl.SimTime";
+    
     private static final Logger log = LogManager.getLogger();
     
-    private final ObjectModel objectModel;
-    
-    private Set<String> baseAttributes = new HashSet<String>();
+    private static boolean packageRegistered = false;
     
     private Set<String> baseParameters = new HashSet<String>();
     
-    public ObjectModelHelper(ObjectModel objectModel) {
-        this.objectModel = objectModel;
-        
-        // base attributes are not sent to the GridLAB-D simulation
-        ObjectClassType baseObject = objectModel.getObject("ObjectRoot");
-        for (AttributeType attribute : objectModel.getAttributes(baseObject)) {
-            baseAttributes.add(attribute.getName().getValue());
-        }
-        log.debug("baseAttributes {}", baseAttributes.toString());
+    public ExtendedObjectModel(String filePath)
+            throws SchemaValidationException {
+        super(filePath);
+        validateXmlFile(filePath);
         
         // base parameters are not sent to the GridLAB-D simulation
-        InteractionClassType baseInteraction = objectModel.getInteraction("InteractionRoot.C2WInteractionRoot");
-        for (ParameterType parameter : objectModel.getParameters(baseInteraction)) {
+        InteractionClassType baseInteraction = getInteraction(ObjectModel.INTERACTION_CPSWT);
+        for (ParameterType parameter : getParameters(baseInteraction)) {
             baseParameters.add(parameter.getName().getValue());
         }
         log.debug("baseParameters {}", baseParameters.toString());
-    }
-    
-    public boolean isGlobalVariable(ObjectClassType object) {
-        log.trace("isGlobalVariable {}", objectModel.getClassPath(object));
-        
-        // an HLA object maps to a GridLAB-D global variable if it satisfies any of the following conditions:
-        //  1. it does not define a name attribute to define the corresponding GridLAB-D object name
-        //  2. it defines a name attribute with an ignored annotation set to either true or 1
-        //  3. it defines a name attribute annotated with a substitute name (that could be name)
-        // #3 does not make much sense to do, but is included just in case someone gets wild
-        AttributeType name = objectModel.getAttribute(object, "name");
-        if (name == null) {
-            return true; // case 1
-        }
-        
-        AttributeDetailsType details = getAttributeDetails(name);
-        if (details != null && details.isSetIgnored() && details.isIgnored()) {
-            return true; // case 2
-        }
-        if (details != null && details.getPropertyName() != null) {
-            return true; // case 3
-        }
-        return false;
-    }
-    
-    public boolean isGlobalVariable(InteractionClassType interaction) {
-        log.trace("isGlobalVariable {}", objectModel.getClassPath(interaction));
-        
-        // an HLA interaction maps to a GridLAB-D global variable if it satisfies any of the following conditions:
-        //  1. it does not define a name parameter to define the corresponding GridLAB-D object name
-        //  2. it defines a name parameter with an ignored annotation set to either true or 1
-        //  3. it defines a name parameter annotated with a substitute name (that could be name)
-        // #3 does not make much sense to do, but is included just in case someone gets wild
-        ParameterType name = objectModel.getParameter(interaction, "name");
-        if (name == null) {
-            return true; // case 1
-        }
-        
-        ParameterDetailsType details = getParameterDetails(name);
-        if (details != null && details.isSetIgnored() && details.isIgnored()) {
-            return true; // case 2
-        }
-        if (details != null && details.getPropertyName() != null) {
-            return true; // case 3
-        }
-        return false;
     }
     
     public boolean isRelevantParameter(ParameterType parameter) {
@@ -106,11 +69,7 @@ public class ObjectModelHelper {
     public boolean isRelevantAttribute(AttributeType attribute) {
         log.trace("isRelevantAttribute {}", attribute.getName().getValue());
         
-        // an attribute is irrelevant if it was defined in the base class or specified as ignored
-        if (baseAttributes.contains(attribute.getName().getValue())) {
-            return false;
-        }
-        
+        // an attribute is irrelevant if it was specified as ignored
         AttributeDetailsType details = getAttributeDetails(attribute);
         return !(details != null && details.isSetIgnored() && details.isIgnored());
     }
@@ -120,13 +79,13 @@ public class ObjectModelHelper {
         
         if (classPath.startsWith("InteractionRoot")) {
             log.trace("interaction class");
-            InteractionClassType interaction = objectModel.getInteraction(classPath);
-            return objectModel.getSubscribedInteractions().contains(interaction);
+            InteractionClassType interaction = getInteraction(classPath);
+            return getSubscribedInteractions().contains(interaction);
         }
         if (classPath.startsWith("ObjectRoot")) {
             log.trace("object class");
-            ObjectClassType object = objectModel.getObject(classPath);
-            return objectModel.getSubscribedObjects().contains(object);
+            ObjectClassType object = getObject(classPath);
+            return getSubscribedObjects().contains(object);
         }
         log.warn("bad class path {}", classPath);
         return false;
@@ -137,53 +96,53 @@ public class ObjectModelHelper {
         
         if (classPath.startsWith("InteractionRoot")) {
             log.trace("interaction class");
-            InteractionClassType interaction = objectModel.getInteraction(classPath);
-            return objectModel.getPublishedInteractions().contains(interaction);
+            InteractionClassType interaction = getInteraction(classPath);
+            return getPublishedInteractions().contains(interaction);
         }
         if (classPath.startsWith("ObjectRoot")) {
             log.trace("object class");
-            ObjectClassType object = objectModel.getObject(classPath);
-            return objectModel.getPublishedObjects().contains(object);
+            ObjectClassType object = getObject(classPath);
+            return getPublishedObjects().contains(object);
         }
         log.warn("bad class path {}", classPath);
         return false;
     }
     
     public Set<String> getPublishedNames(InteractionClassType interaction) {
-        log.trace("getPublishedNames {}", objectModel.getClassPath(interaction));
+        log.trace("getPublishedNames {}", getClassPath(interaction));
         
         Set<String> publishedNames = new HashSet<String>();
         InteractionDetailsType details = getInteractionDetails(interaction);
         
         if (details != null) {
             if (details.getPublishedObjects() == null) {
-                log.debug("no GridLAB-D objects defined for {}", objectModel.getClassPath(interaction));
+                log.debug("no GridLAB-D objects defined for {}", getClassPath(interaction));
             } else {
                 publishedNames.addAll(details.getPublishedObjects().getObjectName());
             }
             return publishedNames;
         }
         
-        log.debug("no interaction details for {}", objectModel.getClassPath(interaction));
+        log.debug("no interaction details for {}", getClassPath(interaction));
         return publishedNames;
     }
     
     public Set<String> getPublishedNames(ObjectClassType object) {
-        log.trace("getPublishedNames {}", objectModel.getClassPath(object));
+        log.trace("getPublishedNames {}", getClassPath(object));
         
         Set<String> publishedNames = new HashSet<String>();
         ObjectDetailsType details = getObjectDetails(object);
         
         if (details != null) {
             if (details.getPublishedObjects() == null) {
-                log.debug("no GridLAB-D objects defined for {}", objectModel.getClassPath(object));
+                log.debug("no GridLAB-D objects defined for {}", getClassPath(object));
             } else {
                 publishedNames.addAll(details.getPublishedObjects().getObjectName());
             }
             return publishedNames;
         }
     
-        log.debug("no object details for {}", objectModel.getClassPath(object));
+        log.debug("no object details for {}", getClassPath(object));
         return publishedNames;
     }
     
@@ -270,7 +229,7 @@ public class ObjectModelHelper {
     }
     
     public double getUpdatePeriod(InteractionClassType interaction) {
-        log.trace("getUpdatePeriod {}", objectModel.getClassPath(interaction));
+        log.trace("getUpdatePeriod {}", getClassPath(interaction));
         
         InteractionDetailsType details = getInteractionDetails(interaction);
         if (details == null || !details.isSetUpdatePeriod()) {
@@ -311,6 +270,35 @@ public class ObjectModelHelper {
         return dataType.equals("double"); // float not supported in GridLAB-D
     }
     
+    @Override
+    protected void registerPackage() {
+        if (!packageRegistered) {
+            super.registerPackage();
+            Deserialize.registerPackage(ucefPackage.eNS_URI, ucefPackage.eINSTANCE);
+            packageRegistered = true;
+        }
+    }
+    
+    private void validateXmlFile(String fomFilePath)
+            throws SchemaValidationException {
+        log.info("validating FOM {}", fomFilePath);
+        
+        Source fomFile = new StreamSource(new File(fomFilePath));
+        InputStream hlaSchema = this.getClass().getClassLoader().getResourceAsStream("IEEE1516-DIF-2010.xsd");
+        InputStream ucefSchema = this.getClass().getClassLoader().getResourceAsStream("ucef.xsd");
+        
+        try {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(new Source[] {
+                        new StreamSource(hlaSchema),
+                        new StreamSource(ucefSchema)});
+            Validator validator = schema.newValidator();
+            validator.validate(fomFile);
+        } catch (IOException | SAXException e) {
+            throw new SchemaValidationException(e);
+        }
+    }
+    
     private ParameterDetailsType getParameterDetails(ParameterType parameter) {
         log.trace("getParameterDetails {}", parameter.getName().getValue());
         
@@ -334,7 +322,7 @@ public class ObjectModelHelper {
     }
     
     private InteractionDetailsType getInteractionDetails(InteractionClassType interaction) {
-        log.trace("InteractionDetailsType {}", objectModel.getClassPath(interaction));
+        log.trace("InteractionDetailsType {}", getClassPath(interaction));
         
         for (FeatureMap.Entry feature : interaction.getAny()) {
             if (feature.getValue() instanceof InteractionDetailsType) {
@@ -345,7 +333,7 @@ public class ObjectModelHelper {
     }
     
     private ObjectDetailsType getObjectDetails(ObjectClassType object) {
-        log.trace("ObjectDetailsType {}", objectModel.getClassPath(object));
+        log.trace("ObjectDetailsType {}", getClassPath(object));
         
         for (FeatureMap.Entry feature : object.getAny()) {
             if (feature.getValue() instanceof ObjectDetailsType) {
