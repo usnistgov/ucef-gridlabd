@@ -17,7 +17,7 @@ import org.cpswt.hla.*;
 * The CoolingControlObject class implements the CoolingControlObject object in the
 * TestFederation simulation.
 */
-public class CoolingControlObject extends ObjectRoot {
+public class CoolingControlObject extends GLDObject {
 
 	private static final Logger logger = LogManager.getLogger(CoolingControlObject.class);
 
@@ -30,7 +30,6 @@ public class CoolingControlObject extends ObjectRoot {
 	
 	
 	private static int _cooling_setpoint_handle;
-	private static int _name_handle;
 	
 	
 	/**
@@ -40,14 +39,6 @@ public class CoolingControlObject extends ObjectRoot {
 	* @return the handle (RTI assigned) of the "cooling_setpoint" attribute
 	*/
 	public static int get_cooling_setpoint_handle() { return _cooling_setpoint_handle; }
-	
-	/**
-	* Returns the handle (RTI assigned) of the "name" attribute of
-	* its containing object class.
-	*
-	* @return the handle (RTI assigned) of the "name" attribute
-	*/
-	public static int get_name_handle() { return _name_handle; }
 	
 	
 	
@@ -72,7 +63,7 @@ public class CoolingControlObject extends ObjectRoot {
 	* rather than the name of the class for the instance referred to by the reference.
 	* For the polymorphic version of this method, use {@link #getClassName()}.
 	*/
-	public static String get_class_name() { return "ObjectRoot.CoolingControlObject"; }
+	public static String get_class_name() { return "ObjectRoot.GLDObject.CoolingControlObject"; }
 
 	/**
 	* Returns the simple name (the last name in the dot-delimited fully-qualified
@@ -121,16 +112,16 @@ public class CoolingControlObject extends ObjectRoot {
 	
 
 	static {
-		_classNameSet.add("ObjectRoot.CoolingControlObject");
-		_classNameClassMap.put("ObjectRoot.CoolingControlObject", CoolingControlObject.class);
+		_classNameSet.add("ObjectRoot.GLDObject.CoolingControlObject");
+		_classNameClassMap.put("ObjectRoot.GLDObject.CoolingControlObject", CoolingControlObject.class);
 		
-		_datamemberClassNameSetMap.put("ObjectRoot.CoolingControlObject", _datamemberNames);
-		_allDatamemberClassNameSetMap.put("ObjectRoot.CoolingControlObject", _allDatamemberNames);
+		_datamemberClassNameSetMap.put("ObjectRoot.GLDObject.CoolingControlObject", _datamemberNames);
+		_allDatamemberClassNameSetMap.put("ObjectRoot.GLDObject.CoolingControlObject", _allDatamemberNames);
 
 		
 		
 		_datamemberNames.add("cooling_setpoint");
-		_datamemberNames.add("name");
+		
 		
 		
 		_allDatamemberNames.add("cooling_setpoint");
@@ -138,32 +129,31 @@ public class CoolingControlObject extends ObjectRoot {
 		
 		
 		_datamemberTypeMap.put("cooling_setpoint", "double");
-		_datamemberTypeMap.put("name", "String");
 	
 
-		_classNamePublishAttributeNameMap.put("ObjectRoot.CoolingControlObject", _publishAttributeNameSet);
+		_classNamePublishAttributeNameMap.put("ObjectRoot.GLDObject.CoolingControlObject", _publishAttributeNameSet);
 		_publishedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNamePublishedAttributeMap.put("ObjectRoot.CoolingControlObject", _publishedAttributeHandleSet);
+		_classNamePublishedAttributeMap.put("ObjectRoot.GLDObject.CoolingControlObject", _publishedAttributeHandleSet);
 
-		_classNameSubscribeAttributeNameMap.put("ObjectRoot.CoolingControlObject", _subscribeAttributeNameSet);
+		_classNameSubscribeAttributeNameMap.put("ObjectRoot.GLDObject.CoolingControlObject", _subscribeAttributeNameSet);
 		_subscribedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNameSubscribedAttributeMap.put("ObjectRoot.CoolingControlObject", _subscribedAttributeHandleSet);
+		_classNameSubscribedAttributeMap.put("ObjectRoot.GLDObject.CoolingControlObject", _subscribedAttributeHandleSet);
 	
 
 	}
 
 
-	private static String initErrorMessage = "Error:  ObjectRoot.CoolingControlObject:  could not initialize:  ";
+	private static String initErrorMessage = "Error:  ObjectRoot.GLDObject.CoolingControlObject:  could not initialize:  ";
 	protected static void init(RTIambassador rti) {
 		if (_isInitialized) return;
 		_isInitialized = true;
 		
-		ObjectRoot.init(rti);
+		GLDObject.init(rti);
 		
 		boolean isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
-				_handle = rti.getObjectClassHandle("ObjectRoot.CoolingControlObject");
+				_handle = rti.getObjectClassHandle("ObjectRoot.GLDObject.CoolingControlObject");
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -179,8 +169,8 @@ public class CoolingControlObject extends ObjectRoot {
 			}
 		}
 
-		_classNameHandleMap.put("ObjectRoot.CoolingControlObject", get_handle());
-		_classHandleNameMap.put(get_handle(), "ObjectRoot.CoolingControlObject");
+		_classNameHandleMap.put("ObjectRoot.GLDObject.CoolingControlObject", get_handle());
+		_classHandleNameMap.put(get_handle(), "ObjectRoot.GLDObject.CoolingControlObject");
 		_classHandleSimpleNameMap.put(get_handle(), "CoolingControlObject");
 
 		
@@ -188,8 +178,7 @@ public class CoolingControlObject extends ObjectRoot {
 		while(isNotInitialized) {
 			try {
 							
-				_cooling_setpoint_handle = rti.getAttributeHandle("cooling_setpoint", get_handle());			
-				_name_handle = rti.getAttributeHandle("name", get_handle());
+				_cooling_setpoint_handle = rti.getAttributeHandle("cooling_setpoint", get_handle());
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -210,17 +199,15 @@ public class CoolingControlObject extends ObjectRoot {
 		}
 			
 			
-		_datamemberNameHandleMap.put("ObjectRoot.CoolingControlObject,cooling_setpoint", get_cooling_setpoint_handle());
-		_datamemberNameHandleMap.put("ObjectRoot.CoolingControlObject,name", get_name_handle());
+		_datamemberNameHandleMap.put("ObjectRoot.GLDObject.CoolingControlObject,cooling_setpoint", get_cooling_setpoint_handle());
 			
 			
 		_datamemberHandleNameMap.put(get_cooling_setpoint_handle(), "cooling_setpoint");
-		_datamemberHandleNameMap.put(get_name_handle(), "name");
 		
 	}
 
 	private static boolean _isPublished = false;
-	private static String publishErrorMessage = "Error:  ObjectRoot.CoolingControlObject:  could not publish:  ";
+	private static String publishErrorMessage = "Error:  ObjectRoot.GLDObject.CoolingControlObject:  could not publish:  ";
 
 	/**
 	* Publishes the CoolingControlObject object class for a federate.
@@ -236,7 +223,7 @@ public class CoolingControlObject extends ObjectRoot {
 		_publishedAttributeHandleSet.empty();
 		for(String attributeName : _publishAttributeNameSet) {
 			try {
-				_publishedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.CoolingControlObject," + attributeName));
+				_publishedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GLDObject.CoolingControlObject," + attributeName));
 			} catch (Exception e) {
 				logger.error("{} Could not publish \"" + attributeName + "\" attribute.", publishErrorMessage);
 			}
@@ -267,7 +254,7 @@ public class CoolingControlObject extends ObjectRoot {
 		_isPublished = true;
 	}
 
-	private static String unpublishErrorMessage = "Error:  ObjectRoot.CoolingControlObject:  could not unpublish:  ";
+	private static String unpublishErrorMessage = "Error:  ObjectRoot.GLDObject.CoolingControlObject:  could not unpublish:  ";
 	/**
 	* Unpublishes the CoolingControlObject object class for a federate.
 	*
@@ -306,7 +293,7 @@ public class CoolingControlObject extends ObjectRoot {
 	}
 
 	private static boolean _isSubscribed = false;
-	private static String subscribeErrorMessage = "Error:  ObjectRoot.CoolingControlObject:  could not subscribe:  ";
+	private static String subscribeErrorMessage = "Error:  ObjectRoot.GLDObject.CoolingControlObject:  could not subscribe:  ";
 	/**
 	* Subscribes a federate to the CoolingControlObject object class.
 	*
@@ -320,7 +307,7 @@ public class CoolingControlObject extends ObjectRoot {
 		_subscribedAttributeHandleSet.empty();
 		for(String attributeName : _subscribeAttributeNameSet) {
 			try {
-				_subscribedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.CoolingControlObject," + attributeName));
+				_subscribedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GLDObject.CoolingControlObject," + attributeName));
 			} catch (Exception e) {
 				logger.error("{} Could not subscribe to \"" + attributeName + "\" attribute.", subscribeErrorMessage);
 			}
@@ -351,7 +338,7 @@ public class CoolingControlObject extends ObjectRoot {
 		_isSubscribed = true;
 	}
 
-	private static String unsubscribeErrorMessage = "Error:  ObjectRoot.CoolingControlObject:  could not unsubscribe:  ";
+	private static String unsubscribeErrorMessage = "Error:  ObjectRoot.GLDObject.CoolingControlObject:  could not unsubscribe:  ";
 	/**
 	* Unsubscribes a federate from the CoolingControlObject object class.
 	*
@@ -485,7 +472,6 @@ public class CoolingControlObject extends ObjectRoot {
 			
 			
 			+ "cooling_setpoint:" + get_cooling_setpoint()
-			+ "," + "name:" + get_name()
 			+ ")";
 	}
 	
@@ -625,38 +611,6 @@ public class CoolingControlObject extends ObjectRoot {
 		return _cooling_setpoint.getTime();
 	}
 	
-	
-	private Attribute< String > _name =
- 		new Attribute< String >(  new String( "" )  );
-	
-	/**
-	* Set the value of the "name" attribute to "value" for this object.
-	*
-	* @param value the new value for the "name" attribute
-	*/
-	public void set_name( String value ) {
-		_name.setValue( value );
-		_name.setTime( getTime() );
-	}
-	
-	/**
-	* Returns the value of the "name" attribute of this object.
-	*
-	* @return the value of the "name" attribute
-	*/
-	public String get_name() {
-		return _name.getValue();
-	}
-	
-	/**
-	* Returns the current timestamp of the "name" attribute of this object.
-	* 
-	* @return the current timestamp of the "name" attribute
-	*/
-	public double get_name_time() {
-		return _name.getTime();
-	}
-	
 
 
 	protected CoolingControlObject( ReflectedAttributes datamemberMap, boolean initFlag ) {
@@ -710,7 +664,6 @@ public class CoolingControlObject extends ObjectRoot {
 		
 		
 		set_cooling_setpoint( CoolingControlObject_var.get_cooling_setpoint() );
-		set_name( CoolingControlObject_var.get_name() );
 	}
 
 
@@ -728,7 +681,6 @@ public class CoolingControlObject extends ObjectRoot {
 		
 		
 		if (  "cooling_setpoint".equals( datamemberName )  ) return new Double(get_cooling_setpoint());
-		else if (  "name".equals( datamemberName )  ) return get_name();
 		else return super.getAttribute( datamemberName );
 	}
 	
@@ -746,7 +698,6 @@ public class CoolingControlObject extends ObjectRoot {
 				
 		
 		if ( get_cooling_setpoint_handle() == datamemberHandle ) return new Double(get_cooling_setpoint());
-		else if ( get_name_handle() == datamemberHandle ) return get_name();
 		else return super.getAttribute( datamemberHandle );
 	}
 	
@@ -756,7 +707,6 @@ public class CoolingControlObject extends ObjectRoot {
 			
 		
 		if ( param_handle == get_cooling_setpoint_handle() ) set_cooling_setpoint( Double.parseDouble(val) );
-		else if ( param_handle == get_name_handle() ) set_name( val );
 		else retval = super.setAttributeAux( param_handle, val );
 		
 		return retval;
@@ -767,8 +717,7 @@ public class CoolingControlObject extends ObjectRoot {
 		
 			
 		
-		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( Double.parseDouble(val) );
-		else if (  "name".equals( datamemberName )  ) set_name( val );	
+		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( Double.parseDouble(val) );	
 		else retval = super.setAttributeAux( datamemberName, val );
 		
 		return retval;
@@ -779,8 +728,7 @@ public class CoolingControlObject extends ObjectRoot {
 		
 		
 		
-		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( (Double)val );
-		else if (  "name".equals( datamemberName )  ) set_name( (String)val );		
+		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( (Double)val );		
 		else retval = super.setAttributeAux( datamemberName, val );
 		
 		return retval;
@@ -796,22 +744,12 @@ public class CoolingControlObject extends ObjectRoot {
 			try {
 				isPublished = _publishedAttributeHandleSet.isMember( get_cooling_setpoint_handle() );
 			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.CoolingControlObject.createSuppliedAttributes:  could not determine if cooling_setpoint is published.");
+				logger.error("ERROR:  ObjectRoot.GLDObject.CoolingControlObject.createSuppliedAttributes:  could not determine if cooling_setpoint is published.");
 				isPublished = false;
 			}
 			if (  isPublished && _cooling_setpoint.shouldBeUpdated( force )  ) {
 				datamembers.add( get_cooling_setpoint_handle(), Double.toString(get_cooling_setpoint()).getBytes() );
 				_cooling_setpoint.setHasBeenUpdated();
-			}
-			try {
-				isPublished = _publishedAttributeHandleSet.isMember( get_name_handle() );
-			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.CoolingControlObject.createSuppliedAttributes:  could not determine if name is published.");
-				isPublished = false;
-			}
-			if (  isPublished && _name.shouldBeUpdated( force )  ) {
-				datamembers.add( get_name_handle(), get_name().getBytes() );
-				_name.setHasBeenUpdated();
 			}
 	
 		return datamembers;
@@ -825,7 +763,6 @@ public class CoolingControlObject extends ObjectRoot {
 			
 			
 				_cooling_setpoint = data._cooling_setpoint;
-				_name = data._name;
 			
 		}
 	}

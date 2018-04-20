@@ -35,8 +35,8 @@ public class TestFederate extends TestFederateBase {
         
         InteractionRoot interaction = null;
         while ((interaction = getNextInteractionNoWait()) != null) {
-            if (interaction instanceof GlobalVariables) {
-                handleInteractionClass((GlobalVariables) interaction);
+            if (interaction instanceof GLDClock) {
+                handleInteractionClass((GLDClock) interaction);
             }
             else if (interaction instanceof House) {
                 handleInteractionClass((House) interaction);
@@ -47,10 +47,7 @@ public class TestFederate extends TestFederateBase {
         while ((reflector = getNextObjectReflectorNoWait()) != null) {
             reflector.reflect();
             ObjectRoot object = reflector.getObjectRoot();
-            if (object instanceof GlobalVariablesObject) {
-                handleObjectClass((GlobalVariablesObject) object);
-            }
-            else if (object instanceof HouseObject) {
+            if (object instanceof HouseObject) {
                 handleObjectClass((HouseObject) object);
             }
         }
@@ -110,18 +107,13 @@ public class TestFederate extends TestFederateBase {
         super.notifyFederationOfResign();
     }
     
-    private void handleInteractionClass(GlobalVariables interaction) {
+    private void handleInteractionClass(GLDClock interaction) {
         log.info("received {}", interaction.toString());
-        updateWorkHours(interaction.get_clock());
+        updateWorkHours(interaction.get_timeStamp());
     }
     
     private void handleInteractionClass(House interaction) {
         log.info("received {}", interaction.toString());
-    }
-    
-    private void handleObjectClass(GlobalVariablesObject object) {
-        log.info("received {}", object.toString());
-        updateWorkHours(object.get_clock());
     }
     
     private void handleObjectClass(HouseObject object) {

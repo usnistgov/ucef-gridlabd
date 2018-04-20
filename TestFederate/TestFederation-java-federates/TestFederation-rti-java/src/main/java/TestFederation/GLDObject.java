@@ -14,31 +14,31 @@ import org.cpswt.utils.CpswtUtils;
 import org.cpswt.hla.*;
 
 /**
-* The GlobalVariablesObject class implements the GlobalVariablesObject object in the
+* The GLDObject class implements the GLDObject object in the
 * TestFederation simulation.
 */
-public class GlobalVariablesObject extends ObjectRoot {
+public class GLDObject extends ObjectRoot {
 
-	private static final Logger logger = LogManager.getLogger(GlobalVariablesObject.class);
+	private static final Logger logger = LogManager.getLogger(GLDObject.class);
 
 	/**
-	* Default constructor -- creates an instance of the GlobalVariablesObject object
+	* Default constructor -- creates an instance of the GLDObject object
 	* class with default attribute values.
 	*/
-	public GlobalVariablesObject() { }
+	public GLDObject() { }
 
 	
 	
-	private static int _clock_handle;
+	private static int _name_handle;
 	
 	
 	/**
-	* Returns the handle (RTI assigned) of the "clock" attribute of
+	* Returns the handle (RTI assigned) of the "name" attribute of
 	* its containing object class.
 	*
-	* @return the handle (RTI assigned) of the "clock" attribute
+	* @return the handle (RTI assigned) of the "name" attribute
 	*/
-	public static int get_clock_handle() { return _clock_handle; }
+	public static int get_name_handle() { return _name_handle; }
 	
 	
 	
@@ -47,7 +47,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 	private static int _handle;
 
 	/**
-	* Returns the handle (RTI assigned) of the GlobalVariablesObject object class.
+	* Returns the handle (RTI assigned) of the GLDObject object class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the handle of the class pertaining to the reference,\
 	* rather than the handle of the class for the instance referred to by the reference.
@@ -56,27 +56,27 @@ public class GlobalVariablesObject extends ObjectRoot {
 	public static int get_handle() { return _handle; }
 
 	/**
-	* Returns the fully-qualified (dot-delimited) name of the GlobalVariablesObject
+	* Returns the fully-qualified (dot-delimited) name of the GLDObject
 	* object class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the name of the class pertaining to the reference,\
 	* rather than the name of the class for the instance referred to by the reference.
 	* For the polymorphic version of this method, use {@link #getClassName()}.
 	*/
-	public static String get_class_name() { return "ObjectRoot.GlobalVariablesObject"; }
+	public static String get_class_name() { return "ObjectRoot.GLDObject"; }
 
 	/**
 	* Returns the simple name (the last name in the dot-delimited fully-qualified
-	* class name) of the GlobalVariablesObject object class.
+	* class name) of the GLDObject object class.
 	*/
-	public static String get_simple_class_name() { return "GlobalVariablesObject"; }
+	public static String get_simple_class_name() { return "GLDObject"; }
 
 	private static Set< String > _datamemberNames = new HashSet< String >();
 	private static Set< String > _allDatamemberNames = new HashSet< String >();
 
 	/**
 	* Returns a set containing the names of all of the non-hidden attributes in the
-	* GlobalVariablesObject object class.
+	* GLDObject object class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
@@ -90,7 +90,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 
 	/**
 	* Returns a set containing the names of all of the attributes in the
-	* GlobalVariablesObject object class.
+	* GLDObject object class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
@@ -112,36 +112,36 @@ public class GlobalVariablesObject extends ObjectRoot {
 	
 
 	static {
-		_classNameSet.add("ObjectRoot.GlobalVariablesObject");
-		_classNameClassMap.put("ObjectRoot.GlobalVariablesObject", GlobalVariablesObject.class);
+		_classNameSet.add("ObjectRoot.GLDObject");
+		_classNameClassMap.put("ObjectRoot.GLDObject", GLDObject.class);
 		
-		_datamemberClassNameSetMap.put("ObjectRoot.GlobalVariablesObject", _datamemberNames);
-		_allDatamemberClassNameSetMap.put("ObjectRoot.GlobalVariablesObject", _allDatamemberNames);
+		_datamemberClassNameSetMap.put("ObjectRoot.GLDObject", _datamemberNames);
+		_allDatamemberClassNameSetMap.put("ObjectRoot.GLDObject", _allDatamemberNames);
 
 		
 		
-		_datamemberNames.add("clock");
+		_datamemberNames.add("name");
 		
 		
-		_allDatamemberNames.add("clock");
+		_allDatamemberNames.add("name");
 		
 		
-		_datamemberTypeMap.put("clock", "String");
+		_datamemberTypeMap.put("name", "String");
 	
 
-		_classNamePublishAttributeNameMap.put("ObjectRoot.GlobalVariablesObject", _publishAttributeNameSet);
+		_classNamePublishAttributeNameMap.put("ObjectRoot.GLDObject", _publishAttributeNameSet);
 		_publishedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNamePublishedAttributeMap.put("ObjectRoot.GlobalVariablesObject", _publishedAttributeHandleSet);
+		_classNamePublishedAttributeMap.put("ObjectRoot.GLDObject", _publishedAttributeHandleSet);
 
-		_classNameSubscribeAttributeNameMap.put("ObjectRoot.GlobalVariablesObject", _subscribeAttributeNameSet);
+		_classNameSubscribeAttributeNameMap.put("ObjectRoot.GLDObject", _subscribeAttributeNameSet);
 		_subscribedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNameSubscribedAttributeMap.put("ObjectRoot.GlobalVariablesObject", _subscribedAttributeHandleSet);
+		_classNameSubscribedAttributeMap.put("ObjectRoot.GLDObject", _subscribedAttributeHandleSet);
 	
 
 	}
 
 
-	private static String initErrorMessage = "Error:  ObjectRoot.GlobalVariablesObject:  could not initialize:  ";
+	private static String initErrorMessage = "Error:  ObjectRoot.GLDObject:  could not initialize:  ";
 	protected static void init(RTIambassador rti) {
 		if (_isInitialized) return;
 		_isInitialized = true;
@@ -151,7 +151,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		boolean isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
-				_handle = rti.getObjectClassHandle("ObjectRoot.GlobalVariablesObject");
+				_handle = rti.getObjectClassHandle("ObjectRoot.GLDObject");
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -167,16 +167,16 @@ public class GlobalVariablesObject extends ObjectRoot {
 			}
 		}
 
-		_classNameHandleMap.put("ObjectRoot.GlobalVariablesObject", get_handle());
-		_classHandleNameMap.put(get_handle(), "ObjectRoot.GlobalVariablesObject");
-		_classHandleSimpleNameMap.put(get_handle(), "GlobalVariablesObject");
+		_classNameHandleMap.put("ObjectRoot.GLDObject", get_handle());
+		_classHandleNameMap.put(get_handle(), "ObjectRoot.GLDObject");
+		_classHandleSimpleNameMap.put(get_handle(), "GLDObject");
 
 		
 		isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
 							
-				_clock_handle = rti.getAttributeHandle("clock", get_handle());
+				_name_handle = rti.getAttributeHandle("name", get_handle());
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -197,18 +197,18 @@ public class GlobalVariablesObject extends ObjectRoot {
 		}
 			
 			
-		_datamemberNameHandleMap.put("ObjectRoot.GlobalVariablesObject,clock", get_clock_handle());
+		_datamemberNameHandleMap.put("ObjectRoot.GLDObject,name", get_name_handle());
 			
 			
-		_datamemberHandleNameMap.put(get_clock_handle(), "clock");
+		_datamemberHandleNameMap.put(get_name_handle(), "name");
 		
 	}
 
 	private static boolean _isPublished = false;
-	private static String publishErrorMessage = "Error:  ObjectRoot.GlobalVariablesObject:  could not publish:  ";
+	private static String publishErrorMessage = "Error:  ObjectRoot.GLDObject:  could not publish:  ";
 
 	/**
-	* Publishes the GlobalVariablesObject object class for a federate.
+	* Publishes the GLDObject object class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -221,7 +221,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		_publishedAttributeHandleSet.empty();
 		for(String attributeName : _publishAttributeNameSet) {
 			try {
-				_publishedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GlobalVariablesObject," + attributeName));
+				_publishedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GLDObject," + attributeName));
 			} catch (Exception e) {
 				logger.error("{} Could not publish \"" + attributeName + "\" attribute.", publishErrorMessage);
 			}
@@ -252,9 +252,9 @@ public class GlobalVariablesObject extends ObjectRoot {
 		_isPublished = true;
 	}
 
-	private static String unpublishErrorMessage = "Error:  ObjectRoot.GlobalVariablesObject:  could not unpublish:  ";
+	private static String unpublishErrorMessage = "Error:  ObjectRoot.GLDObject:  could not unpublish:  ";
 	/**
-	* Unpublishes the GlobalVariablesObject object class for a federate.
+	* Unpublishes the GLDObject object class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -291,9 +291,9 @@ public class GlobalVariablesObject extends ObjectRoot {
 	}
 
 	private static boolean _isSubscribed = false;
-	private static String subscribeErrorMessage = "Error:  ObjectRoot.GlobalVariablesObject:  could not subscribe:  ";
+	private static String subscribeErrorMessage = "Error:  ObjectRoot.GLDObject:  could not subscribe:  ";
 	/**
-	* Subscribes a federate to the GlobalVariablesObject object class.
+	* Subscribes a federate to the GLDObject object class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -305,7 +305,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		_subscribedAttributeHandleSet.empty();
 		for(String attributeName : _subscribeAttributeNameSet) {
 			try {
-				_subscribedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GlobalVariablesObject," + attributeName));
+				_subscribedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GLDObject," + attributeName));
 			} catch (Exception e) {
 				logger.error("{} Could not subscribe to \"" + attributeName + "\" attribute.", subscribeErrorMessage);
 			}
@@ -336,9 +336,9 @@ public class GlobalVariablesObject extends ObjectRoot {
 		_isSubscribed = true;
 	}
 
-	private static String unsubscribeErrorMessage = "Error:  ObjectRoot.GlobalVariablesObject:  could not unsubscribe:  ";
+	private static String unsubscribeErrorMessage = "Error:  ObjectRoot.GLDObject:  could not unsubscribe:  ";
 	/**
-	* Unsubscribes a federate from the GlobalVariablesObject object class.
+	* Unsubscribes a federate from the GLDObject object class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -376,12 +376,12 @@ public class GlobalVariablesObject extends ObjectRoot {
 
 	/**
 	* Return true if "handle" is equal to the handle (RTI assigned) of this class
-	* (that is, the GlobalVariablesObject object class).
+	* (that is, the GLDObject object class).
 	*
 	* @param handle handle to compare to the value of the handle (RTI assigned) of
-	* this class (the GlobalVariablesObject object class).
+	* this class (the GLDObject object class).
 	* @return "true" if "handle" matches the value of the handle of this class
-	* (that is, the GlobalVariablesObject object class).
+	* (that is, the GLDObject object class).
 	*/
 	public static boolean match(int handle) { return handle == get_handle(); }
 
@@ -466,10 +466,10 @@ public class GlobalVariablesObject extends ObjectRoot {
 	
 
 	public String toString() {
-		return "GlobalVariablesObject("
+		return "GLDObject("
 			
 			
-			+ "clock:" + get_clock()
+			+ "name:" + get_name()
 			+ ")";
 	}
 	
@@ -479,140 +479,140 @@ public class GlobalVariablesObject extends ObjectRoot {
 	
 	
 	/**
-	* Publishes the "clock" attribute of the attribute's containing object
+	* Publishes the "name" attribute of the attribute's containing object
 	* class for a federate.
-	* Note:  This method only marks the "clock" attribute for publication.
+	* Note:  This method only marks the "name" attribute for publication.
 	* To actually publish the attribute, the federate must (re)publish its containing
 	* object class.
 	* (using <objectClassName>.publish( RTIambassador rti ) ).
 	*/
-	public static void publish_clock() {
-		_publishAttributeNameSet.add( "clock" );
+	public static void publish_name() {
+		_publishAttributeNameSet.add( "name" );
 	}
 
 	/**
-	* Unpublishes the "clock" attribute of the attribute's containing object
+	* Unpublishes the "name" attribute of the attribute's containing object
 	* class for a federate.
-	* Note:  This method only marks the "clock" attribute for unpublication.
+	* Note:  This method only marks the "name" attribute for unpublication.
 	* To actually publish the attribute, the federate must (re)publish its containing
 	* object class.
 	* (using <objectClassName>.publish( RTIambassador rti ) ).
 	*/
-	public static void unpublish_clock() {
-		_publishAttributeNameSet.remove( "clock" );
+	public static void unpublish_name() {
+		_publishAttributeNameSet.remove( "name" );
 	}
 	
 	/**
-	* Subscribes a federate to the "clock" attribute of the attribute's
+	* Subscribes a federate to the "name" attribute of the attribute's
 	* containing object class.
-	* Note:  This method only marks the "clock" attribute for subscription.
+	* Note:  This method only marks the "name" attribute for subscription.
 	* To actually subscribe to the attribute, the federate must (re)subscribe to its
 	* containing object class.
 	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
 	*/
-	public static void subscribe_clock() {
-		_subscribeAttributeNameSet.add( "clock" );
+	public static void subscribe_name() {
+		_subscribeAttributeNameSet.add( "name" );
 	}
 
 	/**
-	* Unsubscribes a federate from the "clock" attribute of the attribute's
+	* Unsubscribes a federate from the "name" attribute of the attribute's
 	* containing object class.
-	* Note:  This method only marks the "clock" attribute for unsubscription.
+	* Note:  This method only marks the "name" attribute for unsubscription.
 	* To actually unsubscribe to the attribute, the federate must (re)subscribe to its
 	* containing object class.
 	* (using <objectClassName>.subscribe( RTIambassador rti ) ).
 	*/
-	public static void unsubscribe_clock() {
-		_subscribeAttributeNameSet.remove( "clock" );
+	public static void unsubscribe_name() {
+		_subscribeAttributeNameSet.remove( "name" );
 	}
 	
 
 	
 	
-	private Attribute< String > _clock =
+	private Attribute< String > _name =
  		new Attribute< String >(  new String( "" )  );
 	
 	/**
-	* Set the value of the "clock" attribute to "value" for this object.
+	* Set the value of the "name" attribute to "value" for this object.
 	*
-	* @param value the new value for the "clock" attribute
+	* @param value the new value for the "name" attribute
 	*/
-	public void set_clock( String value ) {
-		_clock.setValue( value );
-		_clock.setTime( getTime() );
+	public void set_name( String value ) {
+		_name.setValue( value );
+		_name.setTime( getTime() );
 	}
 	
 	/**
-	* Returns the value of the "clock" attribute of this object.
+	* Returns the value of the "name" attribute of this object.
 	*
-	* @return the value of the "clock" attribute
+	* @return the value of the "name" attribute
 	*/
-	public String get_clock() {
-		return _clock.getValue();
+	public String get_name() {
+		return _name.getValue();
 	}
 	
 	/**
-	* Returns the current timestamp of the "clock" attribute of this object.
+	* Returns the current timestamp of the "name" attribute of this object.
 	* 
-	* @return the current timestamp of the "clock" attribute
+	* @return the current timestamp of the "name" attribute
 	*/
-	public double get_clock_time() {
-		return _clock.getTime();
+	public double get_name_time() {
+		return _name.getTime();
 	}
 	
 
 
-	protected GlobalVariablesObject( ReflectedAttributes datamemberMap, boolean initFlag ) {
+	protected GLDObject( ReflectedAttributes datamemberMap, boolean initFlag ) {
 		super( datamemberMap, false );
 		if ( initFlag ) setAttributes( datamemberMap );
 	}
 	
-	protected GlobalVariablesObject( ReflectedAttributes datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
+	protected GLDObject( ReflectedAttributes datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
 		super( datamemberMap, logicalTime, false );
 		if ( initFlag ) setAttributes( datamemberMap );
 	}
 
 
 	/**
-	* Creates an instance of the GlobalVariablesObject object class, using
+	* Creates an instance of the GLDObject object class, using
 	* "datamemberMap" to initialize its attribute values.
 	* "datamemberMap" is usually acquired as an argument to an RTI federate
 	* callback method, such as "receiveInteraction".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* attributes of this new GlobalVariablesObject object class instance
+	* attributes of this new GLDObject object class instance
 	*/
-	public GlobalVariablesObject( ReflectedAttributes datamemberMap ) {
+	public GLDObject( ReflectedAttributes datamemberMap ) {
 		this( datamemberMap, true );
 	}
 	
 	/**
-	* Like {@link #GlobalVariablesObject( ReflectedAttributes datamemberMap )}, except this
-	* new GlobalVariablesObject object class instance is given a timestamp of
+	* Like {@link #GLDObject( ReflectedAttributes datamemberMap )}, except this
+	* new GLDObject object class instance is given a timestamp of
 	* "logicalTime".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* attributes of this new GlobalVariablesObject object class instance
-	* @param logicalTime timestamp for this new GlobalVariablesObject object class
+	* attributes of this new GLDObject object class instance
+	* @param logicalTime timestamp for this new GLDObject object class
 	* instance
 	*/
-	public GlobalVariablesObject( ReflectedAttributes datamemberMap, LogicalTime logicalTime ) {
+	public GLDObject( ReflectedAttributes datamemberMap, LogicalTime logicalTime ) {
 		this( datamemberMap, logicalTime, true );
 	}
 
 	/**
-	* Creates a new GlobalVariablesObject object class instance that is a duplicate
-	* of the instance referred to by GlobalVariablesObject_var.
+	* Creates a new GLDObject object class instance that is a duplicate
+	* of the instance referred to by GLDObject_var.
 	*
-	* @param GlobalVariablesObject_var GlobalVariablesObject object class instance of which
-	* this newly created GlobalVariablesObject object class instance will be a
+	* @param GLDObject_var GLDObject object class instance of which
+	* this newly created GLDObject object class instance will be a
 	* duplicate
 	*/
-	public GlobalVariablesObject( GlobalVariablesObject GlobalVariablesObject_var ) {
-		super( GlobalVariablesObject_var );
+	public GLDObject( GLDObject GLDObject_var ) {
+		super( GLDObject_var );
 		
 		
-		set_clock( GlobalVariablesObject_var.get_clock() );
+		set_name( GLDObject_var.get_name() );
 	}
 
 
@@ -629,7 +629,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		
 		
 		
-		if (  "clock".equals( datamemberName )  ) return get_clock();
+		if (  "name".equals( datamemberName )  ) return get_name();
 		else return super.getAttribute( datamemberName );
 	}
 	
@@ -646,7 +646,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		
 				
 		
-		if ( get_clock_handle() == datamemberHandle ) return get_clock();
+		if ( get_name_handle() == datamemberHandle ) return get_name();
 		else return super.getAttribute( datamemberHandle );
 	}
 	
@@ -655,7 +655,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		
 			
 		
-		if ( param_handle == get_clock_handle() ) set_clock( val );
+		if ( param_handle == get_name_handle() ) set_name( val );
 		else retval = super.setAttributeAux( param_handle, val );
 		
 		return retval;
@@ -666,7 +666,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		
 			
 		
-		if (  "clock".equals( datamemberName )  ) set_clock( val );	
+		if (  "name".equals( datamemberName )  ) set_name( val );	
 		else retval = super.setAttributeAux( datamemberName, val );
 		
 		return retval;
@@ -677,7 +677,7 @@ public class GlobalVariablesObject extends ObjectRoot {
 		
 		
 		
-		if (  "clock".equals( datamemberName )  ) set_clock( (String)val );		
+		if (  "name".equals( datamemberName )  ) set_name( (String)val );		
 		else retval = super.setAttributeAux( datamemberName, val );
 		
 		return retval;
@@ -691,14 +691,14 @@ public class GlobalVariablesObject extends ObjectRoot {
 		
 		
 			try {
-				isPublished = _publishedAttributeHandleSet.isMember( get_clock_handle() );
+				isPublished = _publishedAttributeHandleSet.isMember( get_name_handle() );
 			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.GlobalVariablesObject.createSuppliedAttributes:  could not determine if clock is published.");
+				logger.error("ERROR:  ObjectRoot.GLDObject.createSuppliedAttributes:  could not determine if name is published.");
 				isPublished = false;
 			}
-			if (  isPublished && _clock.shouldBeUpdated( force )  ) {
-				datamembers.add( get_clock_handle(), get_clock().getBytes() );
-				_clock.setHasBeenUpdated();
+			if (  isPublished && _name.shouldBeUpdated( force )  ) {
+				datamembers.add( get_name_handle(), get_name().getBytes() );
+				_name.setHasBeenUpdated();
 			}
 	
 		return datamembers;
@@ -707,11 +707,11 @@ public class GlobalVariablesObject extends ObjectRoot {
 	
 	public void copyFrom( Object object ) {
 		super.copyFrom( object );
-		if ( object instanceof GlobalVariablesObject ) {
-			GlobalVariablesObject data = (GlobalVariablesObject)object;
+		if ( object instanceof GLDObject ) {
+			GLDObject data = (GLDObject)object;
 			
 			
-				_clock = data._clock;
+				_name = data._name;
 			
 		}
 	}

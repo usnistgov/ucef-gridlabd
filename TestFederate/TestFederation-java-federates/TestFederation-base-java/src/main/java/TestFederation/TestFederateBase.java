@@ -30,12 +30,12 @@ public class TestFederateBase extends SynchronizedFederate {
 		enableAsynchronousDelivery();
         // interaction pubsub
         
-        SimTime.publish(getLRC());
         CoolingControl.publish(getLRC());
+        SimTime.publish(getLRC());
         
-        GlobalVariables.subscribe(getLRC());
+        GLDClock.subscribe(getLRC());
         _subscribedInteractionFilter.setFedFilters( 
-			GlobalVariables.get_handle(), 
+			GLDClock.get_handle(), 
 			SubscribedInteractionFilter.OriginFedFilter.ORIGIN_FILTER_DISABLED, 
 			SubscribedInteractionFilter.SourceFedFilter.SOURCE_FILTER_DISABLED 
 		);
@@ -53,10 +53,6 @@ public class TestFederateBase extends SynchronizedFederate {
         CoolingControlObject.publish(getLRC());
                 
         	
-        GlobalVariablesObject.subscribe_clock();
-        GlobalVariablesObject.subscribe(getLRC());
-        
-        	
         HouseObject.subscribe_air_temperature();
         HouseObject.subscribe_compressor_count();
         HouseObject.subscribe_compressor_on();
@@ -65,14 +61,14 @@ public class TestFederateBase extends SynchronizedFederate {
         	}
         
 	
-	public SimTime create_SimTime() {
-	   SimTime interaction = new SimTime();
+	public CoolingControl create_CoolingControl() {
+	   CoolingControl interaction = new CoolingControl();
 	   interaction.set_sourceFed( getFederateId() );
 	   interaction.set_originFed( getFederateId() );
 	   return interaction;
 	}
-	public CoolingControl create_CoolingControl() {
-	   CoolingControl interaction = new CoolingControl();
+	public SimTime create_SimTime() {
+	   SimTime interaction = new SimTime();
 	   interaction.set_sourceFed( getFederateId() );
 	   interaction.set_originFed( getFederateId() );
 	   return interaction;

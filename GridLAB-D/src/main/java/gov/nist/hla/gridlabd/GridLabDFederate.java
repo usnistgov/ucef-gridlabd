@@ -527,8 +527,8 @@ public class GridLabDFederate implements GatewayCallback {
                 long unixtime = toUnixTime(timestamp);
                 
                 Map<String, String> clockValues = new HashMap<String, String>();
-                clockValues.put("timestamp", timestamp);
-                clockValues.put("unixtime", Long.toString(unixtime));
+                clockValues.put("timeStamp", timestamp);
+                clockValues.put("unixTime", Long.toString(unixtime));
                 
                 gateway.sendInteraction(ExtendedObjectModel.GLD_CLOCK, clockValues, gateway.getTimeStamp());
             } catch (IOException | ParseException | FederateNotExecutionMember | NameNotFound

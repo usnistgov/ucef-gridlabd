@@ -49,16 +49,16 @@
   (attribute FederateHandle reliable timestamp)
   (attribute FederateHost reliable timestamp)
   (attribute FederateType reliable timestamp) )
-(class CoolingControlObject
+(class GLDObject
+  (attribute name reliable timestamp)  (class CoolingControlObject
   (attribute cooling_setpoint reliable timestamp)
   (attribute name reliable timestamp) )
-(class GlobalVariablesObject
-  (attribute clock reliable timestamp) )
-(class HouseObject
+  (class HouseObject
   (attribute air_temperature reliable timestamp)
   (attribute compressor_count reliable timestamp)
   (attribute compressor_on reliable timestamp)
-  (attribute name reliable timestamp) )   ) 
+  (attribute name reliable timestamp) )
+ )   ) 
   )
   (interactions
     (class InteractionRoot reliable timestamp
@@ -381,18 +381,25 @@
   (parameter unixTimeStop)
 )
 )
+(class GLDClock reliable timestamp 
+  (parameter actualLogicalGenerationTime)
+  (parameter federateFilter)
+  (parameter originFed)
+  (parameter sourceFed)
+  (parameter timeStamp)
+  (parameter unixTime)
+)
+(class GLDInteraction reliable timestamp 
+  (parameter actualLogicalGenerationTime)
+  (parameter federateFilter)
+  (parameter name)
+  (parameter originFed)
+  (parameter sourceFed)
 (class CoolingControl reliable timestamp 
   (parameter actualLogicalGenerationTime)
   (parameter cooling_setpoint)
   (parameter federateFilter)
   (parameter name)
-  (parameter originFed)
-  (parameter sourceFed)
-)
-(class GlobalVariables reliable timestamp 
-  (parameter actualLogicalGenerationTime)
-  (parameter clock)
-  (parameter federateFilter)
   (parameter originFed)
   (parameter sourceFed)
 )
@@ -405,6 +412,7 @@
   (parameter name)
   (parameter originFed)
   (parameter sourceFed)
+)
 )
 )  
     )

@@ -7,6 +7,19 @@
             <sharing>Neither</sharing>
             <semantics></semantics>
         <objectClass>
+            <name>GLDObject</name>
+            <sharing>PublishSubscribe</sharing>
+            <semantics></semantics>
+
+            <attribute>
+                <name>name</name>
+                <dataType>String</dataType>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics></semantics>
+            </attribute>
+        <objectClass>
             <name>CoolingControlObject</name>
             <sharing>Subscribe</sharing>
             <semantics></semantics>
@@ -32,20 +45,6 @@
                 <name>name</name>
                 <dataType>String</dataType>
                 <sharing>Subscribe</sharing>
-                <transportation>HLAreliable</transportation>
-                <order>TimeStamp</order>
-                <semantics></semantics>
-            </attribute>
-        </objectClass>
-        <objectClass>
-            <name>GlobalVariablesObject</name>
-            <sharing>Publish</sharing>
-            <semantics></semantics>
-
-            <attribute>
-                <name>clock</name>
-                <dataType>String</dataType>
-                <sharing>Publish</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
                 <semantics></semantics>
@@ -106,12 +105,14 @@
                 <order>TimeStamp</order>
                 <semantics></semantics>
             </attribute>
+
             <ucef:objectDetails>
                 <ucef:publishedObjects>
                     <ucef:objectName>house2</ucef:objectName>
                     <ucef:objectName>house3</ucef:objectName>
                 </ucef:publishedObjects>
             </ucef:objectDetails>
+        </objectClass>
         </objectClass>
         </objectClass>
     </objects>
@@ -241,6 +242,35 @@
         </interactionClass>
         </interactionClass>
         <interactionClass>
+            <name>GLDClock</name>
+            <sharing>Publish</sharing>
+            <transportation>HLAreliable</transportation>
+            <order>TimeStamp</order>
+
+            <parameter> 
+                <name>timestamp</name>
+                <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>unixtime</name>
+                <dataType>long</dataType>
+                <semantics></semantics>
+            </parameter>
+        </interactionClass>
+        <interactionClass>
+            <name>GLDInteraction</name>
+            <sharing>Neither</sharing>
+            <transportation>HLAreliable</transportation>
+            <order>TimeStamp</order>
+
+            <parameter> 
+                <name>name</name>
+                <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+        <interactionClass>
             <name>CoolingControl</name>
             <sharing>Subscribe</sharing>
             <transportation>HLAreliable</transportation>
@@ -255,24 +285,6 @@
                         <ucef:unitName>degC</ucef:unitName>
                     </ucef:unitConversion>
                 </ucef:parameterDetails>
-            </parameter>
-
-            <parameter> 
-                <name>name</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
-        </interactionClass>
-        <interactionClass>
-            <name>GlobalVariables</name>
-            <sharing>Publish</sharing>
-            <transportation>HLAreliable</transportation>
-            <order>TimeStamp</order>
-
-            <parameter> 
-                <name>clock</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
             </parameter>
         </interactionClass>
         <interactionClass>
@@ -304,17 +316,13 @@
                 <semantics></semantics>
             </parameter>
 
-            <parameter> 
-                <name>name</name>
-                <dataType>String</dataType>
-                <semantics></semantics>
-            </parameter>
             <ucef:interactionDetails>
                 <ucef:updatePeriod>2</ucef:updatePeriod>
                 <ucef:publishedObjects>
                     <ucef:objectName>house1</ucef:objectName>
                 </ucef:publishedObjects>
             </ucef:interactionDetails>
+        </interactionClass>
         </interactionClass>
         </interactionClass>
         </interactionClass>

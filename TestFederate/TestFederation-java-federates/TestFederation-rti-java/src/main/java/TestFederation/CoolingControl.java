@@ -17,7 +17,7 @@ import org.cpswt.hla.*;
 * The CoolingControl class implements the CoolingControl interaction in the
 * TestFederation simulation.
 */
-public class CoolingControl extends C2WInteractionRoot {
+public class CoolingControl extends GLDInteraction {
 
 	private static final Logger logger = LogManager.getLogger(CoolingControl.class);
 
@@ -30,7 +30,6 @@ public class CoolingControl extends C2WInteractionRoot {
 	
 	
 	private static int _cooling_setpoint_handle;
-	private static int _name_handle;
 	
 	
 	/**
@@ -40,14 +39,6 @@ public class CoolingControl extends C2WInteractionRoot {
 	* @return the handle (RTI assigned) of the "cooling_setpoint" parameter
 	*/
 	public static int get_cooling_setpoint_handle() { return _cooling_setpoint_handle; }
-	
-	/**
-	* Returns the handle (RTI assigned) of the "name" parameter of
-	* its containing interaction class.
-	*
-	* @return the handle (RTI assigned) of the "name" parameter
-	*/
-	public static int get_name_handle() { return _name_handle; }
 	
 	
 	
@@ -72,7 +63,7 @@ public class CoolingControl extends C2WInteractionRoot {
 	* rather than the name of the class for the instance referred to by the reference.
 	* For the polymorphic version of this method, use {@link #getClassName()}.
 	*/
-	public static String get_class_name() { return "InteractionRoot.C2WInteractionRoot.CoolingControl"; }
+	public static String get_class_name() { return "InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl"; }
 
 	/**
 	* Returns the simple name (the last name in the dot-delimited fully-qualified
@@ -114,18 +105,18 @@ public class CoolingControl extends C2WInteractionRoot {
 	
 
 	static {
-		_classNameSet.add("InteractionRoot.C2WInteractionRoot.CoolingControl");
-		_classNameClassMap.put("InteractionRoot.C2WInteractionRoot.CoolingControl", CoolingControl.class);
+		_classNameSet.add("InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl");
+		_classNameClassMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl", CoolingControl.class);
 		
-		_datamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.CoolingControl", _datamemberNames);
-		_allDatamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.CoolingControl", _allDatamemberNames);
+		_datamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl", _datamemberNames);
+		_allDatamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl", _allDatamemberNames);
 
 		
 		
 		
 		_datamemberNames.add("cooling_setpoint");
 		
-		_datamemberNames.add("name");
+		
 		
 		
 		
@@ -139,24 +130,23 @@ public class CoolingControl extends C2WInteractionRoot {
 		
 		
 		_datamemberTypeMap.put("cooling_setpoint", "double");
-		_datamemberTypeMap.put("name", "String");
 	
 	
 
 	}
 
 
-	private static String initErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.CoolingControl:  could not initialize:  ";
+	private static String initErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl:  could not initialize:  ";
 	protected static void init(RTIambassador rti) {
 		if (_isInitialized) return;
 		_isInitialized = true;
 		
-		C2WInteractionRoot.init(rti);
+		GLDInteraction.init(rti);
 		
 		boolean isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
-				_handle = rti.getInteractionClassHandle("InteractionRoot.C2WInteractionRoot.CoolingControl");
+				_handle = rti.getInteractionClassHandle("InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl");
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -172,8 +162,8 @@ public class CoolingControl extends C2WInteractionRoot {
 			}
 		}
 
-		_classNameHandleMap.put("InteractionRoot.C2WInteractionRoot.CoolingControl", get_handle());
-		_classHandleNameMap.put(get_handle(), "InteractionRoot.C2WInteractionRoot.CoolingControl");
+		_classNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl", get_handle());
+		_classHandleNameMap.put(get_handle(), "InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl");
 		_classHandleSimpleNameMap.put(get_handle(), "CoolingControl");
 
 		
@@ -181,8 +171,7 @@ public class CoolingControl extends C2WInteractionRoot {
 		while(isNotInitialized) {
 			try {
 							
-				_cooling_setpoint_handle = rti.getParameterHandle("cooling_setpoint", get_handle());			
-				_name_handle = rti.getParameterHandle("name", get_handle());
+				_cooling_setpoint_handle = rti.getParameterHandle("cooling_setpoint", get_handle());
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -203,17 +192,15 @@ public class CoolingControl extends C2WInteractionRoot {
 		}
 			
 			
-		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.CoolingControl,cooling_setpoint", get_cooling_setpoint_handle());
-		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.CoolingControl,name", get_name_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl,cooling_setpoint", get_cooling_setpoint_handle());
 			
 			
 		_datamemberHandleNameMap.put(get_cooling_setpoint_handle(), "cooling_setpoint");
-		_datamemberHandleNameMap.put(get_name_handle(), "name");
 		
 	}
 
 	private static boolean _isPublished = false;
-	private static String publishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.CoolingControl:  could not publish:  ";
+	private static String publishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl:  could not publish:  ";
 
 	/**
 	* Publishes the CoolingControl interaction class for a federate.
@@ -251,7 +238,7 @@ public class CoolingControl extends C2WInteractionRoot {
 		_isPublished = true;
 	}
 
-	private static String unpublishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.CoolingControl:  could not unpublish:  ";
+	private static String unpublishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl:  could not unpublish:  ";
 	/**
 	* Unpublishes the CoolingControl interaction class for a federate.
 	*
@@ -290,7 +277,7 @@ public class CoolingControl extends C2WInteractionRoot {
 	}
 
 	private static boolean _isSubscribed = false;
-	private static String subscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.CoolingControl:  could not subscribe:  ";
+	private static String subscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl:  could not subscribe:  ";
 	/**
 	* Subscribes a federate to the CoolingControl interaction class.
 	*
@@ -326,7 +313,7 @@ public class CoolingControl extends C2WInteractionRoot {
 		_isSubscribed = true;
 	}
 
-	private static String unsubscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.CoolingControl:  could not unsubscribe:  ";
+	private static String unsubscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction.CoolingControl:  could not unsubscribe:  ";
 	/**
 	* Unsubscribes a federate from the CoolingControl interaction class.
 	*
@@ -450,7 +437,6 @@ public class CoolingControl extends C2WInteractionRoot {
 			
 			
 			+ "cooling_setpoint:" + get_cooling_setpoint()
-			+ "," + "name:" + get_name()
 			+ ")";
 	}
 	
@@ -460,8 +446,6 @@ public class CoolingControl extends C2WInteractionRoot {
 	
 	
 	private double _cooling_setpoint = 0;
-	
-	private String _name = "";
 
 	
 	
@@ -478,21 +462,6 @@ public class CoolingControl extends C2WInteractionRoot {
 	* @return the value of the "cooling_setpoint" parameter
 	*/
 	public double get_cooling_setpoint() { return _cooling_setpoint; }
-	
-	
-	/**
-	* Set the value of the "name" parameter to "value" for this parameter.
-	*
-	* @param value the new value for the "name" parameter
-	*/
-	public void set_name( String value ) { _name = value; }
-	
-	/**
-	* Returns the value of the "name" parameter of this interaction.
-	*
-	* @return the value of the "name" parameter
-	*/
-	public String get_name() { return _name; }
 	
 
 
@@ -547,7 +516,6 @@ public class CoolingControl extends C2WInteractionRoot {
 		
 		
 		set_cooling_setpoint( CoolingControl_var.get_cooling_setpoint() );
-		set_name( CoolingControl_var.get_name() );
 	}
 
 
@@ -565,7 +533,6 @@ public class CoolingControl extends C2WInteractionRoot {
 		
 		
 		if (  "cooling_setpoint".equals( datamemberName )  ) return new Double(get_cooling_setpoint());
-		else if (  "name".equals( datamemberName )  ) return get_name();
 		else return super.getParameter( datamemberName );
 	}
 	
@@ -583,7 +550,6 @@ public class CoolingControl extends C2WInteractionRoot {
 				
 		
 		if ( get_cooling_setpoint_handle() == datamemberHandle ) return new Double(get_cooling_setpoint());
-		else if ( get_name_handle() == datamemberHandle ) return get_name();
 		else return super.getParameter( datamemberHandle );
 	}
 	
@@ -593,7 +559,6 @@ public class CoolingControl extends C2WInteractionRoot {
 			
 		
 		if ( param_handle == get_cooling_setpoint_handle() ) set_cooling_setpoint( Double.parseDouble(val) );
-		else if ( param_handle == get_name_handle() ) set_name( val );
 		else retval = super.setParameterAux( param_handle, val );
 		
 		return retval;
@@ -604,8 +569,7 @@ public class CoolingControl extends C2WInteractionRoot {
 		
 			
 		
-		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( Double.parseDouble(val) );
-		else if (  "name".equals( datamemberName )  ) set_name( val );	
+		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( Double.parseDouble(val) );	
 		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
@@ -616,8 +580,7 @@ public class CoolingControl extends C2WInteractionRoot {
 		
 		
 		
-		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( (Double)val );
-		else if (  "name".equals( datamemberName )  ) set_name( (String)val );		
+		if (  "cooling_setpoint".equals( datamemberName )  ) set_cooling_setpoint( (Double)val );		
 		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
@@ -631,8 +594,6 @@ public class CoolingControl extends C2WInteractionRoot {
 		
 			datamembers.add( get_cooling_setpoint_handle(), Double.toString(get_cooling_setpoint()).getBytes() );
 		
-			datamembers.add( get_name_handle(), get_name().getBytes() );
-		
 	
 		return datamembers;
 	}
@@ -645,7 +606,6 @@ public class CoolingControl extends C2WInteractionRoot {
 			
 			
 				_cooling_setpoint = data._cooling_setpoint;
-				_name = data._name;
 			
 		}
 	}

@@ -14,32 +14,23 @@ import org.cpswt.utils.CpswtUtils;
 import org.cpswt.hla.*;
 
 /**
-* The HeatingControl class implements the HeatingControl interaction in the
+* The GLDInteraction class implements the GLDInteraction interaction in the
 * TestFederation simulation.
 */
-public class HeatingControl extends C2WInteractionRoot {
+public class GLDInteraction extends C2WInteractionRoot {
 
-	private static final Logger logger = LogManager.getLogger(HeatingControl.class);
+	private static final Logger logger = LogManager.getLogger(GLDInteraction.class);
 
 	/**
-	* Default constructor -- creates an instance of the HeatingControl interaction
+	* Default constructor -- creates an instance of the GLDInteraction interaction
 	* class with default parameter values.
 	*/
-	public HeatingControl() { }
+	public GLDInteraction() { }
 
 	
 	
-	private static int _heating_setpoint_handle;
 	private static int _name_handle;
 	
-	
-	/**
-	* Returns the handle (RTI assigned) of the "heating_setpoint" parameter of
-	* its containing interaction class.
-	*
-	* @return the handle (RTI assigned) of the "heating_setpoint" parameter
-	*/
-	public static int get_heating_setpoint_handle() { return _heating_setpoint_handle; }
 	
 	/**
 	* Returns the handle (RTI assigned) of the "name" parameter of
@@ -56,7 +47,7 @@ public class HeatingControl extends C2WInteractionRoot {
 	private static int _handle;
 
 	/**
-	* Returns the handle (RTI assigned) of the HeatingControl interaction class.
+	* Returns the handle (RTI assigned) of the GLDInteraction interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the handle of the class pertaining to the reference,\
 	* rather than the handle of the class for the instance referred to by the reference.
@@ -65,27 +56,27 @@ public class HeatingControl extends C2WInteractionRoot {
 	public static int get_handle() { return _handle; }
 
 	/**
-	* Returns the fully-qualified (dot-delimited) name of the HeatingControl
+	* Returns the fully-qualified (dot-delimited) name of the GLDInteraction
 	* interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the name of the class pertaining to the reference,\
 	* rather than the name of the class for the instance referred to by the reference.
 	* For the polymorphic version of this method, use {@link #getClassName()}.
 	*/
-	public static String get_class_name() { return "InteractionRoot.C2WInteractionRoot.HeatingControl"; }
+	public static String get_class_name() { return "InteractionRoot.C2WInteractionRoot.GLDInteraction"; }
 
 	/**
 	* Returns the simple name (the last name in the dot-delimited fully-qualified
-	* class name) of the HeatingControl interaction class.
+	* class name) of the GLDInteraction interaction class.
 	*/
-	public static String get_simple_class_name() { return "HeatingControl"; }
+	public static String get_simple_class_name() { return "GLDInteraction"; }
 
 	private static Set< String > _datamemberNames = new HashSet< String >();
 	private static Set< String > _allDatamemberNames = new HashSet< String >();
 
 	/**
 	* Returns a set containing the names of all of the non-hidden parameters in the
-	* HeatingControl interaction class.
+	* GLDInteraction interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
@@ -99,7 +90,7 @@ public class HeatingControl extends C2WInteractionRoot {
 
 	/**
 	* Returns a set containing the names of all of the parameters in the
-	* HeatingControl interaction class.
+	* GLDInteraction interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
@@ -114,17 +105,16 @@ public class HeatingControl extends C2WInteractionRoot {
 	
 
 	static {
-		_classNameSet.add("InteractionRoot.C2WInteractionRoot.HeatingControl");
-		_classNameClassMap.put("InteractionRoot.C2WInteractionRoot.HeatingControl", HeatingControl.class);
+		_classNameSet.add("InteractionRoot.C2WInteractionRoot.GLDInteraction");
+		_classNameClassMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction", GLDInteraction.class);
 		
-		_datamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.HeatingControl", _datamemberNames);
-		_allDatamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.HeatingControl", _allDatamemberNames);
+		_datamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction", _datamemberNames);
+		_allDatamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction", _allDatamemberNames);
 
 		
 		
 		
 		
-		_datamemberNames.add("heating_setpoint");
 		_datamemberNames.add("name");
 		
 		
@@ -132,13 +122,11 @@ public class HeatingControl extends C2WInteractionRoot {
 		
 		_allDatamemberNames.add("actualLogicalGenerationTime");
 		_allDatamemberNames.add("federateFilter");
-		_allDatamemberNames.add("heating_setpoint");
 		_allDatamemberNames.add("name");
 		_allDatamemberNames.add("originFed");
 		_allDatamemberNames.add("sourceFed");
 		
 		
-		_datamemberTypeMap.put("heating_setpoint", "double");
 		_datamemberTypeMap.put("name", "String");
 	
 	
@@ -146,7 +134,7 @@ public class HeatingControl extends C2WInteractionRoot {
 	}
 
 
-	private static String initErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.HeatingControl:  could not initialize:  ";
+	private static String initErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction:  could not initialize:  ";
 	protected static void init(RTIambassador rti) {
 		if (_isInitialized) return;
 		_isInitialized = true;
@@ -156,7 +144,7 @@ public class HeatingControl extends C2WInteractionRoot {
 		boolean isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
-				_handle = rti.getInteractionClassHandle("InteractionRoot.C2WInteractionRoot.HeatingControl");
+				_handle = rti.getInteractionClassHandle("InteractionRoot.C2WInteractionRoot.GLDInteraction");
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -172,16 +160,15 @@ public class HeatingControl extends C2WInteractionRoot {
 			}
 		}
 
-		_classNameHandleMap.put("InteractionRoot.C2WInteractionRoot.HeatingControl", get_handle());
-		_classHandleNameMap.put(get_handle(), "InteractionRoot.C2WInteractionRoot.HeatingControl");
-		_classHandleSimpleNameMap.put(get_handle(), "HeatingControl");
+		_classNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction", get_handle());
+		_classHandleNameMap.put(get_handle(), "InteractionRoot.C2WInteractionRoot.GLDInteraction");
+		_classHandleSimpleNameMap.put(get_handle(), "GLDInteraction");
 
 		
 		isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
 							
-				_heating_setpoint_handle = rti.getParameterHandle("heating_setpoint", get_handle());			
 				_name_handle = rti.getParameterHandle("name", get_handle());
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
@@ -203,20 +190,18 @@ public class HeatingControl extends C2WInteractionRoot {
 		}
 			
 			
-		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.HeatingControl,heating_setpoint", get_heating_setpoint_handle());
-		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.HeatingControl,name", get_name_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GLDInteraction,name", get_name_handle());
 			
 			
-		_datamemberHandleNameMap.put(get_heating_setpoint_handle(), "heating_setpoint");
 		_datamemberHandleNameMap.put(get_name_handle(), "name");
 		
 	}
 
 	private static boolean _isPublished = false;
-	private static String publishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.HeatingControl:  could not publish:  ";
+	private static String publishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction:  could not publish:  ";
 
 	/**
-	* Publishes the HeatingControl interaction class for a federate.
+	* Publishes the GLDInteraction interaction class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -251,9 +236,9 @@ public class HeatingControl extends C2WInteractionRoot {
 		_isPublished = true;
 	}
 
-	private static String unpublishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.HeatingControl:  could not unpublish:  ";
+	private static String unpublishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction:  could not unpublish:  ";
 	/**
-	* Unpublishes the HeatingControl interaction class for a federate.
+	* Unpublishes the GLDInteraction interaction class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -290,9 +275,9 @@ public class HeatingControl extends C2WInteractionRoot {
 	}
 
 	private static boolean _isSubscribed = false;
-	private static String subscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.HeatingControl:  could not subscribe:  ";
+	private static String subscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction:  could not subscribe:  ";
 	/**
-	* Subscribes a federate to the HeatingControl interaction class.
+	* Subscribes a federate to the GLDInteraction interaction class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -326,9 +311,9 @@ public class HeatingControl extends C2WInteractionRoot {
 		_isSubscribed = true;
 	}
 
-	private static String unsubscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.HeatingControl:  could not unsubscribe:  ";
+	private static String unsubscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDInteraction:  could not unsubscribe:  ";
 	/**
-	* Unsubscribes a federate from the HeatingControl interaction class.
+	* Unsubscribes a federate from the GLDInteraction interaction class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -366,12 +351,12 @@ public class HeatingControl extends C2WInteractionRoot {
 
 	/**
 	* Return true if "handle" is equal to the handle (RTI assigned) of this class
-	* (that is, the HeatingControl interaction class).
+	* (that is, the GLDInteraction interaction class).
 	*
 	* @param handle handle to compare to the value of the handle (RTI assigned) of
-	* this class (the HeatingControl interaction class).
+	* this class (the GLDInteraction interaction class).
 	* @return "true" if "handle" matches the value of the handle of this class
-	* (that is, the HeatingControl interaction class).
+	* (that is, the GLDInteraction interaction class).
 	*/
 	public static boolean match(int handle) { return handle == get_handle(); }
 
@@ -446,11 +431,10 @@ public class HeatingControl extends C2WInteractionRoot {
 	
 
 	public String toString() {
-		return "HeatingControl("
+		return "GLDInteraction("
 			
 			
-			+ "heating_setpoint:" + get_heating_setpoint()
-			+ "," + "name:" + get_name()
+			+ "name:" + get_name()
 			+ ")";
 	}
 	
@@ -459,25 +443,8 @@ public class HeatingControl extends C2WInteractionRoot {
 
 	
 	
-	private double _heating_setpoint = 0;
-	
 	private String _name = "";
 
-	
-	
-	/**
-	* Set the value of the "heating_setpoint" parameter to "value" for this parameter.
-	*
-	* @param value the new value for the "heating_setpoint" parameter
-	*/
-	public void set_heating_setpoint( double value ) { _heating_setpoint = value; }
-	
-	/**
-	* Returns the value of the "heating_setpoint" parameter of this interaction.
-	*
-	* @return the value of the "heating_setpoint" parameter
-	*/
-	public double get_heating_setpoint() { return _heating_setpoint; }
 	
 	
 	/**
@@ -496,58 +463,57 @@ public class HeatingControl extends C2WInteractionRoot {
 	
 
 
-	protected HeatingControl( ReceivedInteraction datamemberMap, boolean initFlag ) {
+	protected GLDInteraction( ReceivedInteraction datamemberMap, boolean initFlag ) {
 		super( datamemberMap, false );
 		if ( initFlag ) setParameters( datamemberMap );
 	}
 	
-	protected HeatingControl( ReceivedInteraction datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
+	protected GLDInteraction( ReceivedInteraction datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
 		super( datamemberMap, logicalTime, false );
 		if ( initFlag ) setParameters( datamemberMap );
 	}
 
 
 	/**
-	* Creates an instance of the HeatingControl interaction class, using
+	* Creates an instance of the GLDInteraction interaction class, using
 	* "datamemberMap" to initialize its parameter values.
 	* "datamemberMap" is usually acquired as an argument to an RTI federate
 	* callback method, such as "receiveInteraction".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* parameters of this new HeatingControl interaction class instance
+	* parameters of this new GLDInteraction interaction class instance
 	*/
-	public HeatingControl( ReceivedInteraction datamemberMap ) {
+	public GLDInteraction( ReceivedInteraction datamemberMap ) {
 		this( datamemberMap, true );
 	}
 	
 	/**
-	* Like {@link #HeatingControl( ReceivedInteraction datamemberMap )}, except this
-	* new HeatingControl interaction class instance is given a timestamp of
+	* Like {@link #GLDInteraction( ReceivedInteraction datamemberMap )}, except this
+	* new GLDInteraction interaction class instance is given a timestamp of
 	* "logicalTime".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* parameters of this new HeatingControl interaction class instance
-	* @param logicalTime timestamp for this new HeatingControl interaction class
+	* parameters of this new GLDInteraction interaction class instance
+	* @param logicalTime timestamp for this new GLDInteraction interaction class
 	* instance
 	*/
-	public HeatingControl( ReceivedInteraction datamemberMap, LogicalTime logicalTime ) {
+	public GLDInteraction( ReceivedInteraction datamemberMap, LogicalTime logicalTime ) {
 		this( datamemberMap, logicalTime, true );
 	}
 
 	/**
-	* Creates a new HeatingControl interaction class instance that is a duplicate
-	* of the instance referred to by HeatingControl_var.
+	* Creates a new GLDInteraction interaction class instance that is a duplicate
+	* of the instance referred to by GLDInteraction_var.
 	*
-	* @param HeatingControl_var HeatingControl interaction class instance of which
-	* this newly created HeatingControl interaction class instance will be a
+	* @param GLDInteraction_var GLDInteraction interaction class instance of which
+	* this newly created GLDInteraction interaction class instance will be a
 	* duplicate
 	*/
-	public HeatingControl( HeatingControl HeatingControl_var ) {
-		super( HeatingControl_var );
+	public GLDInteraction( GLDInteraction GLDInteraction_var ) {
+		super( GLDInteraction_var );
 		
 		
-		set_heating_setpoint( HeatingControl_var.get_heating_setpoint() );
-		set_name( HeatingControl_var.get_name() );
+		set_name( GLDInteraction_var.get_name() );
 	}
 
 
@@ -564,8 +530,7 @@ public class HeatingControl extends C2WInteractionRoot {
 		
 		
 		
-		if (  "heating_setpoint".equals( datamemberName )  ) return new Double(get_heating_setpoint());
-		else if (  "name".equals( datamemberName )  ) return get_name();
+		if (  "name".equals( datamemberName )  ) return get_name();
 		else return super.getParameter( datamemberName );
 	}
 	
@@ -582,8 +547,7 @@ public class HeatingControl extends C2WInteractionRoot {
 		
 				
 		
-		if ( get_heating_setpoint_handle() == datamemberHandle ) return new Double(get_heating_setpoint());
-		else if ( get_name_handle() == datamemberHandle ) return get_name();
+		if ( get_name_handle() == datamemberHandle ) return get_name();
 		else return super.getParameter( datamemberHandle );
 	}
 	
@@ -592,8 +556,7 @@ public class HeatingControl extends C2WInteractionRoot {
 		
 			
 		
-		if ( param_handle == get_heating_setpoint_handle() ) set_heating_setpoint( Double.parseDouble(val) );
-		else if ( param_handle == get_name_handle() ) set_name( val );
+		if ( param_handle == get_name_handle() ) set_name( val );
 		else retval = super.setParameterAux( param_handle, val );
 		
 		return retval;
@@ -604,8 +567,7 @@ public class HeatingControl extends C2WInteractionRoot {
 		
 			
 		
-		if (  "heating_setpoint".equals( datamemberName )  ) set_heating_setpoint( Double.parseDouble(val) );
-		else if (  "name".equals( datamemberName )  ) set_name( val );	
+		if (  "name".equals( datamemberName )  ) set_name( val );	
 		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
@@ -616,8 +578,7 @@ public class HeatingControl extends C2WInteractionRoot {
 		
 		
 		
-		if (  "heating_setpoint".equals( datamemberName )  ) set_heating_setpoint( (Double)val );
-		else if (  "name".equals( datamemberName )  ) set_name( (String)val );		
+		if (  "name".equals( datamemberName )  ) set_name( (String)val );		
 		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
@@ -629,8 +590,6 @@ public class HeatingControl extends C2WInteractionRoot {
 	
 		
 		
-			datamembers.add( get_heating_setpoint_handle(), Double.toString(get_heating_setpoint()).getBytes() );
-		
 			datamembers.add( get_name_handle(), get_name().getBytes() );
 		
 	
@@ -640,11 +599,10 @@ public class HeatingControl extends C2WInteractionRoot {
 	
 	public void copyFrom( Object object ) {
 		super.copyFrom( object );
-		if ( object instanceof HeatingControl ) {
-			HeatingControl data = (HeatingControl)object;
+		if ( object instanceof GLDInteraction ) {
+			GLDInteraction data = (GLDInteraction)object;
 			
 			
-				_heating_setpoint = data._heating_setpoint;
 				_name = data._name;
 			
 		}

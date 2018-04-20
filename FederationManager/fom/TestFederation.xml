@@ -39,6 +39,19 @@
             </attribute>
         </objectClass>
         <objectClass>
+            <name>GLDObject</name>
+            <sharing>PublishSubscribe</sharing>
+            <semantics></semantics>
+
+            <attribute>
+                <name>name</name>
+                <dataType>String</dataType>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics></semantics>
+            </attribute>
+        <objectClass>
             <name>CoolingControlObject</name>
             <sharing>PublishSubscribe</sharing>
             <semantics></semantics>
@@ -54,20 +67,6 @@
 
             <attribute>
                 <name>name</name>
-                <dataType>String</dataType>
-                <sharing>PublishSubscribe</sharing>
-                <transportation>HLAreliable</transportation>
-                <order>TimeStamp</order>
-                <semantics></semantics>
-            </attribute>
-        </objectClass>
-        <objectClass>
-            <name>GlobalVariablesObject</name>
-            <sharing>PublishSubscribe</sharing>
-            <semantics></semantics>
-
-            <attribute>
-                <name>clock</name>
                 <dataType>String</dataType>
                 <sharing>PublishSubscribe</sharing>
                 <transportation>HLAreliable</transportation>
@@ -115,6 +114,7 @@
                 <order>TimeStamp</order>
                 <semantics></semantics>
             </attribute>
+        </objectClass>
         </objectClass>
         </objectClass>
     </objects>
@@ -724,7 +724,7 @@
         </interactionClass>
         </interactionClass>
         <interactionClass>
-            <name>CoolingControl</name>
+            <name>GLDClock</name>
             <sharing>PublishSubscribe</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
@@ -736,7 +736,43 @@
             </parameter>
 
             <parameter> 
-                <name>cooling_setpoint</name>
+                <name>federateFilter</name>
+                <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>originFed</name>
+                <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>sourceFed</name>
+                <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>timeStamp</name>
+                <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>unixTime</name>
+                <dataType>long</dataType>
+                <semantics></semantics>
+            </parameter>
+        </interactionClass>
+        <interactionClass>
+            <name>GLDInteraction</name>
+            <sharing>PublishSubscribe</sharing>
+            <transportation>HLAreliable</transportation>
+            <order>TimeStamp</order>
+
+            <parameter> 
+                <name>actualLogicalGenerationTime</name>
                 <dataType>double</dataType>
                 <semantics></semantics>
             </parameter>
@@ -764,9 +800,8 @@
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
-        </interactionClass>
         <interactionClass>
-            <name>GlobalVariables</name>
+            <name>CoolingControl</name>
             <sharing>PublishSubscribe</sharing>
             <transportation>HLAreliable</transportation>
             <order>TimeStamp</order>
@@ -778,13 +813,19 @@
             </parameter>
 
             <parameter> 
-                <name>clock</name>
-                <dataType>String</dataType>
+                <name>cooling_setpoint</name>
+                <dataType>double</dataType>
                 <semantics></semantics>
             </parameter>
 
             <parameter> 
                 <name>federateFilter</name>
+                <dataType>String</dataType>
+                <semantics></semantics>
+            </parameter>
+
+            <parameter> 
+                <name>name</name>
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
@@ -854,6 +895,7 @@
                 <dataType>String</dataType>
                 <semantics></semantics>
             </parameter>
+        </interactionClass>
         </interactionClass>
         </interactionClass>
         </interactionClass>

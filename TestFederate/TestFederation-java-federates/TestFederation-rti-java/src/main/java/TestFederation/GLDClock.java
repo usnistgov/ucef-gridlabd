@@ -14,31 +14,40 @@ import org.cpswt.utils.CpswtUtils;
 import org.cpswt.hla.*;
 
 /**
-* The GlobalVariables class implements the GlobalVariables interaction in the
+* The GLDClock class implements the GLDClock interaction in the
 * TestFederation simulation.
 */
-public class GlobalVariables extends C2WInteractionRoot {
+public class GLDClock extends C2WInteractionRoot {
 
-	private static final Logger logger = LogManager.getLogger(GlobalVariables.class);
+	private static final Logger logger = LogManager.getLogger(GLDClock.class);
 
 	/**
-	* Default constructor -- creates an instance of the GlobalVariables interaction
+	* Default constructor -- creates an instance of the GLDClock interaction
 	* class with default parameter values.
 	*/
-	public GlobalVariables() { }
+	public GLDClock() { }
 
 	
 	
-	private static int _clock_handle;
+	private static int _timeStamp_handle;
+	private static int _unixTime_handle;
 	
 	
 	/**
-	* Returns the handle (RTI assigned) of the "clock" parameter of
+	* Returns the handle (RTI assigned) of the "timeStamp" parameter of
 	* its containing interaction class.
 	*
-	* @return the handle (RTI assigned) of the "clock" parameter
+	* @return the handle (RTI assigned) of the "timeStamp" parameter
 	*/
-	public static int get_clock_handle() { return _clock_handle; }
+	public static int get_timeStamp_handle() { return _timeStamp_handle; }
+	
+	/**
+	* Returns the handle (RTI assigned) of the "unixTime" parameter of
+	* its containing interaction class.
+	*
+	* @return the handle (RTI assigned) of the "unixTime" parameter
+	*/
+	public static int get_unixTime_handle() { return _unixTime_handle; }
 	
 	
 	
@@ -47,7 +56,7 @@ public class GlobalVariables extends C2WInteractionRoot {
 	private static int _handle;
 
 	/**
-	* Returns the handle (RTI assigned) of the GlobalVariables interaction class.
+	* Returns the handle (RTI assigned) of the GLDClock interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the handle of the class pertaining to the reference,\
 	* rather than the handle of the class for the instance referred to by the reference.
@@ -56,27 +65,27 @@ public class GlobalVariables extends C2WInteractionRoot {
 	public static int get_handle() { return _handle; }
 
 	/**
-	* Returns the fully-qualified (dot-delimited) name of the GlobalVariables
+	* Returns the fully-qualified (dot-delimited) name of the GLDClock
 	* interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return the name of the class pertaining to the reference,\
 	* rather than the name of the class for the instance referred to by the reference.
 	* For the polymorphic version of this method, use {@link #getClassName()}.
 	*/
-	public static String get_class_name() { return "InteractionRoot.C2WInteractionRoot.GlobalVariables"; }
+	public static String get_class_name() { return "InteractionRoot.C2WInteractionRoot.GLDClock"; }
 
 	/**
 	* Returns the simple name (the last name in the dot-delimited fully-qualified
-	* class name) of the GlobalVariables interaction class.
+	* class name) of the GLDClock interaction class.
 	*/
-	public static String get_simple_class_name() { return "GlobalVariables"; }
+	public static String get_simple_class_name() { return "GLDClock"; }
 
 	private static Set< String > _datamemberNames = new HashSet< String >();
 	private static Set< String > _allDatamemberNames = new HashSet< String >();
 
 	/**
 	* Returns a set containing the names of all of the non-hidden parameters in the
-	* GlobalVariables interaction class.
+	* GLDClock interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
@@ -90,7 +99,7 @@ public class GlobalVariables extends C2WInteractionRoot {
 
 	/**
 	* Returns a set containing the names of all of the parameters in the
-	* GlobalVariables interaction class.
+	* GLDClock interaction class.
 	* Note: As this is a static method, it is NOT polymorphic, and so, if called on
 	* a reference will return a set of parameter names pertaining to the reference,\
 	* rather than the parameter names of the class for the instance referred to by
@@ -105,36 +114,39 @@ public class GlobalVariables extends C2WInteractionRoot {
 	
 
 	static {
-		_classNameSet.add("InteractionRoot.C2WInteractionRoot.GlobalVariables");
-		_classNameClassMap.put("InteractionRoot.C2WInteractionRoot.GlobalVariables", GlobalVariables.class);
+		_classNameSet.add("InteractionRoot.C2WInteractionRoot.GLDClock");
+		_classNameClassMap.put("InteractionRoot.C2WInteractionRoot.GLDClock", GLDClock.class);
 		
-		_datamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GlobalVariables", _datamemberNames);
-		_allDatamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GlobalVariables", _allDatamemberNames);
+		_datamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GLDClock", _datamemberNames);
+		_allDatamemberClassNameSetMap.put("InteractionRoot.C2WInteractionRoot.GLDClock", _allDatamemberNames);
 
 		
 		
 		
-		_datamemberNames.add("clock");
 		
 		
 		
+		_datamemberNames.add("timeStamp");
+		_datamemberNames.add("unixTime");
 		
 		
 		_allDatamemberNames.add("actualLogicalGenerationTime");
-		_allDatamemberNames.add("clock");
 		_allDatamemberNames.add("federateFilter");
 		_allDatamemberNames.add("originFed");
 		_allDatamemberNames.add("sourceFed");
+		_allDatamemberNames.add("timeStamp");
+		_allDatamemberNames.add("unixTime");
 		
 		
-		_datamemberTypeMap.put("clock", "String");
+		_datamemberTypeMap.put("timeStamp", "String");
+		_datamemberTypeMap.put("unixTime", "long");
 	
 	
 
 	}
 
 
-	private static String initErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GlobalVariables:  could not initialize:  ";
+	private static String initErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDClock:  could not initialize:  ";
 	protected static void init(RTIambassador rti) {
 		if (_isInitialized) return;
 		_isInitialized = true;
@@ -144,7 +156,7 @@ public class GlobalVariables extends C2WInteractionRoot {
 		boolean isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
-				_handle = rti.getInteractionClassHandle("InteractionRoot.C2WInteractionRoot.GlobalVariables");
+				_handle = rti.getInteractionClassHandle("InteractionRoot.C2WInteractionRoot.GLDClock");
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -160,16 +172,17 @@ public class GlobalVariables extends C2WInteractionRoot {
 			}
 		}
 
-		_classNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GlobalVariables", get_handle());
-		_classHandleNameMap.put(get_handle(), "InteractionRoot.C2WInteractionRoot.GlobalVariables");
-		_classHandleSimpleNameMap.put(get_handle(), "GlobalVariables");
+		_classNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GLDClock", get_handle());
+		_classHandleNameMap.put(get_handle(), "InteractionRoot.C2WInteractionRoot.GLDClock");
+		_classHandleSimpleNameMap.put(get_handle(), "GLDClock");
 
 		
 		isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
 							
-				_clock_handle = rti.getParameterHandle("clock", get_handle());
+				_timeStamp_handle = rti.getParameterHandle("timeStamp", get_handle());			
+				_unixTime_handle = rti.getParameterHandle("unixTime", get_handle());
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -190,18 +203,20 @@ public class GlobalVariables extends C2WInteractionRoot {
 		}
 			
 			
-		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GlobalVariables,clock", get_clock_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GLDClock,timeStamp", get_timeStamp_handle());
+		_datamemberNameHandleMap.put("InteractionRoot.C2WInteractionRoot.GLDClock,unixTime", get_unixTime_handle());
 			
 			
-		_datamemberHandleNameMap.put(get_clock_handle(), "clock");
+		_datamemberHandleNameMap.put(get_timeStamp_handle(), "timeStamp");
+		_datamemberHandleNameMap.put(get_unixTime_handle(), "unixTime");
 		
 	}
 
 	private static boolean _isPublished = false;
-	private static String publishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GlobalVariables:  could not publish:  ";
+	private static String publishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDClock:  could not publish:  ";
 
 	/**
-	* Publishes the GlobalVariables interaction class for a federate.
+	* Publishes the GLDClock interaction class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -236,9 +251,9 @@ public class GlobalVariables extends C2WInteractionRoot {
 		_isPublished = true;
 	}
 
-	private static String unpublishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GlobalVariables:  could not unpublish:  ";
+	private static String unpublishErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDClock:  could not unpublish:  ";
 	/**
-	* Unpublishes the GlobalVariables interaction class for a federate.
+	* Unpublishes the GLDClock interaction class for a federate.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -275,9 +290,9 @@ public class GlobalVariables extends C2WInteractionRoot {
 	}
 
 	private static boolean _isSubscribed = false;
-	private static String subscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GlobalVariables:  could not subscribe:  ";
+	private static String subscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDClock:  could not subscribe:  ";
 	/**
-	* Subscribes a federate to the GlobalVariables interaction class.
+	* Subscribes a federate to the GLDClock interaction class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -311,9 +326,9 @@ public class GlobalVariables extends C2WInteractionRoot {
 		_isSubscribed = true;
 	}
 
-	private static String unsubscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GlobalVariables:  could not unsubscribe:  ";
+	private static String unsubscribeErrorMessage = "Error:  InteractionRoot.C2WInteractionRoot.GLDClock:  could not unsubscribe:  ";
 	/**
-	* Unsubscribes a federate from the GlobalVariables interaction class.
+	* Unsubscribes a federate from the GLDClock interaction class.
 	*
 	* @param rti handle to the Local RTI Component
 	*/
@@ -351,12 +366,12 @@ public class GlobalVariables extends C2WInteractionRoot {
 
 	/**
 	* Return true if "handle" is equal to the handle (RTI assigned) of this class
-	* (that is, the GlobalVariables interaction class).
+	* (that is, the GLDClock interaction class).
 	*
 	* @param handle handle to compare to the value of the handle (RTI assigned) of
-	* this class (the GlobalVariables interaction class).
+	* this class (the GLDClock interaction class).
 	* @return "true" if "handle" matches the value of the handle of this class
-	* (that is, the GlobalVariables interaction class).
+	* (that is, the GLDClock interaction class).
 	*/
 	public static boolean match(int handle) { return handle == get_handle(); }
 
@@ -431,10 +446,11 @@ public class GlobalVariables extends C2WInteractionRoot {
 	
 
 	public String toString() {
-		return "GlobalVariables("
+		return "GLDClock("
 			
 			
-			+ "clock:" + get_clock()
+			+ "timeStamp:" + get_timeStamp()
+			+ "," + "unixTime:" + get_unixTime()
 			+ ")";
 	}
 	
@@ -443,77 +459,95 @@ public class GlobalVariables extends C2WInteractionRoot {
 
 	
 	
-	private String _clock = "";
+	private String _timeStamp = "";
+	
+	private long _unixTime = 0;
 
 	
 	
 	/**
-	* Set the value of the "clock" parameter to "value" for this parameter.
+	* Set the value of the "timeStamp" parameter to "value" for this parameter.
 	*
-	* @param value the new value for the "clock" parameter
+	* @param value the new value for the "timeStamp" parameter
 	*/
-	public void set_clock( String value ) { _clock = value; }
+	public void set_timeStamp( String value ) { _timeStamp = value; }
 	
 	/**
-	* Returns the value of the "clock" parameter of this interaction.
+	* Returns the value of the "timeStamp" parameter of this interaction.
 	*
-	* @return the value of the "clock" parameter
+	* @return the value of the "timeStamp" parameter
 	*/
-	public String get_clock() { return _clock; }
+	public String get_timeStamp() { return _timeStamp; }
+	
+	
+	/**
+	* Set the value of the "unixTime" parameter to "value" for this parameter.
+	*
+	* @param value the new value for the "unixTime" parameter
+	*/
+	public void set_unixTime( long value ) { _unixTime = value; }
+	
+	/**
+	* Returns the value of the "unixTime" parameter of this interaction.
+	*
+	* @return the value of the "unixTime" parameter
+	*/
+	public long get_unixTime() { return _unixTime; }
 	
 
 
-	protected GlobalVariables( ReceivedInteraction datamemberMap, boolean initFlag ) {
+	protected GLDClock( ReceivedInteraction datamemberMap, boolean initFlag ) {
 		super( datamemberMap, false );
 		if ( initFlag ) setParameters( datamemberMap );
 	}
 	
-	protected GlobalVariables( ReceivedInteraction datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
+	protected GLDClock( ReceivedInteraction datamemberMap, LogicalTime logicalTime, boolean initFlag ) {
 		super( datamemberMap, logicalTime, false );
 		if ( initFlag ) setParameters( datamemberMap );
 	}
 
 
 	/**
-	* Creates an instance of the GlobalVariables interaction class, using
+	* Creates an instance of the GLDClock interaction class, using
 	* "datamemberMap" to initialize its parameter values.
 	* "datamemberMap" is usually acquired as an argument to an RTI federate
 	* callback method, such as "receiveInteraction".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* parameters of this new GlobalVariables interaction class instance
+	* parameters of this new GLDClock interaction class instance
 	*/
-	public GlobalVariables( ReceivedInteraction datamemberMap ) {
+	public GLDClock( ReceivedInteraction datamemberMap ) {
 		this( datamemberMap, true );
 	}
 	
 	/**
-	* Like {@link #GlobalVariables( ReceivedInteraction datamemberMap )}, except this
-	* new GlobalVariables interaction class instance is given a timestamp of
+	* Like {@link #GLDClock( ReceivedInteraction datamemberMap )}, except this
+	* new GLDClock interaction class instance is given a timestamp of
 	* "logicalTime".
 	*
 	* @param datamemberMap data structure containing initial values for the
-	* parameters of this new GlobalVariables interaction class instance
-	* @param logicalTime timestamp for this new GlobalVariables interaction class
+	* parameters of this new GLDClock interaction class instance
+	* @param logicalTime timestamp for this new GLDClock interaction class
 	* instance
 	*/
-	public GlobalVariables( ReceivedInteraction datamemberMap, LogicalTime logicalTime ) {
+	public GLDClock( ReceivedInteraction datamemberMap, LogicalTime logicalTime ) {
 		this( datamemberMap, logicalTime, true );
 	}
 
 	/**
-	* Creates a new GlobalVariables interaction class instance that is a duplicate
-	* of the instance referred to by GlobalVariables_var.
+	* Creates a new GLDClock interaction class instance that is a duplicate
+	* of the instance referred to by GLDClock_var.
 	*
-	* @param GlobalVariables_var GlobalVariables interaction class instance of which
-	* this newly created GlobalVariables interaction class instance will be a
+	* @param GLDClock_var GLDClock interaction class instance of which
+	* this newly created GLDClock interaction class instance will be a
 	* duplicate
 	*/
-	public GlobalVariables( GlobalVariables GlobalVariables_var ) {
-		super( GlobalVariables_var );
+	public GLDClock( GLDClock GLDClock_var ) {
+		super( GLDClock_var );
 		
 		
-		set_clock( GlobalVariables_var.get_clock() );
+		set_timeStamp( GLDClock_var.get_timeStamp() );
+		set_unixTime( GLDClock_var.get_unixTime() );
 	}
 
 
@@ -530,7 +564,8 @@ public class GlobalVariables extends C2WInteractionRoot {
 		
 		
 		
-		if (  "clock".equals( datamemberName )  ) return get_clock();
+		if (  "timeStamp".equals( datamemberName )  ) return get_timeStamp();
+		else if (  "unixTime".equals( datamemberName )  ) return new Long(get_unixTime());
 		else return super.getParameter( datamemberName );
 	}
 	
@@ -547,7 +582,8 @@ public class GlobalVariables extends C2WInteractionRoot {
 		
 				
 		
-		if ( get_clock_handle() == datamemberHandle ) return get_clock();
+		if ( get_timeStamp_handle() == datamemberHandle ) return get_timeStamp();
+		else if ( get_unixTime_handle() == datamemberHandle ) return new Long(get_unixTime());
 		else return super.getParameter( datamemberHandle );
 	}
 	
@@ -556,7 +592,8 @@ public class GlobalVariables extends C2WInteractionRoot {
 		
 			
 		
-		if ( param_handle == get_clock_handle() ) set_clock( val );
+		if ( param_handle == get_timeStamp_handle() ) set_timeStamp( val );
+		else if ( param_handle == get_unixTime_handle() ) set_unixTime( Long.parseLong(val) );
 		else retval = super.setParameterAux( param_handle, val );
 		
 		return retval;
@@ -567,7 +604,8 @@ public class GlobalVariables extends C2WInteractionRoot {
 		
 			
 		
-		if (  "clock".equals( datamemberName )  ) set_clock( val );	
+		if (  "timeStamp".equals( datamemberName )  ) set_timeStamp( val );
+		else if (  "unixTime".equals( datamemberName )  ) set_unixTime( Long.parseLong(val) );	
 		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
@@ -578,7 +616,8 @@ public class GlobalVariables extends C2WInteractionRoot {
 		
 		
 		
-		if (  "clock".equals( datamemberName )  ) set_clock( (String)val );		
+		if (  "timeStamp".equals( datamemberName )  ) set_timeStamp( (String)val );
+		else if (  "unixTime".equals( datamemberName )  ) set_unixTime( (Long)val );		
 		else retval = super.setParameterAux( datamemberName, val );
 		
 		return retval;
@@ -590,7 +629,9 @@ public class GlobalVariables extends C2WInteractionRoot {
 	
 		
 		
-			datamembers.add( get_clock_handle(), get_clock().getBytes() );
+			datamembers.add( get_timeStamp_handle(), get_timeStamp().getBytes() );
+		
+			datamembers.add( get_unixTime_handle(), Long.toString(get_unixTime()).getBytes() );
 		
 	
 		return datamembers;
@@ -599,11 +640,12 @@ public class GlobalVariables extends C2WInteractionRoot {
 	
 	public void copyFrom( Object object ) {
 		super.copyFrom( object );
-		if ( object instanceof GlobalVariables ) {
-			GlobalVariables data = (GlobalVariables)object;
+		if ( object instanceof GLDClock ) {
+			GLDClock data = (GLDClock)object;
 			
 			
-				_clock = data._clock;
+				_timeStamp = data._timeStamp;
+				_unixTime = data._unixTime;
 			
 		}
 	}

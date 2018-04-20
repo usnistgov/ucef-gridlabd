@@ -17,7 +17,7 @@ import org.cpswt.hla.*;
 * The HouseObject class implements the HouseObject object in the
 * TestFederation simulation.
 */
-public class HouseObject extends ObjectRoot {
+public class HouseObject extends GLDObject {
 
 	private static final Logger logger = LogManager.getLogger(HouseObject.class);
 
@@ -32,7 +32,6 @@ public class HouseObject extends ObjectRoot {
 	private static int _air_temperature_handle;
 	private static int _compressor_count_handle;
 	private static int _compressor_on_handle;
-	private static int _name_handle;
 	
 	
 	/**
@@ -59,14 +58,6 @@ public class HouseObject extends ObjectRoot {
 	*/
 	public static int get_compressor_on_handle() { return _compressor_on_handle; }
 	
-	/**
-	* Returns the handle (RTI assigned) of the "name" attribute of
-	* its containing object class.
-	*
-	* @return the handle (RTI assigned) of the "name" attribute
-	*/
-	public static int get_name_handle() { return _name_handle; }
-	
 	
 	
 	private static boolean _isInitialized = false;
@@ -90,7 +81,7 @@ public class HouseObject extends ObjectRoot {
 	* rather than the name of the class for the instance referred to by the reference.
 	* For the polymorphic version of this method, use {@link #getClassName()}.
 	*/
-	public static String get_class_name() { return "ObjectRoot.HouseObject"; }
+	public static String get_class_name() { return "ObjectRoot.GLDObject.HouseObject"; }
 
 	/**
 	* Returns the simple name (the last name in the dot-delimited fully-qualified
@@ -139,18 +130,18 @@ public class HouseObject extends ObjectRoot {
 	
 
 	static {
-		_classNameSet.add("ObjectRoot.HouseObject");
-		_classNameClassMap.put("ObjectRoot.HouseObject", HouseObject.class);
+		_classNameSet.add("ObjectRoot.GLDObject.HouseObject");
+		_classNameClassMap.put("ObjectRoot.GLDObject.HouseObject", HouseObject.class);
 		
-		_datamemberClassNameSetMap.put("ObjectRoot.HouseObject", _datamemberNames);
-		_allDatamemberClassNameSetMap.put("ObjectRoot.HouseObject", _allDatamemberNames);
+		_datamemberClassNameSetMap.put("ObjectRoot.GLDObject.HouseObject", _datamemberNames);
+		_allDatamemberClassNameSetMap.put("ObjectRoot.GLDObject.HouseObject", _allDatamemberNames);
 
 		
 		
 		_datamemberNames.add("air_temperature");
 		_datamemberNames.add("compressor_count");
 		_datamemberNames.add("compressor_on");
-		_datamemberNames.add("name");
+		
 		
 		
 		_allDatamemberNames.add("air_temperature");
@@ -162,32 +153,31 @@ public class HouseObject extends ObjectRoot {
 		_datamemberTypeMap.put("air_temperature", "double");
 		_datamemberTypeMap.put("compressor_count", "int");
 		_datamemberTypeMap.put("compressor_on", "boolean");
-		_datamemberTypeMap.put("name", "String");
 	
 
-		_classNamePublishAttributeNameMap.put("ObjectRoot.HouseObject", _publishAttributeNameSet);
+		_classNamePublishAttributeNameMap.put("ObjectRoot.GLDObject.HouseObject", _publishAttributeNameSet);
 		_publishedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNamePublishedAttributeMap.put("ObjectRoot.HouseObject", _publishedAttributeHandleSet);
+		_classNamePublishedAttributeMap.put("ObjectRoot.GLDObject.HouseObject", _publishedAttributeHandleSet);
 
-		_classNameSubscribeAttributeNameMap.put("ObjectRoot.HouseObject", _subscribeAttributeNameSet);
+		_classNameSubscribeAttributeNameMap.put("ObjectRoot.GLDObject.HouseObject", _subscribeAttributeNameSet);
 		_subscribedAttributeHandleSet = _factory.createAttributeHandleSet();
-		_classNameSubscribedAttributeMap.put("ObjectRoot.HouseObject", _subscribedAttributeHandleSet);
+		_classNameSubscribedAttributeMap.put("ObjectRoot.GLDObject.HouseObject", _subscribedAttributeHandleSet);
 	
 
 	}
 
 
-	private static String initErrorMessage = "Error:  ObjectRoot.HouseObject:  could not initialize:  ";
+	private static String initErrorMessage = "Error:  ObjectRoot.GLDObject.HouseObject:  could not initialize:  ";
 	protected static void init(RTIambassador rti) {
 		if (_isInitialized) return;
 		_isInitialized = true;
 		
-		ObjectRoot.init(rti);
+		GLDObject.init(rti);
 		
 		boolean isNotInitialized = true;
 		while(isNotInitialized) {
 			try {
-				_handle = rti.getObjectClassHandle("ObjectRoot.HouseObject");
+				_handle = rti.getObjectClassHandle("ObjectRoot.GLDObject.HouseObject");
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -203,8 +193,8 @@ public class HouseObject extends ObjectRoot {
 			}
 		}
 
-		_classNameHandleMap.put("ObjectRoot.HouseObject", get_handle());
-		_classHandleNameMap.put(get_handle(), "ObjectRoot.HouseObject");
+		_classNameHandleMap.put("ObjectRoot.GLDObject.HouseObject", get_handle());
+		_classHandleNameMap.put(get_handle(), "ObjectRoot.GLDObject.HouseObject");
 		_classHandleSimpleNameMap.put(get_handle(), "HouseObject");
 
 		
@@ -214,8 +204,7 @@ public class HouseObject extends ObjectRoot {
 							
 				_air_temperature_handle = rti.getAttributeHandle("air_temperature", get_handle());			
 				_compressor_count_handle = rti.getAttributeHandle("compressor_count", get_handle());			
-				_compressor_on_handle = rti.getAttributeHandle("compressor_on", get_handle());			
-				_name_handle = rti.getAttributeHandle("name", get_handle());
+				_compressor_on_handle = rti.getAttributeHandle("compressor_on", get_handle());
 				isNotInitialized = false;
 			} catch (FederateNotExecutionMember f) {
 				logger.error("{} Federate Not Execution Member", initErrorMessage);
@@ -236,21 +225,19 @@ public class HouseObject extends ObjectRoot {
 		}
 			
 			
-		_datamemberNameHandleMap.put("ObjectRoot.HouseObject,air_temperature", get_air_temperature_handle());
-		_datamemberNameHandleMap.put("ObjectRoot.HouseObject,compressor_count", get_compressor_count_handle());
-		_datamemberNameHandleMap.put("ObjectRoot.HouseObject,compressor_on", get_compressor_on_handle());
-		_datamemberNameHandleMap.put("ObjectRoot.HouseObject,name", get_name_handle());
+		_datamemberNameHandleMap.put("ObjectRoot.GLDObject.HouseObject,air_temperature", get_air_temperature_handle());
+		_datamemberNameHandleMap.put("ObjectRoot.GLDObject.HouseObject,compressor_count", get_compressor_count_handle());
+		_datamemberNameHandleMap.put("ObjectRoot.GLDObject.HouseObject,compressor_on", get_compressor_on_handle());
 			
 			
 		_datamemberHandleNameMap.put(get_air_temperature_handle(), "air_temperature");
 		_datamemberHandleNameMap.put(get_compressor_count_handle(), "compressor_count");
 		_datamemberHandleNameMap.put(get_compressor_on_handle(), "compressor_on");
-		_datamemberHandleNameMap.put(get_name_handle(), "name");
 		
 	}
 
 	private static boolean _isPublished = false;
-	private static String publishErrorMessage = "Error:  ObjectRoot.HouseObject:  could not publish:  ";
+	private static String publishErrorMessage = "Error:  ObjectRoot.GLDObject.HouseObject:  could not publish:  ";
 
 	/**
 	* Publishes the HouseObject object class for a federate.
@@ -266,7 +253,7 @@ public class HouseObject extends ObjectRoot {
 		_publishedAttributeHandleSet.empty();
 		for(String attributeName : _publishAttributeNameSet) {
 			try {
-				_publishedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.HouseObject," + attributeName));
+				_publishedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GLDObject.HouseObject," + attributeName));
 			} catch (Exception e) {
 				logger.error("{} Could not publish \"" + attributeName + "\" attribute.", publishErrorMessage);
 			}
@@ -297,7 +284,7 @@ public class HouseObject extends ObjectRoot {
 		_isPublished = true;
 	}
 
-	private static String unpublishErrorMessage = "Error:  ObjectRoot.HouseObject:  could not unpublish:  ";
+	private static String unpublishErrorMessage = "Error:  ObjectRoot.GLDObject.HouseObject:  could not unpublish:  ";
 	/**
 	* Unpublishes the HouseObject object class for a federate.
 	*
@@ -336,7 +323,7 @@ public class HouseObject extends ObjectRoot {
 	}
 
 	private static boolean _isSubscribed = false;
-	private static String subscribeErrorMessage = "Error:  ObjectRoot.HouseObject:  could not subscribe:  ";
+	private static String subscribeErrorMessage = "Error:  ObjectRoot.GLDObject.HouseObject:  could not subscribe:  ";
 	/**
 	* Subscribes a federate to the HouseObject object class.
 	*
@@ -350,7 +337,7 @@ public class HouseObject extends ObjectRoot {
 		_subscribedAttributeHandleSet.empty();
 		for(String attributeName : _subscribeAttributeNameSet) {
 			try {
-				_subscribedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.HouseObject," + attributeName));
+				_subscribedAttributeHandleSet.add(_datamemberNameHandleMap.get("ObjectRoot.GLDObject.HouseObject," + attributeName));
 			} catch (Exception e) {
 				logger.error("{} Could not subscribe to \"" + attributeName + "\" attribute.", subscribeErrorMessage);
 			}
@@ -381,7 +368,7 @@ public class HouseObject extends ObjectRoot {
 		_isSubscribed = true;
 	}
 
-	private static String unsubscribeErrorMessage = "Error:  ObjectRoot.HouseObject:  could not unsubscribe:  ";
+	private static String unsubscribeErrorMessage = "Error:  ObjectRoot.GLDObject.HouseObject:  could not unsubscribe:  ";
 	/**
 	* Unsubscribes a federate from the HouseObject object class.
 	*
@@ -517,7 +504,6 @@ public class HouseObject extends ObjectRoot {
 			+ "air_temperature:" + get_air_temperature()
 			+ "," + "compressor_count:" + get_compressor_count()
 			+ "," + "compressor_on:" + get_compressor_on()
-			+ "," + "name:" + get_name()
 			+ ")";
 	}
 	
@@ -819,38 +805,6 @@ public class HouseObject extends ObjectRoot {
 		return _compressor_on.getTime();
 	}
 	
-	
-	private Attribute< String > _name =
- 		new Attribute< String >(  new String( "" )  );
-	
-	/**
-	* Set the value of the "name" attribute to "value" for this object.
-	*
-	* @param value the new value for the "name" attribute
-	*/
-	public void set_name( String value ) {
-		_name.setValue( value );
-		_name.setTime( getTime() );
-	}
-	
-	/**
-	* Returns the value of the "name" attribute of this object.
-	*
-	* @return the value of the "name" attribute
-	*/
-	public String get_name() {
-		return _name.getValue();
-	}
-	
-	/**
-	* Returns the current timestamp of the "name" attribute of this object.
-	* 
-	* @return the current timestamp of the "name" attribute
-	*/
-	public double get_name_time() {
-		return _name.getTime();
-	}
-	
 
 
 	protected HouseObject( ReflectedAttributes datamemberMap, boolean initFlag ) {
@@ -906,7 +860,6 @@ public class HouseObject extends ObjectRoot {
 		set_air_temperature( HouseObject_var.get_air_temperature() );
 		set_compressor_count( HouseObject_var.get_compressor_count() );
 		set_compressor_on( HouseObject_var.get_compressor_on() );
-		set_name( HouseObject_var.get_name() );
 	}
 
 
@@ -926,7 +879,6 @@ public class HouseObject extends ObjectRoot {
 		if (  "air_temperature".equals( datamemberName )  ) return new Double(get_air_temperature());
 		else if (  "compressor_count".equals( datamemberName )  ) return new Integer(get_compressor_count());
 		else if (  "compressor_on".equals( datamemberName )  ) return new Boolean(get_compressor_on());
-		else if (  "name".equals( datamemberName )  ) return get_name();
 		else return super.getAttribute( datamemberName );
 	}
 	
@@ -946,7 +898,6 @@ public class HouseObject extends ObjectRoot {
 		if ( get_air_temperature_handle() == datamemberHandle ) return new Double(get_air_temperature());
 		else if ( get_compressor_count_handle() == datamemberHandle ) return new Integer(get_compressor_count());
 		else if ( get_compressor_on_handle() == datamemberHandle ) return new Boolean(get_compressor_on());
-		else if ( get_name_handle() == datamemberHandle ) return get_name();
 		else return super.getAttribute( datamemberHandle );
 	}
 	
@@ -958,7 +909,6 @@ public class HouseObject extends ObjectRoot {
 		if ( param_handle == get_air_temperature_handle() ) set_air_temperature( Double.parseDouble(val) );
 		else if ( param_handle == get_compressor_count_handle() ) set_compressor_count( Integer.parseInt(val) );
 		else if ( param_handle == get_compressor_on_handle() ) set_compressor_on( Boolean.parseBoolean(val) );
-		else if ( param_handle == get_name_handle() ) set_name( val );
 		else retval = super.setAttributeAux( param_handle, val );
 		
 		return retval;
@@ -971,8 +921,7 @@ public class HouseObject extends ObjectRoot {
 		
 		if (  "air_temperature".equals( datamemberName )  ) set_air_temperature( Double.parseDouble(val) );
 		else if (  "compressor_count".equals( datamemberName )  ) set_compressor_count( Integer.parseInt(val) );
-		else if (  "compressor_on".equals( datamemberName )  ) set_compressor_on( Boolean.parseBoolean(val) );
-		else if (  "name".equals( datamemberName )  ) set_name( val );	
+		else if (  "compressor_on".equals( datamemberName )  ) set_compressor_on( Boolean.parseBoolean(val) );	
 		else retval = super.setAttributeAux( datamemberName, val );
 		
 		return retval;
@@ -985,8 +934,7 @@ public class HouseObject extends ObjectRoot {
 		
 		if (  "air_temperature".equals( datamemberName )  ) set_air_temperature( (Double)val );
 		else if (  "compressor_count".equals( datamemberName )  ) set_compressor_count( (Integer)val );
-		else if (  "compressor_on".equals( datamemberName )  ) set_compressor_on( (Boolean)val );
-		else if (  "name".equals( datamemberName )  ) set_name( (String)val );		
+		else if (  "compressor_on".equals( datamemberName )  ) set_compressor_on( (Boolean)val );		
 		else retval = super.setAttributeAux( datamemberName, val );
 		
 		return retval;
@@ -1002,7 +950,7 @@ public class HouseObject extends ObjectRoot {
 			try {
 				isPublished = _publishedAttributeHandleSet.isMember( get_air_temperature_handle() );
 			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.HouseObject.createSuppliedAttributes:  could not determine if air_temperature is published.");
+				logger.error("ERROR:  ObjectRoot.GLDObject.HouseObject.createSuppliedAttributes:  could not determine if air_temperature is published.");
 				isPublished = false;
 			}
 			if (  isPublished && _air_temperature.shouldBeUpdated( force )  ) {
@@ -1012,7 +960,7 @@ public class HouseObject extends ObjectRoot {
 			try {
 				isPublished = _publishedAttributeHandleSet.isMember( get_compressor_count_handle() );
 			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.HouseObject.createSuppliedAttributes:  could not determine if compressor_count is published.");
+				logger.error("ERROR:  ObjectRoot.GLDObject.HouseObject.createSuppliedAttributes:  could not determine if compressor_count is published.");
 				isPublished = false;
 			}
 			if (  isPublished && _compressor_count.shouldBeUpdated( force )  ) {
@@ -1022,22 +970,12 @@ public class HouseObject extends ObjectRoot {
 			try {
 				isPublished = _publishedAttributeHandleSet.isMember( get_compressor_on_handle() );
 			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.HouseObject.createSuppliedAttributes:  could not determine if compressor_on is published.");
+				logger.error("ERROR:  ObjectRoot.GLDObject.HouseObject.createSuppliedAttributes:  could not determine if compressor_on is published.");
 				isPublished = false;
 			}
 			if (  isPublished && _compressor_on.shouldBeUpdated( force )  ) {
 				datamembers.add( get_compressor_on_handle(), Boolean.toString(get_compressor_on()).getBytes() );
 				_compressor_on.setHasBeenUpdated();
-			}
-			try {
-				isPublished = _publishedAttributeHandleSet.isMember( get_name_handle() );
-			} catch ( Exception e ) {
-				logger.error("ERROR:  ObjectRoot.HouseObject.createSuppliedAttributes:  could not determine if name is published.");
-				isPublished = false;
-			}
-			if (  isPublished && _name.shouldBeUpdated( force )  ) {
-				datamembers.add( get_name_handle(), get_name().getBytes() );
-				_name.setHasBeenUpdated();
 			}
 	
 		return datamembers;
@@ -1053,7 +991,6 @@ public class HouseObject extends ObjectRoot {
 				_air_temperature = data._air_temperature;
 				_compressor_count = data._compressor_count;
 				_compressor_on = data._compressor_on;
-				_name = data._name;
 			
 		}
 	}
