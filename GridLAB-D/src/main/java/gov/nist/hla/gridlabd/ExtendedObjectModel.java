@@ -52,21 +52,27 @@ public class ExtendedObjectModel extends ObjectModel {
         super(filePath);
         validateXmlFile(filePath);
         
-        // check for existence of the expected interactions ! !
-        
         // base parameters are not sent to the GridLAB-D simulation
         InteractionClassType baseInteraction = getInteraction(GLD_INTERACTION);
-        for (ParameterType parameter : getParameters(baseInteraction)) {
-            baseParameters.add(parameter.getName().getValue());
+        if (baseInteraction == null) {
+            log.warn("no valid interaction classes in the object model");
+        } else {
+            for (ParameterType parameter : getParameters(baseInteraction)) {
+                baseParameters.add(parameter.getName().getValue());
+            }
+            log.debug("baseParameters {}", baseParameters.toString());
         }
-        log.debug("baseParameters {}", baseParameters.toString());
         
         // base attributes are not sent to the GridLAB-D simulation
         ObjectClassType baseObject = getObject(GLD_OBJECT);
-        for (AttributeType attribute : getAttributes(baseObject)) {
-            baseAttributes.add(attribute.getName().getValue());
+        if (baseObject == null) {
+            log.warn("no valid object classes in the object model");
+        } else {
+            for (AttributeType attribute : getAttributes(baseObject)) {
+                baseAttributes.add(attribute.getName().getValue());
+            }
+            log.debug("baseAttributes {}", baseAttributes.toString());
         }
-        log.debug("baseAttributes {}", baseAttributes.toString());
     }
     
     @Override
@@ -95,32 +101,20 @@ public class ExtendedObjectModel extends ObjectModel {
         }
     }
     
-    // rename gridlabd object
-    public boolean isRelevantInteraction(InteractionClassType interaction) {
-        final String classPath = getClassPath(interaction);
-        log.trace("isRelevantInteraction {}", classPath);
-        return classPath.startsWith(GLD_INTERACTION) && !containsIgnored(interaction.getAny());
+    public boolean isGldObject(InteractionClassType interaction) {
+        return getClassPath(interaction).startsWith(GLD_INTERACTION) && !containsIgnored(interaction.getAny());
     }
     
-    // rename gridlabd property
-    public boolean isRelevantParameter(ParameterType parameter) {
-        final String parameterName = parameter.getName().getValue();
-        log.trace("isRelevantParameter {}", parameterName);
-        // a parameter is irrelevant if it was defined in the base class or specified as ignored
-        return !(baseParameters.contains(parameterName) || containsIgnored(parameter.getAny()));
+    public boolean isGldObject(ObjectClassType object) {
+        return getClassPath(object).startsWith(GLD_OBJECT) && !containsIgnored(object.getAny());
     }
     
-    public boolean isRelevantObject(ObjectClassType object) {
-        final String classPath = getClassPath(object);
-        log.trace("isRelevantObject {}", classPath);
-        return classPath.startsWith(GLD_OBJECT) && !containsIgnored(object.getAny());
+    public boolean isGldProperty(ParameterType parameter) {
+        return !(baseParameters.contains(parameter.getName().getValue()) || containsIgnored(parameter.getAny()));
     }
     
-    public boolean isRelevantAttribute(AttributeType attribute) {
-        final String attributeName = attribute.getName().getValue();
-        log.trace("isRelevantAttribute {}", attributeName);
-        // an attribute is irrelevant if it was defined in the base class or specified as ignored
-        return !(baseAttributes.contains(attributeName) || containsIgnored(attribute.getAny()));
+    public boolean isGldProperty(AttributeType attribute) {
+        return !(baseAttributes.contains(attribute.getName().getValue()) || containsIgnored(attribute.getAny()));
     }
     
     public boolean isSubscribed(String classPath) {

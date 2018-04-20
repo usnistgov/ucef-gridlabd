@@ -23,7 +23,7 @@ public class TimeToUpdate {
     // what if something has no update period ?
     public TimeToUpdate(ExtendedObjectModel objectModel) {
         for (InteractionClassType interaction : objectModel.getPublishedInteractions()) {
-            if (objectModel.isCoreInteraction(interaction)) {
+            if (objectModel.isCoreInteraction(interaction) || !objectModel.isGldObject(interaction)) {
                 continue;
             }
             final String id = objectModel.getClassPath(interaction);
@@ -38,11 +38,11 @@ public class TimeToUpdate {
         }
         
         for (ObjectClassType object : objectModel.getPublishedObjects()) {
-            if (objectModel.isCoreObject(object)) {
+            if (objectModel.isCoreObject(object) || !objectModel.isGldObject(object)) {
                 continue;
             }
             for (AttributeType attribute : objectModel.getPublishedAttributes(object)) {
-                if (!objectModel.isRelevantAttribute(attribute)) {
+                if (!objectModel.isGldProperty(attribute)) {
                     continue;
                 }
                 final String id = objectModel.getClassPath(object) + "." + attribute.getName().getValue();

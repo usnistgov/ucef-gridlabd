@@ -61,6 +61,12 @@ public class GridLabDClient {
         return get("/raw/mainloop_state").equals("PAUSED");
     }
     
+    public String getGlobalVariable(String variableName)
+            throws IOException {
+        log.trace("getGlobalVariable {}", variableName);
+        return get("/raw/" + variableName);
+    }
+    
     public String getStringProperty(String objectName, String propertyName)
             throws IOException {
         log.trace("getStringProperty {}.{}", objectName, propertyName);

@@ -3,6 +3,7 @@ package gov.nist.hla.gridlabd;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -62,6 +63,8 @@ public class GridLabDFederate implements GatewayCallback {
     
     private boolean receivedSimEnd = false;
     
+    private boolean publishClock = false;
+    
     private boolean isInitialized = false;
     
     public static GridLabDConfig readConfiguration(String filePath)
@@ -95,6 +98,11 @@ public class GridLabDFederate implements GatewayCallback {
             throws SchemaValidationException {
         this.configuration = configuration;
         this.objectModel = new ExtendedObjectModel(configuration.getFomFilepath());
+        
+        InteractionClassType clockInteraction = objectModel.getInteraction(ExtendedObjectModel.GLD_CLOCK);
+        if (clockInteraction != null && objectModel.getPublishedInteractions().contains(clockInteraction)) {
+            this.publishClock = true;
+        }
         this.publicationManager = new TimeToUpdate(objectModel);
         
         // GridLAB-D accepts date formats using both the simulation time zone and GMT
@@ -339,8 +347,8 @@ public class GridLabDFederate implements GatewayCallback {
         log.trace("handleInteraction {} as {}", className, parameters.toString());
         
         InteractionClassType interaction = objectModel.getInteraction(className);
-        if (objectModel.isCoreInteraction(interaction)) {
-            log.debug("skipped core interaction {}", className);
+        if (objectModel.isCoreInteraction(interaction) || !objectModel.isGldObject(interaction)) {
+            log.debug("skipped interaction {}", className);
             return;
         }
         
@@ -357,8 +365,8 @@ public class GridLabDFederate implements GatewayCallback {
         log.trace("handleObjectReflection {}:{} as {}", className, instanceName, attributes.toString());
         
         ObjectClassType object = objectModel.getObject(className);
-        if (objectModel.isCoreObject(object)) {
-            log.debug("skipped core object {}:{}", className, instanceName);
+        if (objectModel.isCoreObject(object) || !objectModel.isGldObject(object)) {
+            log.debug("skipped object {}:{}", className, instanceName);
             return;
         }
         
@@ -398,7 +406,7 @@ public class GridLabDFederate implements GatewayCallback {
             final String parameterValue = parameter.getValue();
             
             ParameterType parameterType = objectModel.getParameter(interaction, parameterName);
-            if (parameterName.equals("name") || !objectModel.isRelevantParameter(parameterType)) {
+            if (!objectModel.isGldProperty(parameterType)) {
                 log.debug("skipped parameter {}", parameterName);
                 continue;
             }
@@ -432,7 +440,7 @@ public class GridLabDFederate implements GatewayCallback {
             final String attributeValue = attribute.getValue();
             
             AttributeType attributeType = objectModel.getAttribute(object, attributeName);
-            if (attributeName.equals("name") || !objectModel.isRelevantAttribute(attributeType)) {
+            if (!objectModel.isGldProperty(attributeType)) {
                 log.debug("skipping attribute {}", attributeName);
                 continue;
             }
@@ -491,8 +499,8 @@ public class GridLabDFederate implements GatewayCallback {
         for (ObjectClassType publishedObject : objectModel.getPublishedObjects()) {
             final String objectClass = objectModel.getClassPath(publishedObject);
             
-            if (objectModel.isCoreObject(publishedObject)) {
-                log.debug("skipped core object {}", objectClass);
+            if (objectModel.isCoreObject(publishedObject) || !objectModel.isGldObject(publishedObject)) {
+                log.debug("skipped object {}", objectClass);
                 continue; // ignore objects related to gateway infrastructure
             }
             
@@ -513,7 +521,21 @@ public class GridLabDFederate implements GatewayCallback {
     private void sendPublications() {
         log.trace("sendPublications");
         
-        // send the latest clock value if published
+        if (publishClock) {
+            try {
+                String timestamp = client.getGlobalVariable("clock");
+                long unixtime = toUnixTime(timestamp);
+                
+                Map<String, String> clockValues = new HashMap<String, String>();
+                clockValues.put("timestamp", timestamp);
+                clockValues.put("unixtime", Long.toString(unixtime));
+                
+                gateway.sendInteraction(ExtendedObjectModel.GLD_CLOCK, clockValues, gateway.getTimeStamp());
+            } catch (IOException | ParseException | FederateNotExecutionMember | NameNotFound
+                    | InteractionClassNotPublished | InvalidFederationTime e) {
+                log.error("failed to publish clock", e);
+            }
+        }
         
         for (NamePair names : registeredObjects) {
             final String instanceName = names.getInstanceName();
@@ -525,8 +547,8 @@ public class GridLabDFederate implements GatewayCallback {
         }
         
         for (InteractionClassType interaction : objectModel.getPublishedInteractions()) {
-            if (objectModel.isCoreInteraction(interaction)) {
-                log.debug("skipped core interaction {}", objectModel.getClassPath(interaction));
+            if (objectModel.isCoreInteraction(interaction) || !objectModel.isGldObject(interaction)) {
+                log.debug("skipped interaction {}", objectModel.getClassPath(interaction));
                 continue; // ignore interactions related to gateway infrastructure
             }
             if (publicationManager.isTimeToUpdate(objectModel.getClassPath(interaction))) {
@@ -543,7 +565,7 @@ public class GridLabDFederate implements GatewayCallback {
         for (AttributeType attribute : objectModel.getAttributes(object)) {
             final String attributeName = attribute.getName().getValue();
             
-            if (!objectModel.isRelevantAttribute(attribute) || attributeName.equals("name")) {
+            if (!objectModel.isGldProperty(attribute)) {
                 log.debug("skipping attribute {}", attributeName);
                 continue;
             }
@@ -609,7 +631,7 @@ public class GridLabDFederate implements GatewayCallback {
             for (ParameterType parameter : objectModel.getParameters(interaction)) {
                 final String parameterName = parameter.getName().getValue();
                 
-                if (!objectModel.isRelevantParameter(parameter) || parameterName.equals("name")) {
+                if (!objectModel.isGldProperty(parameter)) {
                     // these should be set to a reasonable default value
                     log.debug("skipping parameter {}", parameterName);
                     continue;
@@ -692,6 +714,12 @@ public class GridLabDFederate implements GatewayCallback {
     private String toTimeStamp(long unixTime) {
         log.trace("toTimeStamp {}", unixTime);
         return dateFormat.format(new Date(unixTime*1000));
+    }
+    
+    private long toUnixTime(String timeStamp)
+            throws ParseException {
+        log.trace("toUnixTime {}", timeStamp);
+        return dateFormat.parse(timeStamp).getTime()/1000;
     }
     
     private double convertToHla(LinearConversionType conversion, double value) {
