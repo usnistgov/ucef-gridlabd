@@ -62,6 +62,7 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
         switch (eClass.getClassifierID()) {
             case ucefPackage.ATTRIBUTE_DETAILS_TYPE: return createAttributeDetailsType();
             case ucefPackage.DOCUMENT_ROOT: return createDocumentRoot();
+            case ucefPackage.IGNORED_TYPE: return createIgnoredType();
             case ucefPackage.INTERACTION_DETAILS_TYPE: return createInteractionDetailsType();
             case ucefPackage.LINEAR_CONVERSION_TYPE: return createLinearConversionType();
             case ucefPackage.OBJECT_DETAILS_TYPE: return createObjectDetailsType();
@@ -133,6 +134,16 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public IgnoredType createIgnoredType() {
+        IgnoredTypeImpl ignoredType = new IgnoredTypeImpl();
+        return ignoredType;
     }
 
     /**

@@ -78,6 +78,12 @@ public class ucefSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case ucefPackage.IGNORED_TYPE: {
+                IgnoredType ignoredType = (IgnoredType)theEObject;
+                T result = caseIgnoredType(ignoredType);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case ucefPackage.INTERACTION_DETAILS_TYPE: {
                 InteractionDetailsType interactionDetailsType = (InteractionDetailsType)theEObject;
                 T result = caseInteractionDetailsType(interactionDetailsType);
@@ -145,6 +151,21 @@ public class ucefSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseDocumentRoot(DocumentRoot object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Ignored Type</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Ignored Type</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIgnoredType(IgnoredType object) {
         return null;
     }
 

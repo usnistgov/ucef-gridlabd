@@ -513,6 +513,8 @@ public class GridLabDFederate implements GatewayCallback {
     private void sendPublications() {
         log.trace("sendPublications");
         
+        // send the latest clock value if published
+        
         for (NamePair names : registeredObjects) {
             final String instanceName = names.getInstanceName();
             final String gldObjectName = names.getGridLabDName();

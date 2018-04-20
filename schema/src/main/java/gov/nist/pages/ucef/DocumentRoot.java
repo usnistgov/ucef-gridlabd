@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getAttributeDetails <em>Attribute Details</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.DocumentRoot#isIgnored <em>Ignored</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getIgnored <em>Ignored</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getInteractionDetails <em>Interaction Details</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getLinearConversion <em>Linear Conversion</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getObjectDetails <em>Object Details</em>}</li>
@@ -118,30 +118,30 @@ public interface DocumentRoot extends EObject {
     void setAttributeDetails(AttributeDetailsType value);
 
     /**
-     * Returns the value of the '<em><b>Ignored</b></em>' attribute.
+     * Returns the value of the '<em><b>Ignored</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * An ignore flag to indicate that a parameter or attribute should not be sent to or retrieved from the GridLAB-D simulation.
+     * A flag to indicate that a parameter or attribute should not be sent to or retrieved from the GridLAB-D simulation.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Ignored</em>' attribute.
-     * @see #setIgnored(boolean)
+     * @return the value of the '<em>Ignored</em>' containment reference.
+     * @see #setIgnored(IgnoredType)
      * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_Ignored()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.Boolean" upper="-2" transient="true" volatile="true" derived="true"
+     * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
      *        extendedMetaData="kind='element' name='ignored' namespace='##targetNamespace'"
      * @generated
      */
-    boolean isIgnored();
+    IgnoredType getIgnored();
 
     /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#isIgnored <em>Ignored</em>}' attribute.
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getIgnored <em>Ignored</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Ignored</em>' attribute.
-     * @see #isIgnored()
+     * @param value the new value of the '<em>Ignored</em>' containment reference.
+     * @see #getIgnored()
      * @generated
      */
-    void setIgnored(boolean value);
+    void setIgnored(IgnoredType value);
 
     /**
      * Returns the value of the '<em><b>Interaction Details</b></em>' containment reference.

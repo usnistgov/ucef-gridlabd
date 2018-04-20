@@ -4,6 +4,7 @@ package gov.nist.pages.ucef.impl;
 
 import gov.nist.pages.ucef.AttributeDetailsType;
 import gov.nist.pages.ucef.DocumentRoot;
+import gov.nist.pages.ucef.IgnoredType;
 import gov.nist.pages.ucef.InteractionDetailsType;
 import gov.nist.pages.ucef.LinearConversionType;
 import gov.nist.pages.ucef.ObjectDetailsType;
@@ -41,7 +42,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getAttributeDetails <em>Attribute Details</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#isIgnored <em>Ignored</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getIgnored <em>Ignored</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getInteractionDetails <em>Interaction Details</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getLinearConversion <em>Linear Conversion</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.DocumentRootImpl#getObjectDetails <em>Object Details</em>}</li>
@@ -85,16 +86,6 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * @ordered
      */
     protected EMap<String, String> xSISchemaLocation;
-
-    /**
-     * The default value of the '{@link #isIgnored() <em>Ignored</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isIgnored()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean IGNORED_EDEFAULT = false;
 
     /**
      * The default value of the '{@link #getPropertyName() <em>Property Name</em>}' attribute.
@@ -213,8 +204,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isIgnored() {
-        return (Boolean)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__IGNORED, true);
+    public IgnoredType getIgnored() {
+        return (IgnoredType)getMixed().get(ucefPackage.Literals.DOCUMENT_ROOT__IGNORED, true);
     }
 
     /**
@@ -222,7 +213,16 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setIgnored(boolean newIgnored) {
+    public NotificationChain basicSetIgnored(IgnoredType newIgnored, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ucefPackage.Literals.DOCUMENT_ROOT__IGNORED, newIgnored, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setIgnored(IgnoredType newIgnored) {
         ((FeatureMap.Internal)getMixed()).set(ucefPackage.Literals.DOCUMENT_ROOT__IGNORED, newIgnored);
     }
 
@@ -458,6 +458,8 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 return ((InternalEList<?>)getXSISchemaLocation()).basicRemove(otherEnd, msgs);
             case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
                 return basicSetAttributeDetails(null, msgs);
+            case ucefPackage.DOCUMENT_ROOT__IGNORED:
+                return basicSetIgnored(null, msgs);
             case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
                 return basicSetInteractionDetails(null, msgs);
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:
@@ -494,7 +496,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
             case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
                 return getAttributeDetails();
             case ucefPackage.DOCUMENT_ROOT__IGNORED:
-                return isIgnored();
+                return getIgnored();
             case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
                 return getInteractionDetails();
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:
@@ -538,7 +540,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setAttributeDetails((AttributeDetailsType)newValue);
                 return;
             case ucefPackage.DOCUMENT_ROOT__IGNORED:
-                setIgnored((Boolean)newValue);
+                setIgnored((IgnoredType)newValue);
                 return;
             case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
                 setInteractionDetails((InteractionDetailsType)newValue);
@@ -592,7 +594,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setAttributeDetails((AttributeDetailsType)null);
                 return;
             case ucefPackage.DOCUMENT_ROOT__IGNORED:
-                setIgnored(IGNORED_EDEFAULT);
+                setIgnored((IgnoredType)null);
                 return;
             case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
                 setInteractionDetails((InteractionDetailsType)null);
@@ -642,7 +644,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
             case ucefPackage.DOCUMENT_ROOT__ATTRIBUTE_DETAILS:
                 return getAttributeDetails() != null;
             case ucefPackage.DOCUMENT_ROOT__IGNORED:
-                return isIgnored() != IGNORED_EDEFAULT;
+                return getIgnored() != null;
             case ucefPackage.DOCUMENT_ROOT__INTERACTION_DETAILS:
                 return getInteractionDetails() != null;
             case ucefPackage.DOCUMENT_ROOT__LINEAR_CONVERSION:

@@ -68,22 +68,22 @@ public interface ucefPackage extends EPackage {
     int ATTRIBUTE_DETAILS_TYPE = 0;
 
     /**
-     * The feature id for the '<em><b>Ignored</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ATTRIBUTE_DETAILS_TYPE__IGNORED = 0;
-
-    /**
      * The feature id for the '<em><b>Property Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_DETAILS_TYPE__PROPERTY_NAME = 1;
+    int ATTRIBUTE_DETAILS_TYPE__PROPERTY_NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Unit Conversion</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE_DETAILS_TYPE__UNIT_CONVERSION = 1;
 
     /**
      * The feature id for the '<em><b>Update Period</b></em>' attribute.
@@ -95,22 +95,13 @@ public interface ucefPackage extends EPackage {
     int ATTRIBUTE_DETAILS_TYPE__UPDATE_PERIOD = 2;
 
     /**
-     * The feature id for the '<em><b>Unit Conversion</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ATTRIBUTE_DETAILS_TYPE__UNIT_CONVERSION = 3;
-
-    /**
      * The number of structural features of the '<em>Attribute Details Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_DETAILS_TYPE_FEATURE_COUNT = 4;
+    int ATTRIBUTE_DETAILS_TYPE_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Attribute Details Type</em>' class.
@@ -168,7 +159,7 @@ public interface ucefPackage extends EPackage {
     int DOCUMENT_ROOT__ATTRIBUTE_DETAILS = 3;
 
     /**
-     * The feature id for the '<em><b>Ignored</b></em>' attribute.
+     * The feature id for the '<em><b>Ignored</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -276,6 +267,34 @@ public interface ucefPackage extends EPackage {
     int DOCUMENT_ROOT_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link gov.nist.pages.ucef.impl.IgnoredTypeImpl <em>Ignored Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see gov.nist.pages.ucef.impl.IgnoredTypeImpl
+     * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getIgnoredType()
+     * @generated
+     */
+    int IGNORED_TYPE = 2;
+
+    /**
+     * The number of structural features of the '<em>Ignored Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IGNORED_TYPE_FEATURE_COUNT = 0;
+
+    /**
+     * The number of operations of the '<em>Ignored Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IGNORED_TYPE_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link gov.nist.pages.ucef.impl.InteractionDetailsTypeImpl <em>Interaction Details Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -283,7 +302,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getInteractionDetailsType()
      * @generated
      */
-    int INTERACTION_DETAILS_TYPE = 2;
+    int INTERACTION_DETAILS_TYPE = 3;
 
     /**
      * The feature id for the '<em><b>Update Period</b></em>' attribute.
@@ -329,7 +348,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getLinearConversionType()
      * @generated
      */
-    int LINEAR_CONVERSION_TYPE = 3;
+    int LINEAR_CONVERSION_TYPE = 4;
 
     /**
      * The feature id for the '<em><b>Scale</b></em>' attribute.
@@ -375,7 +394,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getObjectDetailsType()
      * @generated
      */
-    int OBJECT_DETAILS_TYPE = 4;
+    int OBJECT_DETAILS_TYPE = 5;
 
     /**
      * The feature id for the '<em><b>Published Objects</b></em>' containment reference.
@@ -412,16 +431,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getParameterDetailsType()
      * @generated
      */
-    int PARAMETER_DETAILS_TYPE = 5;
-
-    /**
-     * The feature id for the '<em><b>Ignored</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PARAMETER_DETAILS_TYPE__IGNORED = 0;
+    int PARAMETER_DETAILS_TYPE = 6;
 
     /**
      * The feature id for the '<em><b>Property Name</b></em>' attribute.
@@ -430,7 +440,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PARAMETER_DETAILS_TYPE__PROPERTY_NAME = 1;
+    int PARAMETER_DETAILS_TYPE__PROPERTY_NAME = 0;
 
     /**
      * The feature id for the '<em><b>Unit Conversion</b></em>' containment reference.
@@ -439,7 +449,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PARAMETER_DETAILS_TYPE__UNIT_CONVERSION = 2;
+    int PARAMETER_DETAILS_TYPE__UNIT_CONVERSION = 1;
 
     /**
      * The number of structural features of the '<em>Parameter Details Type</em>' class.
@@ -448,7 +458,7 @@ public interface ucefPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PARAMETER_DETAILS_TYPE_FEATURE_COUNT = 3;
+    int PARAMETER_DETAILS_TYPE_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Parameter Details Type</em>' class.
@@ -467,7 +477,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getPublishedObjectsType()
      * @generated
      */
-    int PUBLISHED_OBJECTS_TYPE = 6;
+    int PUBLISHED_OBJECTS_TYPE = 7;
 
     /**
      * The feature id for the '<em><b>Object Name</b></em>' attribute list.
@@ -504,7 +514,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUnitConversionType()
      * @generated
      */
-    int UNIT_CONVERSION_TYPE = 7;
+    int UNIT_CONVERSION_TYPE = 8;
 
     /**
      * The feature id for the '<em><b>Unit Name</b></em>' attribute.
@@ -550,7 +560,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getPropertyNameType()
      * @generated
      */
-    int PROPERTY_NAME_TYPE = 8;
+    int PROPERTY_NAME_TYPE = 9;
 
     /**
      * The meta object id for the '<em>Unit Name Type</em>' data type.
@@ -560,7 +570,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUnitNameType()
      * @generated
      */
-    int UNIT_NAME_TYPE = 9;
+    int UNIT_NAME_TYPE = 10;
 
     /**
      * The meta object id for the '<em>Update Period Type</em>' data type.
@@ -569,7 +579,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUpdatePeriodType()
      * @generated
      */
-    int UPDATE_PERIOD_TYPE = 10;
+    int UPDATE_PERIOD_TYPE = 11;
 
     /**
      * The meta object id for the '<em>Update Period Type Object</em>' data type.
@@ -579,7 +589,7 @@ public interface ucefPackage extends EPackage {
      * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getUpdatePeriodTypeObject()
      * @generated
      */
-    int UPDATE_PERIOD_TYPE_OBJECT = 11;
+    int UPDATE_PERIOD_TYPE_OBJECT = 12;
 
 
     /**
@@ -593,17 +603,6 @@ public interface ucefPackage extends EPackage {
     EClass getAttributeDetailsType();
 
     /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeDetailsType#isIgnored <em>Ignored</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Ignored</em>'.
-     * @see gov.nist.pages.ucef.AttributeDetailsType#isIgnored()
-     * @see #getAttributeDetailsType()
-     * @generated
-     */
-    EAttribute getAttributeDetailsType_Ignored();
-
-    /**
      * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeDetailsType#getPropertyName <em>Property Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -615,17 +614,6 @@ public interface ucefPackage extends EPackage {
     EAttribute getAttributeDetailsType_PropertyName();
 
     /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeDetailsType#getUpdatePeriod <em>Update Period</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Update Period</em>'.
-     * @see gov.nist.pages.ucef.AttributeDetailsType#getUpdatePeriod()
-     * @see #getAttributeDetailsType()
-     * @generated
-     */
-    EAttribute getAttributeDetailsType_UpdatePeriod();
-
-    /**
      * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.AttributeDetailsType#getUnitConversion <em>Unit Conversion</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -635,6 +623,17 @@ public interface ucefPackage extends EPackage {
      * @generated
      */
     EReference getAttributeDetailsType_UnitConversion();
+
+    /**
+     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.AttributeDetailsType#getUpdatePeriod <em>Update Period</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Update Period</em>'.
+     * @see gov.nist.pages.ucef.AttributeDetailsType#getUpdatePeriod()
+     * @see #getAttributeDetailsType()
+     * @generated
+     */
+    EAttribute getAttributeDetailsType_UpdatePeriod();
 
     /**
      * Returns the meta object for class '{@link gov.nist.pages.ucef.DocumentRoot <em>Document Root</em>}'.
@@ -691,15 +690,15 @@ public interface ucefPackage extends EPackage {
     EReference getDocumentRoot_AttributeDetails();
 
     /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.DocumentRoot#isIgnored <em>Ignored</em>}'.
+     * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getIgnored <em>Ignored</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Ignored</em>'.
-     * @see gov.nist.pages.ucef.DocumentRoot#isIgnored()
+     * @return the meta object for the containment reference '<em>Ignored</em>'.
+     * @see gov.nist.pages.ucef.DocumentRoot#getIgnored()
      * @see #getDocumentRoot()
      * @generated
      */
-    EAttribute getDocumentRoot_Ignored();
+    EReference getDocumentRoot_Ignored();
 
     /**
      * Returns the meta object for the containment reference '{@link gov.nist.pages.ucef.DocumentRoot#getInteractionDetails <em>Interaction Details</em>}'.
@@ -801,6 +800,16 @@ public interface ucefPackage extends EPackage {
     EAttribute getDocumentRoot_UpdatePeriod();
 
     /**
+     * Returns the meta object for class '{@link gov.nist.pages.ucef.IgnoredType <em>Ignored Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Ignored Type</em>'.
+     * @see gov.nist.pages.ucef.IgnoredType
+     * @generated
+     */
+    EClass getIgnoredType();
+
+    /**
      * Returns the meta object for class '{@link gov.nist.pages.ucef.InteractionDetailsType <em>Interaction Details Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -894,17 +903,6 @@ public interface ucefPackage extends EPackage {
      * @generated
      */
     EClass getParameterDetailsType();
-
-    /**
-     * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.ParameterDetailsType#isIgnored <em>Ignored</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Ignored</em>'.
-     * @see gov.nist.pages.ucef.ParameterDetailsType#isIgnored()
-     * @see #getParameterDetailsType()
-     * @generated
-     */
-    EAttribute getParameterDetailsType_Ignored();
 
     /**
      * Returns the meta object for the attribute '{@link gov.nist.pages.ucef.ParameterDetailsType#getPropertyName <em>Property Name</em>}'.
@@ -1062,14 +1060,6 @@ public interface ucefPackage extends EPackage {
         EClass ATTRIBUTE_DETAILS_TYPE = eINSTANCE.getAttributeDetailsType();
 
         /**
-         * The meta object literal for the '<em><b>Ignored</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute ATTRIBUTE_DETAILS_TYPE__IGNORED = eINSTANCE.getAttributeDetailsType_Ignored();
-
-        /**
          * The meta object literal for the '<em><b>Property Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -1078,20 +1068,20 @@ public interface ucefPackage extends EPackage {
         EAttribute ATTRIBUTE_DETAILS_TYPE__PROPERTY_NAME = eINSTANCE.getAttributeDetailsType_PropertyName();
 
         /**
-         * The meta object literal for the '<em><b>Update Period</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute ATTRIBUTE_DETAILS_TYPE__UPDATE_PERIOD = eINSTANCE.getAttributeDetailsType_UpdatePeriod();
-
-        /**
          * The meta object literal for the '<em><b>Unit Conversion</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
         EReference ATTRIBUTE_DETAILS_TYPE__UNIT_CONVERSION = eINSTANCE.getAttributeDetailsType_UnitConversion();
+
+        /**
+         * The meta object literal for the '<em><b>Update Period</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ATTRIBUTE_DETAILS_TYPE__UPDATE_PERIOD = eINSTANCE.getAttributeDetailsType_UpdatePeriod();
 
         /**
          * The meta object literal for the '{@link gov.nist.pages.ucef.impl.DocumentRootImpl <em>Document Root</em>}' class.
@@ -1136,12 +1126,12 @@ public interface ucefPackage extends EPackage {
         EReference DOCUMENT_ROOT__ATTRIBUTE_DETAILS = eINSTANCE.getDocumentRoot_AttributeDetails();
 
         /**
-         * The meta object literal for the '<em><b>Ignored</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Ignored</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute DOCUMENT_ROOT__IGNORED = eINSTANCE.getDocumentRoot_Ignored();
+        EReference DOCUMENT_ROOT__IGNORED = eINSTANCE.getDocumentRoot_Ignored();
 
         /**
          * The meta object literal for the '<em><b>Interaction Details</b></em>' containment reference feature.
@@ -1214,6 +1204,16 @@ public interface ucefPackage extends EPackage {
          * @generated
          */
         EAttribute DOCUMENT_ROOT__UPDATE_PERIOD = eINSTANCE.getDocumentRoot_UpdatePeriod();
+
+        /**
+         * The meta object literal for the '{@link gov.nist.pages.ucef.impl.IgnoredTypeImpl <em>Ignored Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see gov.nist.pages.ucef.impl.IgnoredTypeImpl
+         * @see gov.nist.pages.ucef.impl.ucefPackageImpl#getIgnoredType()
+         * @generated
+         */
+        EClass IGNORED_TYPE = eINSTANCE.getIgnoredType();
 
         /**
          * The meta object literal for the '{@link gov.nist.pages.ucef.impl.InteractionDetailsTypeImpl <em>Interaction Details Type</em>}' class.
@@ -1294,14 +1294,6 @@ public interface ucefPackage extends EPackage {
          * @generated
          */
         EClass PARAMETER_DETAILS_TYPE = eINSTANCE.getParameterDetailsType();
-
-        /**
-         * The meta object literal for the '<em><b>Ignored</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute PARAMETER_DETAILS_TYPE__IGNORED = eINSTANCE.getParameterDetailsType_Ignored();
 
         /**
          * The meta object literal for the '<em><b>Property Name</b></em>' attribute feature.

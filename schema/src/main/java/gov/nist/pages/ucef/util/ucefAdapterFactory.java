@@ -76,6 +76,10 @@ public class ucefAdapterFactory extends AdapterFactoryImpl {
                 return createDocumentRootAdapter();
             }
             @Override
+            public Adapter caseIgnoredType(IgnoredType object) {
+                return createIgnoredTypeAdapter();
+            }
+            @Override
             public Adapter caseInteractionDetailsType(InteractionDetailsType object) {
                 return createInteractionDetailsTypeAdapter();
             }
@@ -144,6 +148,20 @@ public class ucefAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDocumentRootAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link gov.nist.pages.ucef.IgnoredType <em>Ignored Type</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see gov.nist.pages.ucef.IgnoredType
+     * @generated
+     */
+    public Adapter createIgnoredTypeAdapter() {
         return null;
     }
 

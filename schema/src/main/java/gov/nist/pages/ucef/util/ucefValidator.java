@@ -101,6 +101,8 @@ public class ucefValidator extends EObjectValidator {
                 return validateAttributeDetailsType((AttributeDetailsType)value, diagnostics, context);
             case ucefPackage.DOCUMENT_ROOT:
                 return validateDocumentRoot((DocumentRoot)value, diagnostics, context);
+            case ucefPackage.IGNORED_TYPE:
+                return validateIgnoredType((IgnoredType)value, diagnostics, context);
             case ucefPackage.INTERACTION_DETAILS_TYPE:
                 return validateInteractionDetailsType((InteractionDetailsType)value, diagnostics, context);
             case ucefPackage.LINEAR_CONVERSION_TYPE:
@@ -142,6 +144,15 @@ public class ucefValidator extends EObjectValidator {
      */
     public boolean validateDocumentRoot(DocumentRoot documentRoot, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint(documentRoot, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateIgnoredType(IgnoredType ignoredType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(ignoredType, diagnostics, context);
     }
 
     /**

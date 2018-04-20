@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link gov.nist.pages.ucef.ParameterDetailsType#isIgnored <em>Ignored</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.ParameterDetailsType#getPropertyName <em>Property Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.ParameterDetailsType#getUnitConversion <em>Unit Conversion</em>}</li>
  * </ul>
@@ -23,59 +22,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface ParameterDetailsType extends EObject {
-    /**
-     * Returns the value of the '<em><b>Ignored</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * An ignore flag to indicate that a parameter or attribute should not be sent to or retrieved from the GridLAB-D simulation.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Ignored</em>' attribute.
-     * @see #isSetIgnored()
-     * @see #unsetIgnored()
-     * @see #setIgnored(boolean)
-     * @see gov.nist.pages.ucef.ucefPackage#getParameterDetailsType_Ignored()
-     * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-     *        extendedMetaData="kind='element' name='ignored' namespace='##targetNamespace'"
-     * @generated
-     */
-    boolean isIgnored();
-
-    /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.ParameterDetailsType#isIgnored <em>Ignored</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Ignored</em>' attribute.
-     * @see #isSetIgnored()
-     * @see #unsetIgnored()
-     * @see #isIgnored()
-     * @generated
-     */
-    void setIgnored(boolean value);
-
-    /**
-     * Unsets the value of the '{@link gov.nist.pages.ucef.ParameterDetailsType#isIgnored <em>Ignored</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isSetIgnored()
-     * @see #isIgnored()
-     * @see #setIgnored(boolean)
-     * @generated
-     */
-    void unsetIgnored();
-
-    /**
-     * Returns whether the value of the '{@link gov.nist.pages.ucef.ParameterDetailsType#isIgnored <em>Ignored</em>}' attribute is set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return whether the value of the '<em>Ignored</em>' attribute is set.
-     * @see #unsetIgnored()
-     * @see #isIgnored()
-     * @see #setIgnored(boolean)
-     * @generated
-     */
-    boolean isSetIgnored();
-
     /**
      * Returns the value of the '<em><b>Property Name</b></em>' attribute.
      * <!-- begin-user-doc -->

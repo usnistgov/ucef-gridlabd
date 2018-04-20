@@ -23,7 +23,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link gov.nist.pages.ucef.impl.ParameterDetailsTypeImpl#isIgnored <em>Ignored</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.ParameterDetailsTypeImpl#getPropertyName <em>Property Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.ParameterDetailsTypeImpl#getUnitConversion <em>Unit Conversion</em>}</li>
  * </ul>
@@ -31,32 +30,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container implements ParameterDetailsType {
-    /**
-     * The default value of the '{@link #isIgnored() <em>Ignored</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isIgnored()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean IGNORED_EDEFAULT = false;
-    /**
-     * The cached value of the '{@link #isIgnored() <em>Ignored</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isIgnored()
-     * @generated
-     * @ordered
-     */
-    protected boolean ignored = IGNORED_EDEFAULT;
-    /**
-     * This is true if the Ignored attribute has been set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    protected boolean ignoredESet;
     /**
      * The default value of the '{@link #getPropertyName() <em>Property Name</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -66,6 +39,7 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
      * @ordered
      */
     protected static final String PROPERTY_NAME_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getPropertyName() <em>Property Name</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -75,6 +49,7 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
      * @ordered
      */
     protected String propertyName = PROPERTY_NAME_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getUnitConversion() <em>Unit Conversion</em>}' containment reference.
      * <!-- begin-user-doc -->
@@ -102,52 +77,6 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
     @Override
     protected EClass eStaticClass() {
         return ucefPackage.Literals.PARAMETER_DETAILS_TYPE;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public boolean isIgnored() {
-        return ignored;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setIgnored(boolean newIgnored) {
-        boolean oldIgnored = ignored;
-        ignored = newIgnored;
-        boolean oldIgnoredESet = ignoredESet;
-        ignoredESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ucefPackage.PARAMETER_DETAILS_TYPE__IGNORED, oldIgnored, ignored, !oldIgnoredESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void unsetIgnored() {
-        boolean oldIgnored = ignored;
-        boolean oldIgnoredESet = ignoredESet;
-        ignored = IGNORED_EDEFAULT;
-        ignoredESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, ucefPackage.PARAMETER_DETAILS_TYPE__IGNORED, oldIgnored, IGNORED_EDEFAULT, oldIgnoredESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public boolean isSetIgnored() {
-        return ignoredESet;
     }
 
     /**
@@ -236,8 +165,6 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ucefPackage.PARAMETER_DETAILS_TYPE__IGNORED:
-                return isIgnored();
             case ucefPackage.PARAMETER_DETAILS_TYPE__PROPERTY_NAME:
                 return getPropertyName();
             case ucefPackage.PARAMETER_DETAILS_TYPE__UNIT_CONVERSION:
@@ -254,9 +181,6 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ucefPackage.PARAMETER_DETAILS_TYPE__IGNORED:
-                setIgnored((Boolean)newValue);
-                return;
             case ucefPackage.PARAMETER_DETAILS_TYPE__PROPERTY_NAME:
                 setPropertyName((String)newValue);
                 return;
@@ -275,9 +199,6 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ucefPackage.PARAMETER_DETAILS_TYPE__IGNORED:
-                unsetIgnored();
-                return;
             case ucefPackage.PARAMETER_DETAILS_TYPE__PROPERTY_NAME:
                 setPropertyName(PROPERTY_NAME_EDEFAULT);
                 return;
@@ -296,8 +217,6 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ucefPackage.PARAMETER_DETAILS_TYPE__IGNORED:
-                return isSetIgnored();
             case ucefPackage.PARAMETER_DETAILS_TYPE__PROPERTY_NAME:
                 return PROPERTY_NAME_EDEFAULT == null ? propertyName != null : !PROPERTY_NAME_EDEFAULT.equals(propertyName);
             case ucefPackage.PARAMETER_DETAILS_TYPE__UNIT_CONVERSION:
@@ -316,9 +235,7 @@ public class ParameterDetailsTypeImpl extends MinimalEObjectImpl.Container imple
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (ignored: ");
-        if (ignoredESet) result.append(ignored); else result.append("<unset>");
-        result.append(", propertyName: ");
+        result.append(" (propertyName: ");
         result.append(propertyName);
         result.append(')');
         return result.toString();

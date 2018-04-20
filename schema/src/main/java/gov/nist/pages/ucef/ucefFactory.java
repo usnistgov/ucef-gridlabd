@@ -40,6 +40,15 @@ public interface ucefFactory extends EFactory {
     DocumentRoot createDocumentRoot();
 
     /**
+     * Returns a new object of class '<em>Ignored Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Ignored Type</em>'.
+     * @generated
+     */
+    IgnoredType createIgnoredType();
+
+    /**
      * Returns a new object of class '<em>Interaction Details Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

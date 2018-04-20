@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 import gov.nist.hla.gateway.ObjectModel;
 import gov.nist.hla.gridlabd.exception.SchemaValidationException;
 import gov.nist.pages.ucef.AttributeDetailsType;
+import gov.nist.pages.ucef.IgnoredType;
 import gov.nist.pages.ucef.InteractionDetailsType;
 import gov.nist.pages.ucef.LinearConversionType;
 import gov.nist.pages.ucef.ObjectDetailsType;
@@ -33,6 +34,9 @@ import gov.nist.pages.ucef.ucefPackage;
 import gov.nist.sds4emf.Deserialize;
 
 public class ExtendedObjectModel extends ObjectModel {
+    public static final String GLD_OBJECT = ObjectModel.OBJECT_ROOT + ".GLDObject";
+    public static final String GLD_INTERACTION = ObjectModel.INTERACTION_CPSWT + ".GLDInteraction";
+    public static final String GLD_CLOCK = ObjectModel.INTERACTION_CPSWT + ".GLDClock";
     public static final String SIMULATION_TIME = ObjectModel.INTERACTION_CPSWT + ".SimulationControl.SimTime";
     
     private static final Logger log = LogManager.getLogger();
@@ -41,37 +45,82 @@ public class ExtendedObjectModel extends ObjectModel {
     
     private Set<String> baseParameters = new HashSet<String>();
     
+    private Set<String> baseAttributes = new HashSet<String>();
+    
     public ExtendedObjectModel(String filePath)
             throws SchemaValidationException {
         super(filePath);
         validateXmlFile(filePath);
         
+        // check for existence of the expected interactions ! !
+        
         // base parameters are not sent to the GridLAB-D simulation
-        InteractionClassType baseInteraction = getInteraction(ObjectModel.INTERACTION_CPSWT);
+        InteractionClassType baseInteraction = getInteraction(GLD_INTERACTION);
         for (ParameterType parameter : getParameters(baseInteraction)) {
             baseParameters.add(parameter.getName().getValue());
         }
         log.debug("baseParameters {}", baseParameters.toString());
+        
+        // base attributes are not sent to the GridLAB-D simulation
+        ObjectClassType baseObject = getObject(GLD_OBJECT);
+        for (AttributeType attribute : getAttributes(baseObject)) {
+            baseAttributes.add(attribute.getName().getValue());
+        }
+        log.debug("baseAttributes {}", baseAttributes.toString());
     }
     
-    public boolean isRelevantParameter(ParameterType parameter) {
-        log.trace("isRelevantParameter {}", parameter.getName().getValue());
+    @Override
+    public boolean isCoreInteraction(InteractionClassType interaction) {
+        final String classPath = getClassPath(interaction);
         
-        // a parameter is irrelevant if it was defined in the base class or specified as ignored
-        if (baseParameters.contains(parameter.getName().getValue())) {
-            return false;
+        switch (classPath) {
+            case GLD_INTERACTION:
+            case GLD_CLOCK:
+            case SIMULATION_TIME:
+                return true;
+            default:
+                return super.isCoreInteraction(interaction);
         }
+    }
+    
+    @Override
+    public boolean isCoreObject(ObjectClassType object) {
+        final String classPath = getClassPath(object);
         
-        ParameterDetailsType details = getParameterDetails(parameter);
-        return !(details != null && details.isSetIgnored() && details.isIgnored());
+        switch (classPath) {
+            case GLD_OBJECT:
+                return true;
+            default:
+                return super.isCoreObject(object);
+        }
+    }
+    
+    // rename gridlabd object
+    public boolean isRelevantInteraction(InteractionClassType interaction) {
+        final String classPath = getClassPath(interaction);
+        log.trace("isRelevantInteraction {}", classPath);
+        return classPath.startsWith(GLD_INTERACTION) && !containsIgnored(interaction.getAny());
+    }
+    
+    // rename gridlabd property
+    public boolean isRelevantParameter(ParameterType parameter) {
+        final String parameterName = parameter.getName().getValue();
+        log.trace("isRelevantParameter {}", parameterName);
+        // a parameter is irrelevant if it was defined in the base class or specified as ignored
+        return !(baseParameters.contains(parameterName) || containsIgnored(parameter.getAny()));
+    }
+    
+    public boolean isRelevantObject(ObjectClassType object) {
+        final String classPath = getClassPath(object);
+        log.trace("isRelevantObject {}", classPath);
+        return classPath.startsWith(GLD_OBJECT) && !containsIgnored(object.getAny());
     }
     
     public boolean isRelevantAttribute(AttributeType attribute) {
-        log.trace("isRelevantAttribute {}", attribute.getName().getValue());
-        
-        // an attribute is irrelevant if it was specified as ignored
-        AttributeDetailsType details = getAttributeDetails(attribute);
-        return !(details != null && details.isSetIgnored() && details.isIgnored());
+        final String attributeName = attribute.getName().getValue();
+        log.trace("isRelevantAttribute {}", attributeName);
+        // an attribute is irrelevant if it was defined in the base class or specified as ignored
+        return !(baseAttributes.contains(attributeName) || containsIgnored(attribute.getAny()));
     }
     
     public boolean isSubscribed(String classPath) {
@@ -294,6 +343,7 @@ public class ExtendedObjectModel extends ObjectModel {
                         new StreamSource(ucefSchema)});
             Validator validator = schema.newValidator();
             validator.validate(fomFile);
+            log.info("Validated.");
         } catch (IOException | SAXException e) {
             throw new SchemaValidationException(e);
         }
@@ -341,5 +391,14 @@ public class ExtendedObjectModel extends ObjectModel {
             }
         }
         return null;
+    }
+    
+    private boolean containsIgnored(FeatureMap features) {
+        for (FeatureMap.Entry feature : features) {
+            if (feature.getValue() instanceof IgnoredType) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -69,10 +69,11 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-    <xs:element name="ignored" type="xs:boolean">
+    <xs:element name="ignored">
         <xs:annotation>
-            <xs:documentation>An ignore flag to indicate that a parameter or attribute should not be sent to or retrieved from the GridLAB-D simulation.</xs:documentation>
+            <xs:documentation>A flag to indicate that a parameter or attribute should not be sent to or retrieved from the GridLAB-D simulation.</xs:documentation>
         </xs:annotation>
+        <xs:complexType/>
     </xs:element>
     <xs:element name="propertyName" type="propertyNameType">
         <xs:annotation>
@@ -112,7 +113,6 @@
     </xs:element>
     <xs:complexType name="parameterDetailsType">
         <xs:all>
-            <xs:element ref="ignored" minOccurs="0"/>
             <xs:element ref="propertyName" minOccurs="0"/>
             <xs:element ref="unitConversion" minOccurs="0"/>
         </xs:all>
@@ -124,10 +124,9 @@
     </xs:element>
     <xs:complexType name="attributeDetailsType">
         <xs:all>
-            <xs:element ref="ignored" minOccurs="0"/>
             <xs:element ref="propertyName" minOccurs="0"/>
-            <xs:element ref="updatePeriod" minOccurs="0"/>
             <xs:element ref="unitConversion" minOccurs="0"/>
+            <xs:element ref="updatePeriod" minOccurs="0"/>
         </xs:all>
     </xs:complexType>
 </xs:schema>
