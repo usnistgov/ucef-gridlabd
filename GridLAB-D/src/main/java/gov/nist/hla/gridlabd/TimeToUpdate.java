@@ -20,40 +20,61 @@ public class TimeToUpdate {
     
     private Map<String, Double> nextUpdateTime = new HashMap<String, Double>();
     
+    // what if something has no update period ?
     public TimeToUpdate(ExtendedObjectModel objectModel) {
         for (InteractionClassType interaction : objectModel.getPublishedInteractions()) {
+            if (objectModel.isCoreInteraction(interaction)) {
+                continue;
+            }
             final String id = objectModel.getClassPath(interaction);
             final double period = objectModel.getUpdatePeriod(interaction);
             
-            thingsToUpdate.add(id); // for t=0.0
-            updatePeriod.put(id, period);
-            nextUpdateTime.put(id, period);
+            updatePeriod.put(id, period); // -1 if each time step
+            
+            if (period > 0) {
+                thingsToUpdate.add(id); // for t=0.0
+                nextUpdateTime.put(id, period);
+            }
         }
         
         for (ObjectClassType object : objectModel.getPublishedObjects()) {
+            if (objectModel.isCoreObject(object)) {
+                continue;
+            }
             for (AttributeType attribute : objectModel.getPublishedAttributes(object)) {
+                if (!objectModel.isRelevantAttribute(attribute)) {
+                    continue;
+                }
                 final String id = objectModel.getClassPath(object) + "." + attribute.getName().getValue();
                 final double period = objectModel.getUpdatePeriod(attribute);
                 
-                thingsToUpdate.add(id); // for t=0.0
-                updatePeriod.put(id, period);
-                nextUpdateTime.put(id, period);
+                updatePeriod.put(id, period); // -1 if each time step
+                
+                if (period > 0) {
+                    thingsToUpdate.add(id); // for t=0.0
+                    nextUpdateTime.put(id, period);
+                }
             }
         }
     }
     
     public void step(double logicalTime) {
+        log.trace("step {}", logicalTime);
         thingsToUpdate.clear();
         
-        for (String id : nextUpdateTime.keySet()) {
-            double updateTime = nextUpdateTime.get(id);
-            
-            if (updateTime <= logicalTime) {
-                while (updateTime <= logicalTime) {
-                    updateTime += updatePeriod.get(id);
+        for (String id : updatePeriod.keySet()) {
+            if (nextUpdateTime.containsKey(id)) {
+                log.trace("on {}", id);
+                double updateTime = nextUpdateTime.get(id);
+                
+                if (updateTime <= logicalTime) {
+                    while (updateTime <= logicalTime) {
+                        updateTime += updatePeriod.get(id);
+                    }
+                    nextUpdateTime.put(id, updateTime);
+                    thingsToUpdate.add(id);
+                    log.debug("next update for {} @ t={}", id, updateTime);
                 }
-                nextUpdateTime.put(id, updateTime);
-                thingsToUpdate.add(id);
             }
         }
     }
