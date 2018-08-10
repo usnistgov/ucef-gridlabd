@@ -565,7 +565,12 @@ public class GridLabDFederate implements GatewayCallback {
         }
         pendingInteractions.clear();
     }
-    
+
+    @Override
+    public void prepareToResign() {
+        log.trace("prepareToResign");
+    }
+
     @Override
     public void terminate() {
         log.trace("terminate");
