@@ -212,7 +212,12 @@ public class GridLabDFederate implements GatewayCallback {
             throw new GridLabDException(e);
         }
     }
-    
+
+    @Override
+    public void prepareToResign() {
+        log.trace("prepareToResign");
+    }
+
     @Override
     public void terminate() {
         log.trace("terminate");
