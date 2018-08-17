@@ -5,4 +5,4 @@ cd $rootdir/schema
 mvn clean install
 
 cd $rootdir/GridLAB-D
-mvn clean install
+mvn clean install javadoc:javadoc

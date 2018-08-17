@@ -170,7 +170,7 @@ public class GridLabDFederate implements GatewayCallback {
             case ExtendedObjectModel.SIMULATION_END:
                 handleSimEnd();
                 break;
-            case ExtendedObjectModel.SIMULATION_TIME:
+            case ExtendedObjectModel.SIM_TIME:
                 handleSimTime(parameters);
                 break;
             default:
@@ -230,13 +230,13 @@ public class GridLabDFederate implements GatewayCallback {
     private void waitForSimTime() {
         log.trace("waitForSimTime");
         
-        if (!objectModel.isSubscribed(ExtendedObjectModel.SIMULATION_TIME)) {
-            throw new GridLabDException("no subscription for " + ExtendedObjectModel.SIMULATION_TIME);
+        if (!objectModel.isSubscribed(ExtendedObjectModel.SIM_TIME)) {
+            throw new GridLabDException("no subscription for " + ExtendedObjectModel.SIM_TIME);
         }
         
         while (!receivedSimTime) {
             try {
-                log.info("waiting {} ms to receive {}", configuration.getWaitTimeMs(), ExtendedObjectModel.SIMULATION_TIME);
+                log.info("waiting {} ms to receive {}", configuration.getWaitTimeMs(), ExtendedObjectModel.SIM_TIME);
                 Thread.sleep(configuration.getWaitTimeMs());
                 gateway.tick();
                 
@@ -333,7 +333,7 @@ public class GridLabDFederate implements GatewayCallback {
         
         if (receivedSimTime) {
             // replace the old values with the latest received ones
-            log.warn("received duplicate {}", ExtendedObjectModel.SIMULATION_TIME);
+            log.warn("received duplicate {}", ExtendedObjectModel.SIM_TIME);
         }
         
         final long unixTimeStart = Long.valueOf(parameters.get("unixTimeStart"));
