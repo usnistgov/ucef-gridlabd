@@ -2,14 +2,21 @@ package gov.nist.hla.gridlabd;
 
 import java.util.Objects;
 
-public class NamePair {
+public class ObjectInstanceInfo {
     private final String instanceName;
     
     private final String gridlabdName;
     
-    public NamePair(String instanceName, String gridlabdName) {
+    private final String className;
+    
+    public ObjectInstanceInfo(String className, String instanceName, String gridlabdName) {
+        this.className    = className;
         this.instanceName = instanceName;
         this.gridlabdName = gridlabdName;
+    }
+    
+    public String getClassName() {
+        return className;
     }
     
     public String getInstanceName() {
@@ -25,11 +32,11 @@ public class NamePair {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof NamePair)) {
+        if (!(o instanceof ObjectInstanceInfo)) {
             return false;
         }
         
-        NamePair namePair = (NamePair) o;
+        ObjectInstanceInfo namePair = (ObjectInstanceInfo) o;
         return (Objects.equals(instanceName, namePair.instanceName) &&
                 Objects.equals(gridlabdName, namePair.gridlabdName));
     }
@@ -41,6 +48,6 @@ public class NamePair {
     
     @Override
     public String toString() {
-        return "(" + instanceName + "," + gridlabdName + ")";
+        return "(" + className + "." + instanceName + "," + gridlabdName + ")";
     }
 }

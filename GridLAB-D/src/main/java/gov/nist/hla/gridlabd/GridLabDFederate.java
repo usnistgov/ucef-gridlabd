@@ -4,14 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimeZone;
 
 import gov.nist.hla.gateway.GatewayCallback;
 import gov.nist.hla.gateway.GatewayFederate;
@@ -36,6 +33,11 @@ import org.ieee.standards.ieee1516._2010.ParameterType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * 
+ * 
+ * @author Thomas Roth
+ */
 public class GridLabDFederate implements GatewayCallback {    
     private static final Logger log = LogManager.getLogger();
     
@@ -43,8 +45,6 @@ public class GridLabDFederate implements GatewayCallback {
     
     final private ExtendedObjectModel objectModel;
     
-    final private SimpleDateFormat dateFormat;
-
     final private GatewayFederate gateway;
     
     final private GridLabDClient client;
@@ -55,15 +55,13 @@ public class GridLabDFederate implements GatewayCallback {
     
     private Set<PropertyUpdate> propertyUpdates = new HashSet<PropertyUpdate>();
     
-    private Map<String, ObjectState> objectStates = new HashMap<String, ObjectState>();
-    
-    private Set<NamePair> registeredObjects = new HashSet<NamePair>();
+    private Set<ObjectInstanceInfo> registeredObjects = new HashSet<ObjectInstanceInfo>();
     
     private boolean receivedSimTime = false;
     
     private boolean receivedSimEnd = false;
     
-    private boolean publishClock = false;
+    private boolean isClockPublished = false;
     
     private boolean isInitialized = false;
     
@@ -86,44 +84,34 @@ public class GridLabDFederate implements GatewayCallback {
             GridLabDConfig config = GridLabDFederate.readConfiguration(jsonFilePath);
             GridLabDFederate gridlabdFederate = new GridLabDFederate(config);
             gridlabdFederate.run();
+            log.info("Done.");
         } catch (Exception e) {
             log.error(e);
-            return;
         }
-        
-        log.info("Done.");
     }
     
     public GridLabDFederate(GridLabDConfig configuration)
             throws SchemaValidationException {
         this.configuration = configuration;
         this.objectModel = new ExtendedObjectModel(configuration.getFomFilepath());
+        this.gateway = new GatewayFederate(configuration, this, objectModel);
+        this.client = new GridLabDClient("localhost", configuration.getServerPortNumber());
+        
+        this.publicationManager = new TimeToUpdate(objectModel);
         
         InteractionClassType clockInteraction = objectModel.getInteraction(ExtendedObjectModel.GLD_CLOCK);
         if (clockInteraction != null && objectModel.getPublishedInteractions().contains(clockInteraction)) {
-            this.publishClock = true;
+            this.isClockPublished = true;
         }
-        this.publicationManager = new TimeToUpdate(objectModel);
-        
-        // GridLAB-D accepts date formats using both the simulation time zone and GMT
-        //  future releases of GridLAB-D will continue to support GMT as an additional time zone
-        //  the conversion from GMT to native simulation time will be performed inside GridLAB-D
-        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-        this.dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        
-        this.gateway = new GatewayFederate(configuration, this, objectModel);
-        this.client = new GridLabDClient("localhost", configuration.getServerPortNumber());
     }
     
     public void run() {
-        log.trace("run");
         gateway.run();
     }
     
     @Override
     public void initializeSelf() {
         log.trace("initializeSelf");
-        // do nothing
     }
     
     @Override
@@ -131,22 +119,9 @@ public class GridLabDFederate implements GatewayCallback {
         log.trace("initializeWithPeers");
         
         if (configuration.getUseSimTime()) {
-            waitForSimTime(); // this will modify configuration
+            waitForSimTime(); // side effect - modifies the content of configuration
         }
-        
-        if (configuration.getUnixTimeStop() < 0) {
-            log.info("configured to run using stoptime=NEVER");
-        }
-        
-        // the GridLAB-D federate has two independent exit conditions:
-        //  1. the GridLAB-D federate receives the SimEnd interaction
-        //  2. the GridLAB-D simulation reaches the configured stop time
-        if (!objectModel.isSubscribed(ExtendedObjectModel.SIMULATION_END)) {
-            log.warn("configured to run without " + ExtendedObjectModel.SIMULATION_END);
-            if (configuration.getUnixTimeStop() < 0) {
-                throw new GridLabDException("no exit condition");
-            }
-        }
+        validateExitCondition(); // must happen after the side effect of SimTime
         
         try {
             startGld();
@@ -188,26 +163,17 @@ public class GridLabDFederate implements GatewayCallback {
     public void doTimeStep(Double timeStep) {
         log.trace("doTimeStep {}", timeStep);
         
-        try {
-            int code = gridlabd.exitValue(); // this will throw an exception if GridLAB-D is still running
-            log.info("GridLAB-D done with exit value {}", code);
+        if (hasGldExited()) {
             gateway.requestExit();
-            return;
-        } catch (IllegalThreadStateException e) {
-            // do nothing; this is not a real exception
+            return; // cannot access GridLAB-D after it exits so nothing left to do
         }
         
         publicationManager.step(timeStep); // has to happen before sendPublications
         sendPublications();
-        updateProperties();
+        updateGldProperties();
         
         try {
-            double elapsedTime = (timeStep + configuration.getStepSize()) * configuration.getSimulationTimeScale();
-            long nextPauseTime = configuration.getUnixTimeStart() + Double.valueOf(elapsedTime).longValue();
-            if (nextPauseTime > configuration.getUnixTimeStop()) {
-                nextPauseTime = configuration.getUnixTimeStop();
-            }
-            advanceSimulationTime(nextPauseTime);
+            advanceSimulationTime(getNextPauseTime(timeStep));
         } catch (InterruptedException | IOException e) {
             throw new GridLabDException(e);
         }
@@ -228,13 +194,11 @@ public class GridLabDFederate implements GatewayCallback {
     }
     
     private void waitForSimTime() {
-        log.trace("waitForSimTime");
-        
         if (!objectModel.isSubscribed(ExtendedObjectModel.SIM_TIME)) {
             throw new GridLabDException("no subscription for " + ExtendedObjectModel.SIM_TIME);
         }
         
-        while (!receivedSimTime) {
+        while (!receivedSimTime) { // this will execute until the RTI calls handleSimTime in gateway.tick()
             try {
                 log.info("waiting {} ms to receive {}", configuration.getWaitTimeMs(), ExtendedObjectModel.SIM_TIME);
                 Thread.sleep(configuration.getWaitTimeMs());
@@ -252,18 +216,31 @@ public class GridLabDFederate implements GatewayCallback {
         }
     }
     
-    private void startGld()
-            throws IOException {
-        log.trace("startGld");
+    private void validateExitCondition() {
+        // the GridLAB-D federate has two independent exit conditions:
+        //  1. the GridLAB-D federate receives the SimEnd interaction
+        //  2. the GridLAB-D simulation reaches the configured stop time
+        if (!objectModel.isSubscribed(ExtendedObjectModel.SIMULATION_END)) {
+            if (configuration.getUnixTimeStop() < 0) {
+                throw new GridLabDException("no exit condition");
+            }
+            log.info("configured to run without " + ExtendedObjectModel.SIMULATION_END);
+        }
         
-        String timeStart = toTimeStamp(configuration.getUnixTimeStart());
-        String timeStop  = configuration.getUnixTimeStop() < 0 ? "NEVER" : toTimeStamp(configuration.getUnixTimeStop());
-        String timeZone  = configuration.getSimulationTimeZone();
-        configuration.getSimulationTimeScale(); // to trigger early exception if the time scale is not set
+        if (configuration.getUnixTimeStop() < 0) {
+            log.info("configured to run using stoptime=NEVER");
+        }
+    }
+    
+    private void startGld() // need to fix
+            throws IOException {
+        final String startTime = ConversionMethods.toTimeStamp(configuration.getUnixTimeStart());
+        final String stopTime  = configuration.getUnixTimeStop() < 0 ? "NEVER" : ConversionMethods.toTimeStamp(configuration.getUnixTimeStop());
+        final String timeZone  = configuration.getSimulationTimeZone();
         
         log.debug("creating process builder for GridLAB-D");
         ProcessBuilder builder = new ProcessBuilder();
-        builder.inheritIO(); // maybe replace
+        builder.inheritIO();
         builder.command(
                 "gridlabd",
                 configuration.getModelFilePath(),
@@ -271,11 +248,11 @@ public class GridLabDFederate implements GatewayCallback {
                 "--server_portnum",
                 Integer.toString(configuration.getServerPortNumber()), // no guarantee this port gets used
                 "--define",
-                "starttime=" + timeStart,
+                "starttime=" + startTime,
                 "--define",
-                "stoptime=" + timeStop,
+                "stoptime=" + stopTime,
                 "--define",
-                "pauseat=" + timeStart
+                "pauseat=" + startTime
                 );
         log.debug("command: {}", Arrays.toString(builder.command().toArray()));
         
@@ -309,8 +286,6 @@ public class GridLabDFederate implements GatewayCallback {
     
     private void connectToGld()
             throws InterruptedException {
-        log.trace("connectToGld");
-        
         boolean connected = false;
         while (!connected) {
             try {
@@ -321,6 +296,47 @@ public class GridLabDFederate implements GatewayCallback {
                 log.warn("failed to connect to GridLAB-D server");
             }
         }
+    }
+    
+    private void registerObjectInstances() {
+        for (ObjectClassType publishedObject : objectModel.getPublishedObjects()) {
+            final String objectClass = objectModel.getClassPath(publishedObject);
+            
+            if (objectModel.isCoreObject(publishedObject) || !objectModel.isGldObject(publishedObject)) {
+                log.debug("skipped object instance registration for {}", objectClass);
+                continue; // ignore objects related to gateway infrastructure
+            }
+            
+            for (String gldObjectName : objectModel.getPublishedNames(publishedObject)) {
+                try {
+                    // assign a random instance name to avoid collision
+                    final String instanceName = gateway.registerObjectInstance(objectClass);
+                    registeredObjects.add(new ObjectInstanceInfo(objectClass, instanceName, gldObjectName));
+                    log.debug("registered {}:{} to publish {}", objectClass, instanceName, gldObjectName);
+                } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished e) {
+                    throw new RTIAmbassadorException(e);
+                }
+            }
+        }
+    }
+    
+    private boolean hasGldExited() {
+        try {
+            int code = gridlabd.exitValue(); // this will throw an exception if GridLAB-D is still running
+            log.debug("GridLAB-D done with exit value {}", code);
+            return true;
+        } catch (IllegalThreadStateException e) {
+            return false;
+        }
+    }
+    
+    private long getNextPauseTime(double currentTime) {
+        double elapsedTime = (currentTime + configuration.getStepSize()) * configuration.getSimulationTimeScale();
+        long nextPauseTime = configuration.getUnixTimeStart() + Double.valueOf(elapsedTime).longValue();
+        if (nextPauseTime > configuration.getUnixTimeStop()) {
+            nextPauseTime = configuration.getUnixTimeStop();
+        }
+        return nextPauseTime;
     }
     
     private void handleSimEnd() {
@@ -375,21 +391,18 @@ public class GridLabDFederate implements GatewayCallback {
             return;
         }
         
-        if (!objectStates.containsKey(instanceName)) {
-            objectStates.put(instanceName, new ObjectState(className, instanceName));
-            log.info("discovered object {}:{}", className, instanceName);
+        Map<String, String> state = gateway.getObjectState(instanceName);
+        if (state == null) {
+            state = new HashMap<String, String>();
         }
         
-        ObjectState state = objectStates.get(instanceName);
-        state.reflectAttributes(attributes);
-        
         final String receivedName = attributes.get("name");
-        final String storedName = state.getAttribute("name");
+        final String storedName = state.get("name");
         if (receivedName != null && !receivedName.isEmpty()) {
             // if we receive a new value for the name attribute, then the GridLAB-D object with name="receivedName" has
             // no prior history with the object instance being handled in this method. therefore, the entire instance
             // state (represented by the state variable) must be reflected into GridLAB-D using the received name.
-            queue(object, receivedName, state.getAttributes());
+            queue(object, receivedName, state);
         } else if (storedName != null && !storedName.isEmpty()) {
             // if we do not receive the name attribute, but have a stored name for this instance from a prior object
             // reflection, then the GridLAB-D object with name="storedName" must have a history of being updated by
@@ -423,7 +436,7 @@ public class GridLabDFederate implements GatewayCallback {
             
             LinearConversionType linearConversion = objectModel.getLinearConversion(parameterType);
             if (linearConversion != null) {
-                double convertedValue = convertToGld(linearConversion, Double.parseDouble(propertyValue));
+                double convertedValue = ConversionMethods.toGldValue(Double.parseDouble(propertyValue), linearConversion);
                 propertyValue = Double.toString(convertedValue);
             }
             
@@ -457,7 +470,7 @@ public class GridLabDFederate implements GatewayCallback {
             
             LinearConversionType linearConversion = objectModel.getLinearConversion(attributeType);
             if (linearConversion != null) {
-                double convertedValue = convertToGld(linearConversion, Double.parseDouble(propertyValue));
+                double convertedValue = ConversionMethods.toGldValue(Double.parseDouble(propertyValue), linearConversion);
                 propertyValue = Double.toString(convertedValue);
             }
             
@@ -471,7 +484,7 @@ public class GridLabDFederate implements GatewayCallback {
         }
     }
     
-    private void updateProperties() {
+    private void updateGldProperties() {
         log.trace("updateProperties");
         
         for (PropertyUpdate update : propertyUpdates) {
@@ -498,38 +511,15 @@ public class GridLabDFederate implements GatewayCallback {
         }
     }
     
-    private void registerObjectInstances() {
-        log.trace("registerObjectInstances");
-        
-        for (ObjectClassType publishedObject : objectModel.getPublishedObjects()) {
-            final String objectClass = objectModel.getClassPath(publishedObject);
-            
-            if (objectModel.isCoreObject(publishedObject) || !objectModel.isGldObject(publishedObject)) {
-                log.debug("skipped object {}", objectClass);
-                continue; // ignore objects related to gateway infrastructure
-            }
-            
-            for (String gldObjectName : objectModel.getPublishedNames(publishedObject)) {
-                try {
-                    // assign a random instance name to avoid collision
-                    final String instanceName = gateway.registerObjectInstance(objectClass);
-                    objectStates.put(instanceName, new ObjectState(objectClass, instanceName));
-                    registeredObjects.add(new NamePair(instanceName, gldObjectName));
-                    log.debug("registered {}:{} to publish {}", objectClass, instanceName, gldObjectName);
-                } catch (FederateNotExecutionMember | NameNotFound | ObjectClassNotPublished e) {
-                    throw new RTIAmbassadorException(e);
-                }
-            }
-        }
-    }
+    
     
     private void sendPublications() {
         log.trace("sendPublications");
         
-        if (publishClock) {
+        if (isClockPublished) {
             try {
                 String timestamp = client.getGlobalVariable("clock");
-                long unixtime = toUnixTime(timestamp);
+                long unixtime = ConversionMethods.toUnixTime(timestamp);
                 
                 Map<String, String> clockValues = new HashMap<String, String>();
                 clockValues.put("timeStamp", timestamp);
@@ -542,10 +532,10 @@ public class GridLabDFederate implements GatewayCallback {
             }
         }
         
-        for (NamePair names : registeredObjects) {
+        for (ObjectInstanceInfo names : registeredObjects) {
+            final String objectClass = names.getClassName();
             final String instanceName = names.getInstanceName();
             final String gldObjectName = names.getGridLabDName();
-            final String objectClass = objectStates.get(instanceName).getClassName();
             
             ObjectClassType object = objectModel.getObject(objectClass);
             publish(object, instanceName, gldObjectName);
@@ -595,7 +585,7 @@ public class GridLabDFederate implements GatewayCallback {
                     double propertyValue = client.getDoubleProperty(gldObjectName, propertyName);
                     LinearConversionType conversionRule = objectModel.getLinearConversion(attribute);
                     if (conversionRule != null) {
-                        propertyValue = convertToHla(conversionRule, propertyValue);
+                        propertyValue = ConversionMethods.toHlaValue(propertyValue, conversionRule);
                     }
                     log.debug("got {}:{}={}", gldObjectName, propertyName, propertyValue);
                     updatedValues.put(attributeName, Double.toString(propertyValue));
@@ -657,7 +647,7 @@ public class GridLabDFederate implements GatewayCallback {
                         double propertyValue = client.getDoubleProperty(gldObjectName, propertyName);
                         LinearConversionType conversionRule = objectModel.getLinearConversion(parameter);
                         if (conversionRule != null) {
-                            propertyValue = convertToHla(conversionRule, propertyValue);
+                            propertyValue = ConversionMethods.toHlaValue(propertyValue, conversionRule);
                         }
                         log.debug("got {}:{}={}", gldObjectName, propertyName, propertyValue);
                         updatedValues.put(parameterName, Double.toString(propertyValue));
@@ -691,7 +681,7 @@ public class GridLabDFederate implements GatewayCallback {
             throws InterruptedException, IOException {
         log.trace("advanceSimulationTime {}", unixTime);
         
-        final String timeStamp = toTimeStamp(unixTime);
+        final String timeStamp = ConversionMethods.toTimeStamp(unixTime);
         
         if (unixTime >= configuration.getUnixTimeStop()) {
             log.info("running last timestep (GridLAB-D will crash)");
@@ -714,38 +704,5 @@ public class GridLabDFederate implements GatewayCallback {
         }
         log.info("advanced GridLAB-D simulation to {}", timeStamp);
         // maybe check if GridLAB-D advanced to the requested time ?
-    }
-    
-    private String toTimeStamp(long unixTime) {
-        log.trace("toTimeStamp {}", unixTime);
-        return dateFormat.format(new Date(unixTime*1000));
-    }
-    
-    private long toUnixTime(String timeStamp)
-            throws ParseException {
-        log.trace("toUnixTime {}", timeStamp);
-        return dateFormat.parse(timeStamp).getTime()/1000;
-    }
-    
-    private double convertToHla(LinearConversionType conversion, double value) {
-        log.trace("convertToHla");
-        
-        double scale = conversion.getScale();
-        double offset = conversion.getOffset();
-        double result = scale * value + offset;
-        
-        log.debug("GLD to HLA : {} = {} * {} - {}", result, scale, value, offset);
-        return result;
-    }
-    
-    private double convertToGld(LinearConversionType conversion, double value) {
-        log.trace("convertToGld");
-        
-        double scale  = conversion.getScale();
-        double offset = conversion.getOffset();
-        double result = (value - offset) / scale;
-        
-        log.debug("HLA to GLD : {} = ({} - {}) / {}", result, value, offset, scale);
-        return result;
     }
 }
