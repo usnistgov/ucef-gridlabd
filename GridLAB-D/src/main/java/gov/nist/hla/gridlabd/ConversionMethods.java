@@ -44,8 +44,8 @@ public interface ConversionMethods {
     /**
      * Perform linear conversion on a GridLAB-D value to produce its HLA equivalent.
      *
-     * @param conversion A linear conversion rule that defines the coefficients.
      * @param gldValue A value retrieved from the GridLAB-D simulation.
+     * @param conversion A linear conversion rule that defines the coefficients.
      * @return The equivalent value that should be sent to the HLA federation.
      */
     public static double toHlaValue(double gldValue, LinearConversionType conversion) {
@@ -55,8 +55,8 @@ public interface ConversionMethods {
     /**
      * Perform linear conversion on an HLA value to produce its GridLAB-D equivalent.
      *
-     * @param conversion A linear conversion rule that defines the coefficients.
      * @param hlaValue A value received from the HLA federation.
+     * @param conversion A linear conversion rule that defines the coefficients.
      * @return The equivalent value that should be sent to the GridLAB-D simulation.
      */
     public static double toGldValue(double hlaValue, LinearConversionType conversion) {
