@@ -3,27 +3,61 @@ package gov.nist.hla.gridlabd;
 import gov.nist.hla.gateway.GatewayFederateConfig;
 import gov.nist.hla.gateway.exception.ValueNotSet;
 
+/**
+ * This class defines the structure of the GridLAB-D federate configuration file for use with Jackson.
+ *
+ * @author Thomas Roth
+ */
 public class GridLabDConfig extends GatewayFederateConfig {
+    /**
+     * The path to a GridLAB-D model.
+     */
     private String modelFilePath;
     private boolean modelFilePathSet = false;
     
+    /**
+     * The directory where GridLAB-D will execute.
+     */
     private String workingDirectory = null;
     
+    /**
+     * The desired port number for GridLAB-D server mode.
+     */
     private int serverPortNumber = 6267;
     
+    /**
+     * The time to wait between connection attempts to GridLAB-D server mode.
+     */
     private int waitTimeMs = 500;
     
+    /**
+     * If true, the GridLAB-D federate will not start until it receives {@link ExtendedObjectModel#SIM_TIME}. As a side
+     * effect, all the configuration options related to time in the JSON configuration file will be ignored in favor of
+     * the values defined in the received interaction.
+     */
     private boolean useSimTime = true;
     
+    /**
+     * The start time of the GridLAB-D simulation.
+     */
     private long unixTimeStart;
     private boolean unixTimeStartSet = false;
     
+    /**
+     * The stop time of the GridLAB-D simulation, where a value of -1 indicates run until the federation terminates.
+     */
     private long unixTimeStop;
     private boolean unixTimestopSet = false;
     
+    /**
+     * The number of simulation seconds in 1 logical time step.
+     */
     private double simulationTimeScale;
     private boolean simulationTimeScaleSet = false;
     
+    /**
+     * The time zone for the GridLAB-D simulation.
+     */
     private String simulationTimeZone;
     private boolean simulationTimeZoneSet = false;
 

@@ -2,13 +2,25 @@ package gov.nist.hla.gridlabd;
 
 import java.util.Objects;
 
+/**
+ * This class associates an HLA object instance with a GridLAB-D simulation object.
+ *
+ * @author Thomas Roth
+ */
 public class ObjectInstanceInfo {
+    private final String className;
+    
     private final String instanceName;
     
     private final String gridlabdName;
     
-    private final String className;
-    
+    /**
+     * Create a new association between an HLA object instance and an object in the GridLAB-D simulation model.
+     *
+     * @param className The fully qualified name of the HLA object class.
+     * @param instanceName The name of the object instance in the HLA federation.
+     * @param gridlabdName The name of the equivalent object in the GridLAB-D simulation.
+     */
     public ObjectInstanceInfo(String className, String instanceName, String gridlabdName) {
         this.className    = className;
         this.instanceName = instanceName;

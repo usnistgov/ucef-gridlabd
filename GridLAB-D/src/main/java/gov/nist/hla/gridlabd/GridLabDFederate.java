@@ -34,7 +34,23 @@ import org.ieee.standards.ieee1516._2010.ParameterType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * 
+ * This class implements a federate that creates and manages a GridLAB-D simulation as a child process. The GridLAB-D
+ * simulation will run in server mode using the options specified in a JSON configuration file that mirrors the class
+ * structure of {@link GridLabDConfig}. When the federation execution starts, {@link ExtendedObjectModel#SIM_TIME} can
+ * be sent as a receive order interaction to further customize the behavior of the GridLAB-D simulation.
+ * <p>
+ * The GridLAB-D federate will terminate when it either receives {@link ExtendedObjectModel#SIMULATION_END}, or it
+ * reaches its configured stop time. If it terminates due to the stop time, the federate will leave the federation
+ * early without any attempt to synchronize with the other federates.
+ * <p>
+ * The GridLAB-D federate will ignore all interaction classes and object classes that do not define a special field
+ * called `name`. This field should be set to the name of an object in the GridLAB-D simulation, and defines a 1-to-1
+ * relation between an HLA entity and a GridLAB-D simulation object.
+ * <p>
+ * There is no guarantee that the port number specified in the configuration is used by GridLAB-D. If the specified
+ * port number is unavailable, then GridLAB-D will select and use the next available port number. This fail case is
+ * unrecoverable, and the GridLAB-D federate will continue to output warning messages as it tries to connect to the
+ * wrong server address.
  * 
  * @author Thomas Roth
  */
