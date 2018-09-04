@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link gov.nist.pages.ucef.UnitConversionType#getNameConversion <em>Name Conversion</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.UnitConversionType#getUnitName <em>Unit Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.UnitConversionType#getLinearConversion <em>Linear Conversion</em>}</li>
  * </ul>
  *
@@ -23,30 +23,30 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface UnitConversionType extends EObject {
     /**
-     * Returns the value of the '<em><b>Name Conversion</b></em>' attribute.
+     * Returns the value of the '<em><b>Unit Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * A unit conversion rule that declares the HLA federation uses the specified unit name. This rule relies on GridLAB-D's internal unit conversion and only works for attributes and parameters defined as floating point values.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Name Conversion</em>' attribute.
-     * @see #setNameConversion(String)
-     * @see gov.nist.pages.ucef.ucefPackage#getUnitConversionType_NameConversion()
-     * @model dataType="gov.nist.pages.ucef.NameConversionType"
-     *        extendedMetaData="kind='element' name='nameConversion' namespace='##targetNamespace'"
+     * @return the value of the '<em>Unit Name</em>' attribute.
+     * @see #setUnitName(String)
+     * @see gov.nist.pages.ucef.ucefPackage#getUnitConversionType_UnitName()
+     * @model dataType="gov.nist.pages.ucef.UnitNameType"
+     *        extendedMetaData="kind='element' name='unitName' namespace='##targetNamespace'"
      * @generated
      */
-    String getNameConversion();
+    String getUnitName();
 
     /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.UnitConversionType#getNameConversion <em>Name Conversion</em>}' attribute.
+     * Sets the value of the '{@link gov.nist.pages.ucef.UnitConversionType#getUnitName <em>Unit Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name Conversion</em>' attribute.
-     * @see #getNameConversion()
+     * @param value the new value of the '<em>Unit Name</em>' attribute.
+     * @see #getUnitName()
      * @generated
      */
-    void setNameConversion(String value);
+    void setUnitName(String value);
 
     /**
      * Returns the value of the '<em><b>Linear Conversion</b></em>' containment reference.

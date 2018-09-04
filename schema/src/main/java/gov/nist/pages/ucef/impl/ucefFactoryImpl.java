@@ -60,12 +60,13 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case ucefPackage.ATTRIBUTE_CONFIG_TYPE: return createAttributeConfigType();
+            case ucefPackage.ATTRIBUTE_DETAILS_TYPE: return createAttributeDetailsType();
             case ucefPackage.DOCUMENT_ROOT: return createDocumentRoot();
-            case ucefPackage.INTERACTION_CLASS_CONFIG_TYPE: return createInteractionClassConfigType();
+            case ucefPackage.IGNORED_TYPE: return createIgnoredType();
+            case ucefPackage.INTERACTION_DETAILS_TYPE: return createInteractionDetailsType();
             case ucefPackage.LINEAR_CONVERSION_TYPE: return createLinearConversionType();
-            case ucefPackage.OBJECT_CLASS_CONFIG_TYPE: return createObjectClassConfigType();
-            case ucefPackage.PARAMETER_CONFIG_TYPE: return createParameterConfigType();
+            case ucefPackage.OBJECT_DETAILS_TYPE: return createObjectDetailsType();
+            case ucefPackage.PARAMETER_DETAILS_TYPE: return createParameterDetailsType();
             case ucefPackage.PUBLISHED_OBJECTS_TYPE: return createPublishedObjectsType();
             case ucefPackage.UNIT_CONVERSION_TYPE: return createUnitConversionType();
             default:
@@ -81,8 +82,10 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
-            case ucefPackage.NAME_CONVERSION_TYPE:
-                return createNameConversionTypeFromString(eDataType, initialValue);
+            case ucefPackage.PROPERTY_NAME_TYPE:
+                return createPropertyNameTypeFromString(eDataType, initialValue);
+            case ucefPackage.UNIT_NAME_TYPE:
+                return createUnitNameTypeFromString(eDataType, initialValue);
             case ucefPackage.UPDATE_PERIOD_TYPE:
                 return createUpdatePeriodTypeFromString(eDataType, initialValue);
             case ucefPackage.UPDATE_PERIOD_TYPE_OBJECT:
@@ -100,8 +103,10 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
-            case ucefPackage.NAME_CONVERSION_TYPE:
-                return convertNameConversionTypeToString(eDataType, instanceValue);
+            case ucefPackage.PROPERTY_NAME_TYPE:
+                return convertPropertyNameTypeToString(eDataType, instanceValue);
+            case ucefPackage.UNIT_NAME_TYPE:
+                return convertUnitNameTypeToString(eDataType, instanceValue);
             case ucefPackage.UPDATE_PERIOD_TYPE:
                 return convertUpdatePeriodTypeToString(eDataType, instanceValue);
             case ucefPackage.UPDATE_PERIOD_TYPE_OBJECT:
@@ -116,9 +121,9 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public AttributeConfigType createAttributeConfigType() {
-        AttributeConfigTypeImpl attributeConfigType = new AttributeConfigTypeImpl();
-        return attributeConfigType;
+    public AttributeDetailsType createAttributeDetailsType() {
+        AttributeDetailsTypeImpl attributeDetailsType = new AttributeDetailsTypeImpl();
+        return attributeDetailsType;
     }
 
     /**
@@ -136,9 +141,19 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public InteractionClassConfigType createInteractionClassConfigType() {
-        InteractionClassConfigTypeImpl interactionClassConfigType = new InteractionClassConfigTypeImpl();
-        return interactionClassConfigType;
+    public IgnoredType createIgnoredType() {
+        IgnoredTypeImpl ignoredType = new IgnoredTypeImpl();
+        return ignoredType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public InteractionDetailsType createInteractionDetailsType() {
+        InteractionDetailsTypeImpl interactionDetailsType = new InteractionDetailsTypeImpl();
+        return interactionDetailsType;
     }
 
     /**
@@ -156,9 +171,9 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public ObjectClassConfigType createObjectClassConfigType() {
-        ObjectClassConfigTypeImpl objectClassConfigType = new ObjectClassConfigTypeImpl();
-        return objectClassConfigType;
+    public ObjectDetailsType createObjectDetailsType() {
+        ObjectDetailsTypeImpl objectDetailsType = new ObjectDetailsTypeImpl();
+        return objectDetailsType;
     }
 
     /**
@@ -166,9 +181,9 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public ParameterConfigType createParameterConfigType() {
-        ParameterConfigTypeImpl parameterConfigType = new ParameterConfigTypeImpl();
-        return parameterConfigType;
+    public ParameterDetailsType createParameterDetailsType() {
+        ParameterDetailsTypeImpl parameterDetailsType = new ParameterDetailsTypeImpl();
+        return parameterDetailsType;
     }
 
     /**
@@ -196,7 +211,7 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String createNameConversionTypeFromString(EDataType eDataType, String initialValue) {
+    public String createPropertyNameTypeFromString(EDataType eDataType, String initialValue) {
         return (String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.STRING, initialValue);
     }
 
@@ -205,7 +220,25 @@ public class ucefFactoryImpl extends EFactoryImpl implements ucefFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String convertNameConversionTypeToString(EDataType eDataType, Object instanceValue) {
+    public String convertPropertyNameTypeToString(EDataType eDataType, Object instanceValue) {
+        return XMLTypeFactory.eINSTANCE.convertToString(XMLTypePackage.Literals.STRING, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String createUnitNameTypeFromString(EDataType eDataType, String initialValue) {
+        return (String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.STRING, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertUnitNameTypeToString(EDataType eDataType, Object instanceValue) {
         return XMLTypeFactory.eINSTANCE.convertToString(XMLTypePackage.Literals.STRING, instanceValue);
     }
 

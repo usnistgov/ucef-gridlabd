@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/ucef-schema/src/main/java" modelPluginID="ucef-schema"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/schema/src/main/java" modelPluginID="ucef-schema"
     modelName="ucef" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.xsd.ecore.importer" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
   <foreignModel>../ucef.xsd</foreignModel>
   <genPackages prefix="ucef" basePackage="gov.nist.pages" resource="XML" disposableProviderFactory="true"
       ecorePackage="ucef.ecore#/">
-    <genDataTypes ecoreDataType="ucef.ecore#//NameConversionType"/>
+    <genDataTypes ecoreDataType="ucef.ecore#//PropertyNameType"/>
+    <genDataTypes ecoreDataType="ucef.ecore#//UnitNameType"/>
     <genDataTypes ecoreDataType="ucef.ecore#//UpdatePeriodType"/>
     <genDataTypes ecoreDataType="ucef.ecore#//UpdatePeriodTypeObject"/>
-    <genClasses ecoreClass="ucef.ecore#//AttributeConfigType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//AttributeConfigType/updatePeriod"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//AttributeConfigType/unitConversion"/>
+    <genClasses ecoreClass="ucef.ecore#//AttributeDetailsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//AttributeDetailsType/propertyName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//AttributeDetailsType/unitConversion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//AttributeDetailsType/updatePeriod"/>
     </genClasses>
     <genClasses ecoreClass="ucef.ecore#//DocumentRoot">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//DocumentRoot/mixed"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/xMLNSPrefixMap"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/xSISchemaLocation"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/attributeConfig"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/interactionClassConfig"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/attributeDetails"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/ignored"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/interactionDetails"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/linearConversion"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//DocumentRoot/nameConversion"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/objectClassConfig"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/parameterConfig"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/objectDetails"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/parameterDetails"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//DocumentRoot/propertyName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/publishedObjects"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//DocumentRoot/unitConversion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//DocumentRoot/unitName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//DocumentRoot/updatePeriod"/>
     </genClasses>
-    <genClasses ecoreClass="ucef.ecore#//InteractionClassConfigType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//InteractionClassConfigType/updatePeriod"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//InteractionClassConfigType/publishedObjects"/>
+    <genClasses ecoreClass="ucef.ecore#//IgnoredType"/>
+    <genClasses ecoreClass="ucef.ecore#//InteractionDetailsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//InteractionDetailsType/updatePeriod"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//InteractionDetailsType/publishedObjects"/>
     </genClasses>
     <genClasses ecoreClass="ucef.ecore#//LinearConversionType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//LinearConversionType/scale"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//LinearConversionType/offset"/>
     </genClasses>
-    <genClasses ecoreClass="ucef.ecore#//ObjectClassConfigType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//ObjectClassConfigType/publishedObjects"/>
+    <genClasses ecoreClass="ucef.ecore#//ObjectDetailsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//ObjectDetailsType/publishedObjects"/>
     </genClasses>
-    <genClasses ecoreClass="ucef.ecore#//ParameterConfigType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//ParameterConfigType/unitConversion"/>
+    <genClasses ecoreClass="ucef.ecore#//ParameterDetailsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//ParameterDetailsType/propertyName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//ParameterDetailsType/unitConversion"/>
     </genClasses>
     <genClasses ecoreClass="ucef.ecore#//PublishedObjectsType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//PublishedObjectsType/objectName"/>
     </genClasses>
     <genClasses ecoreClass="ucef.ecore#//UnitConversionType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//UnitConversionType/nameConversion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ucef.ecore#//UnitConversionType/unitName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ucef.ecore#//UnitConversionType/linearConversion"/>
     </genClasses>
   </genPackages>

@@ -22,13 +22,13 @@ public interface ucefFactory extends EFactory {
     ucefFactory eINSTANCE = gov.nist.pages.ucef.impl.ucefFactoryImpl.init();
 
     /**
-     * Returns a new object of class '<em>Attribute Config Type</em>'.
+     * Returns a new object of class '<em>Attribute Details Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Attribute Config Type</em>'.
+     * @return a new object of class '<em>Attribute Details Type</em>'.
      * @generated
      */
-    AttributeConfigType createAttributeConfigType();
+    AttributeDetailsType createAttributeDetailsType();
 
     /**
      * Returns a new object of class '<em>Document Root</em>'.
@@ -40,13 +40,22 @@ public interface ucefFactory extends EFactory {
     DocumentRoot createDocumentRoot();
 
     /**
-     * Returns a new object of class '<em>Interaction Class Config Type</em>'.
+     * Returns a new object of class '<em>Ignored Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Interaction Class Config Type</em>'.
+     * @return a new object of class '<em>Ignored Type</em>'.
      * @generated
      */
-    InteractionClassConfigType createInteractionClassConfigType();
+    IgnoredType createIgnoredType();
+
+    /**
+     * Returns a new object of class '<em>Interaction Details Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Interaction Details Type</em>'.
+     * @generated
+     */
+    InteractionDetailsType createInteractionDetailsType();
 
     /**
      * Returns a new object of class '<em>Linear Conversion Type</em>'.
@@ -58,22 +67,22 @@ public interface ucefFactory extends EFactory {
     LinearConversionType createLinearConversionType();
 
     /**
-     * Returns a new object of class '<em>Object Class Config Type</em>'.
+     * Returns a new object of class '<em>Object Details Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Object Class Config Type</em>'.
+     * @return a new object of class '<em>Object Details Type</em>'.
      * @generated
      */
-    ObjectClassConfigType createObjectClassConfigType();
+    ObjectDetailsType createObjectDetailsType();
 
     /**
-     * Returns a new object of class '<em>Parameter Config Type</em>'.
+     * Returns a new object of class '<em>Parameter Details Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Parameter Config Type</em>'.
+     * @return a new object of class '<em>Parameter Details Type</em>'.
      * @generated
      */
-    ParameterConfigType createParameterConfigType();
+    ParameterDetailsType createParameterDetailsType();
 
     /**
      * Returns a new object of class '<em>Published Objects Type</em>'.

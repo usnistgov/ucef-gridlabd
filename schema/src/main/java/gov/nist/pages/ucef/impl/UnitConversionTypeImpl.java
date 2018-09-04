@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link gov.nist.pages.ucef.impl.UnitConversionTypeImpl#getNameConversion <em>Name Conversion</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.impl.UnitConversionTypeImpl#getUnitName <em>Unit Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.impl.UnitConversionTypeImpl#getLinearConversion <em>Linear Conversion</em>}</li>
  * </ul>
  *
@@ -31,24 +31,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container implements UnitConversionType {
     /**
-     * The default value of the '{@link #getNameConversion() <em>Name Conversion</em>}' attribute.
+     * The default value of the '{@link #getUnitName() <em>Unit Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getNameConversion()
+     * @see #getUnitName()
      * @generated
      * @ordered
      */
-    protected static final String NAME_CONVERSION_EDEFAULT = null;
+    protected static final String UNIT_NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getNameConversion() <em>Name Conversion</em>}' attribute.
+     * The cached value of the '{@link #getUnitName() <em>Unit Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getNameConversion()
+     * @see #getUnitName()
      * @generated
      * @ordered
      */
-    protected String nameConversion = NAME_CONVERSION_EDEFAULT;
+    protected String unitName = UNIT_NAME_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getLinearConversion() <em>Linear Conversion</em>}' containment reference.
@@ -84,8 +84,8 @@ public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getNameConversion() {
-        return nameConversion;
+    public String getUnitName() {
+        return unitName;
     }
 
     /**
@@ -93,11 +93,11 @@ public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setNameConversion(String newNameConversion) {
-        String oldNameConversion = nameConversion;
-        nameConversion = newNameConversion;
+    public void setUnitName(String newUnitName) {
+        String oldUnitName = unitName;
+        unitName = newUnitName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ucefPackage.UNIT_CONVERSION_TYPE__NAME_CONVERSION, oldNameConversion, nameConversion));
+            eNotify(new ENotificationImpl(this, Notification.SET, ucefPackage.UNIT_CONVERSION_TYPE__UNIT_NAME, oldUnitName, unitName));
     }
 
     /**
@@ -165,8 +165,8 @@ public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ucefPackage.UNIT_CONVERSION_TYPE__NAME_CONVERSION:
-                return getNameConversion();
+            case ucefPackage.UNIT_CONVERSION_TYPE__UNIT_NAME:
+                return getUnitName();
             case ucefPackage.UNIT_CONVERSION_TYPE__LINEAR_CONVERSION:
                 return getLinearConversion();
         }
@@ -181,8 +181,8 @@ public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ucefPackage.UNIT_CONVERSION_TYPE__NAME_CONVERSION:
-                setNameConversion((String)newValue);
+            case ucefPackage.UNIT_CONVERSION_TYPE__UNIT_NAME:
+                setUnitName((String)newValue);
                 return;
             case ucefPackage.UNIT_CONVERSION_TYPE__LINEAR_CONVERSION:
                 setLinearConversion((LinearConversionType)newValue);
@@ -199,8 +199,8 @@ public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ucefPackage.UNIT_CONVERSION_TYPE__NAME_CONVERSION:
-                setNameConversion(NAME_CONVERSION_EDEFAULT);
+            case ucefPackage.UNIT_CONVERSION_TYPE__UNIT_NAME:
+                setUnitName(UNIT_NAME_EDEFAULT);
                 return;
             case ucefPackage.UNIT_CONVERSION_TYPE__LINEAR_CONVERSION:
                 setLinearConversion((LinearConversionType)null);
@@ -217,8 +217,8 @@ public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ucefPackage.UNIT_CONVERSION_TYPE__NAME_CONVERSION:
-                return NAME_CONVERSION_EDEFAULT == null ? nameConversion != null : !NAME_CONVERSION_EDEFAULT.equals(nameConversion);
+            case ucefPackage.UNIT_CONVERSION_TYPE__UNIT_NAME:
+                return UNIT_NAME_EDEFAULT == null ? unitName != null : !UNIT_NAME_EDEFAULT.equals(unitName);
             case ucefPackage.UNIT_CONVERSION_TYPE__LINEAR_CONVERSION:
                 return linearConversion != null;
         }
@@ -235,8 +235,8 @@ public class UnitConversionTypeImpl extends MinimalEObjectImpl.Container impleme
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (nameConversion: ");
-        result.append(nameConversion);
+        result.append(" (unitName: ");
+        result.append(unitName);
         result.append(')');
         return result.toString();
     }

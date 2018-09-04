@@ -2,12 +2,13 @@
  */
 package gov.nist.pages.ucef.impl;
 
-import gov.nist.pages.ucef.AttributeConfigType;
+import gov.nist.pages.ucef.AttributeDetailsType;
 import gov.nist.pages.ucef.DocumentRoot;
-import gov.nist.pages.ucef.InteractionClassConfigType;
+import gov.nist.pages.ucef.IgnoredType;
+import gov.nist.pages.ucef.InteractionDetailsType;
 import gov.nist.pages.ucef.LinearConversionType;
-import gov.nist.pages.ucef.ObjectClassConfigType;
-import gov.nist.pages.ucef.ParameterConfigType;
+import gov.nist.pages.ucef.ObjectDetailsType;
+import gov.nist.pages.ucef.ParameterDetailsType;
 import gov.nist.pages.ucef.PublishedObjectsType;
 import gov.nist.pages.ucef.UnitConversionType;
 import gov.nist.pages.ucef.ucefFactory;
@@ -38,7 +39,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass attributeConfigTypeEClass = null;
+    private EClass attributeDetailsTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -52,7 +53,14 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass interactionClassConfigTypeEClass = null;
+    private EClass ignoredTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass interactionDetailsTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -66,14 +74,14 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass objectClassConfigTypeEClass = null;
+    private EClass objectDetailsTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass parameterConfigTypeEClass = null;
+    private EClass parameterDetailsTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -94,7 +102,14 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EDataType nameConversionTypeEDataType = null;
+    private EDataType propertyNameTypeEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType unitNameTypeEDataType = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -188,8 +203,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getAttributeConfigType() {
-        return attributeConfigTypeEClass;
+    public EClass getAttributeDetailsType() {
+        return attributeDetailsTypeEClass;
     }
 
     /**
@@ -197,8 +212,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getAttributeConfigType_UpdatePeriod() {
-        return (EAttribute)attributeConfigTypeEClass.getEStructuralFeatures().get(0);
+    public EAttribute getAttributeDetailsType_PropertyName() {
+        return (EAttribute)attributeDetailsTypeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -206,8 +221,17 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getAttributeConfigType_UnitConversion() {
-        return (EReference)attributeConfigTypeEClass.getEStructuralFeatures().get(1);
+    public EReference getAttributeDetailsType_UnitConversion() {
+        return (EReference)attributeDetailsTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAttributeDetailsType_UpdatePeriod() {
+        return (EAttribute)attributeDetailsTypeEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -251,7 +275,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getDocumentRoot_AttributeConfig() {
+    public EReference getDocumentRoot_AttributeDetails() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
     }
 
@@ -260,7 +284,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getDocumentRoot_InteractionClassConfig() {
+    public EReference getDocumentRoot_Ignored() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
     }
 
@@ -269,7 +293,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getDocumentRoot_LinearConversion() {
+    public EReference getDocumentRoot_InteractionDetails() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
     }
 
@@ -278,8 +302,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getDocumentRoot_NameConversion() {
-        return (EAttribute)documentRootEClass.getEStructuralFeatures().get(6);
+    public EReference getDocumentRoot_LinearConversion() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -287,7 +311,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getDocumentRoot_ObjectClassConfig() {
+    public EReference getDocumentRoot_ObjectDetails() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
     }
 
@@ -296,7 +320,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getDocumentRoot_ParameterConfig() {
+    public EReference getDocumentRoot_ParameterDetails() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
     }
 
@@ -305,8 +329,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getDocumentRoot_PublishedObjects() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
+    public EAttribute getDocumentRoot_PropertyName() {
+        return (EAttribute)documentRootEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -314,7 +338,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getDocumentRoot_UnitConversion() {
+    public EReference getDocumentRoot_PublishedObjects() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
     }
 
@@ -323,8 +347,26 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EReference getDocumentRoot_UnitConversion() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getDocumentRoot_UnitName() {
+        return (EAttribute)documentRootEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EAttribute getDocumentRoot_UpdatePeriod() {
-        return (EAttribute)documentRootEClass.getEStructuralFeatures().get(11);
+        return (EAttribute)documentRootEClass.getEStructuralFeatures().get(13);
     }
 
     /**
@@ -332,8 +374,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getInteractionClassConfigType() {
-        return interactionClassConfigTypeEClass;
+    public EClass getIgnoredType() {
+        return ignoredTypeEClass;
     }
 
     /**
@@ -341,8 +383,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getInteractionClassConfigType_UpdatePeriod() {
-        return (EAttribute)interactionClassConfigTypeEClass.getEStructuralFeatures().get(0);
+    public EClass getInteractionDetailsType() {
+        return interactionDetailsTypeEClass;
     }
 
     /**
@@ -350,8 +392,17 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getInteractionClassConfigType_PublishedObjects() {
-        return (EReference)interactionClassConfigTypeEClass.getEStructuralFeatures().get(1);
+    public EAttribute getInteractionDetailsType_UpdatePeriod() {
+        return (EAttribute)interactionDetailsTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getInteractionDetailsType_PublishedObjects() {
+        return (EReference)interactionDetailsTypeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -386,8 +437,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getObjectClassConfigType() {
-        return objectClassConfigTypeEClass;
+    public EClass getObjectDetailsType() {
+        return objectDetailsTypeEClass;
     }
 
     /**
@@ -395,8 +446,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getObjectClassConfigType_PublishedObjects() {
-        return (EReference)objectClassConfigTypeEClass.getEStructuralFeatures().get(0);
+    public EReference getObjectDetailsType_PublishedObjects() {
+        return (EReference)objectDetailsTypeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -404,8 +455,8 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getParameterConfigType() {
-        return parameterConfigTypeEClass;
+    public EClass getParameterDetailsType() {
+        return parameterDetailsTypeEClass;
     }
 
     /**
@@ -413,8 +464,17 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getParameterConfigType_UnitConversion() {
-        return (EReference)parameterConfigTypeEClass.getEStructuralFeatures().get(0);
+    public EAttribute getParameterDetailsType_PropertyName() {
+        return (EAttribute)parameterDetailsTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getParameterDetailsType_UnitConversion() {
+        return (EReference)parameterDetailsTypeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -449,7 +509,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getUnitConversionType_NameConversion() {
+    public EAttribute getUnitConversionType_UnitName() {
         return (EAttribute)unitConversionTypeEClass.getEStructuralFeatures().get(0);
     }
 
@@ -467,8 +527,17 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EDataType getNameConversionType() {
-        return nameConversionTypeEDataType;
+    public EDataType getPropertyNameType() {
+        return propertyNameTypeEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getUnitNameType() {
+        return unitNameTypeEDataType;
     }
 
     /**
@@ -517,47 +586,54 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
         isCreated = true;
 
         // Create classes and their features
-        attributeConfigTypeEClass = createEClass(ATTRIBUTE_CONFIG_TYPE);
-        createEAttribute(attributeConfigTypeEClass, ATTRIBUTE_CONFIG_TYPE__UPDATE_PERIOD);
-        createEReference(attributeConfigTypeEClass, ATTRIBUTE_CONFIG_TYPE__UNIT_CONVERSION);
+        attributeDetailsTypeEClass = createEClass(ATTRIBUTE_DETAILS_TYPE);
+        createEAttribute(attributeDetailsTypeEClass, ATTRIBUTE_DETAILS_TYPE__PROPERTY_NAME);
+        createEReference(attributeDetailsTypeEClass, ATTRIBUTE_DETAILS_TYPE__UNIT_CONVERSION);
+        createEAttribute(attributeDetailsTypeEClass, ATTRIBUTE_DETAILS_TYPE__UPDATE_PERIOD);
 
         documentRootEClass = createEClass(DOCUMENT_ROOT);
         createEAttribute(documentRootEClass, DOCUMENT_ROOT__MIXED);
         createEReference(documentRootEClass, DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
         createEReference(documentRootEClass, DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__ATTRIBUTE_CONFIG);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__INTERACTION_CLASS_CONFIG);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__ATTRIBUTE_DETAILS);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__IGNORED);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__INTERACTION_DETAILS);
         createEReference(documentRootEClass, DOCUMENT_ROOT__LINEAR_CONVERSION);
-        createEAttribute(documentRootEClass, DOCUMENT_ROOT__NAME_CONVERSION);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__OBJECT_CLASS_CONFIG);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__PARAMETER_CONFIG);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__OBJECT_DETAILS);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__PARAMETER_DETAILS);
+        createEAttribute(documentRootEClass, DOCUMENT_ROOT__PROPERTY_NAME);
         createEReference(documentRootEClass, DOCUMENT_ROOT__PUBLISHED_OBJECTS);
         createEReference(documentRootEClass, DOCUMENT_ROOT__UNIT_CONVERSION);
+        createEAttribute(documentRootEClass, DOCUMENT_ROOT__UNIT_NAME);
         createEAttribute(documentRootEClass, DOCUMENT_ROOT__UPDATE_PERIOD);
 
-        interactionClassConfigTypeEClass = createEClass(INTERACTION_CLASS_CONFIG_TYPE);
-        createEAttribute(interactionClassConfigTypeEClass, INTERACTION_CLASS_CONFIG_TYPE__UPDATE_PERIOD);
-        createEReference(interactionClassConfigTypeEClass, INTERACTION_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS);
+        ignoredTypeEClass = createEClass(IGNORED_TYPE);
+
+        interactionDetailsTypeEClass = createEClass(INTERACTION_DETAILS_TYPE);
+        createEAttribute(interactionDetailsTypeEClass, INTERACTION_DETAILS_TYPE__UPDATE_PERIOD);
+        createEReference(interactionDetailsTypeEClass, INTERACTION_DETAILS_TYPE__PUBLISHED_OBJECTS);
 
         linearConversionTypeEClass = createEClass(LINEAR_CONVERSION_TYPE);
         createEAttribute(linearConversionTypeEClass, LINEAR_CONVERSION_TYPE__SCALE);
         createEAttribute(linearConversionTypeEClass, LINEAR_CONVERSION_TYPE__OFFSET);
 
-        objectClassConfigTypeEClass = createEClass(OBJECT_CLASS_CONFIG_TYPE);
-        createEReference(objectClassConfigTypeEClass, OBJECT_CLASS_CONFIG_TYPE__PUBLISHED_OBJECTS);
+        objectDetailsTypeEClass = createEClass(OBJECT_DETAILS_TYPE);
+        createEReference(objectDetailsTypeEClass, OBJECT_DETAILS_TYPE__PUBLISHED_OBJECTS);
 
-        parameterConfigTypeEClass = createEClass(PARAMETER_CONFIG_TYPE);
-        createEReference(parameterConfigTypeEClass, PARAMETER_CONFIG_TYPE__UNIT_CONVERSION);
+        parameterDetailsTypeEClass = createEClass(PARAMETER_DETAILS_TYPE);
+        createEAttribute(parameterDetailsTypeEClass, PARAMETER_DETAILS_TYPE__PROPERTY_NAME);
+        createEReference(parameterDetailsTypeEClass, PARAMETER_DETAILS_TYPE__UNIT_CONVERSION);
 
         publishedObjectsTypeEClass = createEClass(PUBLISHED_OBJECTS_TYPE);
         createEAttribute(publishedObjectsTypeEClass, PUBLISHED_OBJECTS_TYPE__OBJECT_NAME);
 
         unitConversionTypeEClass = createEClass(UNIT_CONVERSION_TYPE);
-        createEAttribute(unitConversionTypeEClass, UNIT_CONVERSION_TYPE__NAME_CONVERSION);
+        createEAttribute(unitConversionTypeEClass, UNIT_CONVERSION_TYPE__UNIT_NAME);
         createEReference(unitConversionTypeEClass, UNIT_CONVERSION_TYPE__LINEAR_CONVERSION);
 
         // Create data types
-        nameConversionTypeEDataType = createEDataType(NAME_CONVERSION_TYPE);
+        propertyNameTypeEDataType = createEDataType(PROPERTY_NAME_TYPE);
+        unitNameTypeEDataType = createEDataType(UNIT_NAME_TYPE);
         updatePeriodTypeEDataType = createEDataType(UPDATE_PERIOD_TYPE);
         updatePeriodTypeObjectEDataType = createEDataType(UPDATE_PERIOD_TYPE_OBJECT);
     }
@@ -595,47 +671,54 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
         // Add supertypes to classes
 
         // Initialize classes, features, and operations; add parameters
-        initEClass(attributeConfigTypeEClass, AttributeConfigType.class, "AttributeConfigType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getAttributeConfigType_UpdatePeriod(), this.getUpdatePeriodType(), "updatePeriod", null, 0, 1, AttributeConfigType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getAttributeConfigType_UnitConversion(), this.getUnitConversionType(), null, "unitConversion", null, 0, 1, AttributeConfigType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(attributeDetailsTypeEClass, AttributeDetailsType.class, "AttributeDetailsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getAttributeDetailsType_PropertyName(), this.getPropertyNameType(), "propertyName", null, 0, 1, AttributeDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getAttributeDetailsType_UnitConversion(), this.getUnitConversionType(), null, "unitConversion", null, 0, 1, AttributeDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAttributeDetailsType_UpdatePeriod(), this.getUpdatePeriodType(), "updatePeriod", null, 0, 1, AttributeDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(documentRootEClass, DocumentRoot.class, "DocumentRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDocumentRoot_Mixed(), ecorePackage.getEFeatureMapEntry(), "mixed", null, 0, -1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_XMLNSPrefixMap(), ecorePackage.getEStringToStringMapEntry(), null, "xMLNSPrefixMap", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_XSISchemaLocation(), ecorePackage.getEStringToStringMapEntry(), null, "xSISchemaLocation", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_AttributeConfig(), this.getAttributeConfigType(), null, "attributeConfig", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_InteractionClassConfig(), this.getInteractionClassConfigType(), null, "interactionClassConfig", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_AttributeDetails(), this.getAttributeDetailsType(), null, "attributeDetails", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_Ignored(), this.getIgnoredType(), null, "ignored", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_InteractionDetails(), this.getInteractionDetailsType(), null, "interactionDetails", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_LinearConversion(), this.getLinearConversionType(), null, "linearConversion", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEAttribute(getDocumentRoot_NameConversion(), this.getNameConversionType(), "nameConversion", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_ObjectClassConfig(), this.getObjectClassConfigType(), null, "objectClassConfig", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_ParameterConfig(), this.getParameterConfigType(), null, "parameterConfig", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_ObjectDetails(), this.getObjectDetailsType(), null, "objectDetails", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_ParameterDetails(), this.getParameterDetailsType(), null, "parameterDetails", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentRoot_PropertyName(), this.getPropertyNameType(), "propertyName", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_PublishedObjects(), this.getPublishedObjectsType(), null, "publishedObjects", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_UnitConversion(), this.getUnitConversionType(), null, "unitConversion", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentRoot_UnitName(), this.getUnitNameType(), "unitName", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEAttribute(getDocumentRoot_UpdatePeriod(), this.getUpdatePeriodType(), "updatePeriod", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
-        initEClass(interactionClassConfigTypeEClass, InteractionClassConfigType.class, "InteractionClassConfigType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getInteractionClassConfigType_UpdatePeriod(), this.getUpdatePeriodType(), "updatePeriod", null, 0, 1, InteractionClassConfigType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getInteractionClassConfigType_PublishedObjects(), this.getPublishedObjectsType(), null, "publishedObjects", null, 0, 1, InteractionClassConfigType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(ignoredTypeEClass, IgnoredType.class, "IgnoredType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(interactionDetailsTypeEClass, InteractionDetailsType.class, "InteractionDetailsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getInteractionDetailsType_UpdatePeriod(), this.getUpdatePeriodType(), "updatePeriod", null, 0, 1, InteractionDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getInteractionDetailsType_PublishedObjects(), this.getPublishedObjectsType(), null, "publishedObjects", null, 0, 1, InteractionDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(linearConversionTypeEClass, LinearConversionType.class, "LinearConversionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getLinearConversionType_Scale(), theXMLTypePackage.getDouble(), "scale", null, 1, 1, LinearConversionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getLinearConversionType_Offset(), theXMLTypePackage.getDouble(), "offset", null, 1, 1, LinearConversionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(objectClassConfigTypeEClass, ObjectClassConfigType.class, "ObjectClassConfigType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getObjectClassConfigType_PublishedObjects(), this.getPublishedObjectsType(), null, "publishedObjects", null, 0, 1, ObjectClassConfigType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(objectDetailsTypeEClass, ObjectDetailsType.class, "ObjectDetailsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getObjectDetailsType_PublishedObjects(), this.getPublishedObjectsType(), null, "publishedObjects", null, 0, 1, ObjectDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(parameterConfigTypeEClass, ParameterConfigType.class, "ParameterConfigType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getParameterConfigType_UnitConversion(), this.getUnitConversionType(), null, "unitConversion", null, 0, 1, ParameterConfigType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(parameterDetailsTypeEClass, ParameterDetailsType.class, "ParameterDetailsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getParameterDetailsType_PropertyName(), this.getPropertyNameType(), "propertyName", null, 0, 1, ParameterDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getParameterDetailsType_UnitConversion(), this.getUnitConversionType(), null, "unitConversion", null, 0, 1, ParameterDetailsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(publishedObjectsTypeEClass, PublishedObjectsType.class, "PublishedObjectsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getPublishedObjectsType_ObjectName(), theXMLTypePackage.getString(), "objectName", null, 1, -1, PublishedObjectsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(unitConversionTypeEClass, UnitConversionType.class, "UnitConversionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getUnitConversionType_NameConversion(), this.getNameConversionType(), "nameConversion", null, 0, 1, UnitConversionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getUnitConversionType_UnitName(), this.getUnitNameType(), "unitName", null, 0, 1, UnitConversionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getUnitConversionType_LinearConversion(), this.getLinearConversionType(), null, "linearConversion", null, 0, 1, UnitConversionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
-        initEDataType(nameConversionTypeEDataType, String.class, "NameConversionType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(propertyNameTypeEDataType, String.class, "PropertyNameType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(unitNameTypeEDataType, String.class, "UnitNameType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(updatePeriodTypeEDataType, double.class, "UpdatePeriodType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(updatePeriodTypeObjectEDataType, Double.class, "UpdatePeriodTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
@@ -656,26 +739,34 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
     protected void createExtendedMetaDataAnnotations() {
         String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";	
         addAnnotation
-          (attributeConfigTypeEClass, 
+          (attributeDetailsTypeEClass, 
            source, 
            new String[] {
-             "name", "attributeConfigType",
+             "name", "attributeDetailsType",
              "kind", "elementOnly"
            });	
         addAnnotation
-          (getAttributeConfigType_UpdatePeriod(), 
+          (getAttributeDetailsType_PropertyName(), 
            source, 
            new String[] {
              "kind", "element",
-             "name", "updatePeriod",
+             "name", "propertyName",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (getAttributeConfigType_UnitConversion(), 
+          (getAttributeDetailsType_UnitConversion(), 
            source, 
            new String[] {
              "kind", "element",
              "name", "unitConversion",
+             "namespace", "##targetNamespace"
+           });	
+        addAnnotation
+          (getAttributeDetailsType_UpdatePeriod(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "updatePeriod",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
@@ -707,19 +798,27 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "name", "xsi:schemaLocation"
            });	
         addAnnotation
-          (getDocumentRoot_AttributeConfig(), 
+          (getDocumentRoot_AttributeDetails(), 
            source, 
            new String[] {
              "kind", "element",
-             "name", "attributeConfig",
+             "name", "attributeDetails",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (getDocumentRoot_InteractionClassConfig(), 
+          (getDocumentRoot_Ignored(), 
            source, 
            new String[] {
              "kind", "element",
-             "name", "interactionClassConfig",
+             "name", "ignored",
+             "namespace", "##targetNamespace"
+           });	
+        addAnnotation
+          (getDocumentRoot_InteractionDetails(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "interactionDetails",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
@@ -731,27 +830,27 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (getDocumentRoot_NameConversion(), 
+          (getDocumentRoot_ObjectDetails(), 
            source, 
            new String[] {
              "kind", "element",
-             "name", "nameConversion",
+             "name", "objectDetails",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (getDocumentRoot_ObjectClassConfig(), 
+          (getDocumentRoot_ParameterDetails(), 
            source, 
            new String[] {
              "kind", "element",
-             "name", "objectClassConfig",
+             "name", "parameterDetails",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (getDocumentRoot_ParameterConfig(), 
+          (getDocumentRoot_PropertyName(), 
            source, 
            new String[] {
              "kind", "element",
-             "name", "parameterConfig",
+             "name", "propertyName",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
@@ -771,6 +870,14 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "namespace", "##targetNamespace"
            });	
         addAnnotation
+          (getDocumentRoot_UnitName(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "unitName",
+             "namespace", "##targetNamespace"
+           });	
+        addAnnotation
           (getDocumentRoot_UpdatePeriod(), 
            source, 
            new String[] {
@@ -779,14 +886,21 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (interactionClassConfigTypeEClass, 
+          (ignoredTypeEClass, 
            source, 
            new String[] {
-             "name", "interactionClassConfigType",
+             "name", "ignored_._type",
+             "kind", "empty"
+           });	
+        addAnnotation
+          (interactionDetailsTypeEClass, 
+           source, 
+           new String[] {
+             "name", "interactionDetailsType",
              "kind", "elementOnly"
            });	
         addAnnotation
-          (getInteractionClassConfigType_UpdatePeriod(), 
+          (getInteractionDetailsType_UpdatePeriod(), 
            source, 
            new String[] {
              "kind", "element",
@@ -794,7 +908,7 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (getInteractionClassConfigType_PublishedObjects(), 
+          (getInteractionDetailsType_PublishedObjects(), 
            source, 
            new String[] {
              "kind", "element",
@@ -825,23 +939,14 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (nameConversionTypeEDataType, 
+          (objectDetailsTypeEClass, 
            source, 
            new String[] {
-             "name", "nameConversionType",
-             "baseType", "http://www.eclipse.org/emf/2003/XMLType#string",
-             "whiteSpace", "collapse",
-             "minLength", "1"
-           });	
-        addAnnotation
-          (objectClassConfigTypeEClass, 
-           source, 
-           new String[] {
-             "name", "objectClassConfigType",
+             "name", "objectDetailsType",
              "kind", "elementOnly"
            });	
         addAnnotation
-          (getObjectClassConfigType_PublishedObjects(), 
+          (getObjectDetailsType_PublishedObjects(), 
            source, 
            new String[] {
              "kind", "element",
@@ -849,19 +954,35 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "namespace", "##targetNamespace"
            });	
         addAnnotation
-          (parameterConfigTypeEClass, 
+          (parameterDetailsTypeEClass, 
            source, 
            new String[] {
-             "name", "parameterConfigType",
+             "name", "parameterDetailsType",
              "kind", "elementOnly"
            });	
         addAnnotation
-          (getParameterConfigType_UnitConversion(), 
+          (getParameterDetailsType_PropertyName(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "propertyName",
+             "namespace", "##targetNamespace"
+           });	
+        addAnnotation
+          (getParameterDetailsType_UnitConversion(), 
            source, 
            new String[] {
              "kind", "element",
              "name", "unitConversion",
              "namespace", "##targetNamespace"
+           });	
+        addAnnotation
+          (propertyNameTypeEDataType, 
+           source, 
+           new String[] {
+             "name", "propertyNameType",
+             "baseType", "http://www.eclipse.org/emf/2003/XMLType#string",
+             "pattern", "[a-zA-Z0-9_.]+"
            });	
         addAnnotation
           (publishedObjectsTypeEClass, 
@@ -886,11 +1007,11 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "kind", "elementOnly"
            });	
         addAnnotation
-          (getUnitConversionType_NameConversion(), 
+          (getUnitConversionType_UnitName(), 
            source, 
            new String[] {
              "kind", "element",
-             "name", "nameConversion",
+             "name", "unitName",
              "namespace", "##targetNamespace"
            });	
         addAnnotation
@@ -900,6 +1021,15 @@ public class ucefPackageImpl extends EPackageImpl implements ucefPackage {
              "kind", "element",
              "name", "linearConversion",
              "namespace", "##targetNamespace"
+           });	
+        addAnnotation
+          (unitNameTypeEDataType, 
+           source, 
+           new String[] {
+             "name", "unitNameType",
+             "baseType", "http://www.eclipse.org/emf/2003/XMLType#string",
+             "whiteSpace", "collapse",
+             "minLength", "1"
            });	
         addAnnotation
           (updatePeriodTypeEDataType, 

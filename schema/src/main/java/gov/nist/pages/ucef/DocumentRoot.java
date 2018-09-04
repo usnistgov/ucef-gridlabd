@@ -20,14 +20,16 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getMixed <em>Mixed</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getAttributeConfig <em>Attribute Config</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getInteractionClassConfig <em>Interaction Class Config</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getAttributeDetails <em>Attribute Details</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getIgnored <em>Ignored</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getInteractionDetails <em>Interaction Details</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getLinearConversion <em>Linear Conversion</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getNameConversion <em>Name Conversion</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getObjectClassConfig <em>Object Class Config</em>}</li>
- *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getParameterConfig <em>Parameter Config</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getObjectDetails <em>Object Details</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getParameterDetails <em>Parameter Details</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getPropertyName <em>Property Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getPublishedObjects <em>Published Objects</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getUnitConversion <em>Unit Conversion</em>}</li>
+ *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getUnitName <em>Unit Name</em>}</li>
  *   <li>{@link gov.nist.pages.ucef.DocumentRoot#getUpdatePeriod <em>Update Period</em>}</li>
  * </ul>
  *
@@ -90,56 +92,82 @@ public interface DocumentRoot extends EObject {
     EMap<String, String> getXSISchemaLocation();
 
     /**
-     * Returns the value of the '<em><b>Attribute Config</b></em>' containment reference.
+     * Returns the value of the '<em><b>Attribute Details</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Custom GridLAB-D configuration options for object attributes.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Attribute Config</em>' containment reference.
-     * @see #setAttributeConfig(AttributeConfigType)
-     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_AttributeConfig()
+     * @return the value of the '<em>Attribute Details</em>' containment reference.
+     * @see #setAttributeDetails(AttributeDetailsType)
+     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_AttributeDetails()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='attributeConfig' namespace='##targetNamespace'"
+     *        extendedMetaData="kind='element' name='attributeDetails' namespace='##targetNamespace'"
      * @generated
      */
-    AttributeConfigType getAttributeConfig();
+    AttributeDetailsType getAttributeDetails();
 
     /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getAttributeConfig <em>Attribute Config</em>}' containment reference.
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getAttributeDetails <em>Attribute Details</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Attribute Config</em>' containment reference.
-     * @see #getAttributeConfig()
+     * @param value the new value of the '<em>Attribute Details</em>' containment reference.
+     * @see #getAttributeDetails()
      * @generated
      */
-    void setAttributeConfig(AttributeConfigType value);
+    void setAttributeDetails(AttributeDetailsType value);
 
     /**
-     * Returns the value of the '<em><b>Interaction Class Config</b></em>' containment reference.
+     * Returns the value of the '<em><b>Ignored</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * A flag to indicate that a parameter or attribute should not be sent to or retrieved from the GridLAB-D simulation.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Ignored</em>' containment reference.
+     * @see #setIgnored(IgnoredType)
+     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_Ignored()
+     * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
+     *        extendedMetaData="kind='element' name='ignored' namespace='##targetNamespace'"
+     * @generated
+     */
+    IgnoredType getIgnored();
+
+    /**
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getIgnored <em>Ignored</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Ignored</em>' containment reference.
+     * @see #getIgnored()
+     * @generated
+     */
+    void setIgnored(IgnoredType value);
+
+    /**
+     * Returns the value of the '<em><b>Interaction Details</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Custom GridLAB-D configuration options for interaction classes.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Interaction Class Config</em>' containment reference.
-     * @see #setInteractionClassConfig(InteractionClassConfigType)
-     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_InteractionClassConfig()
+     * @return the value of the '<em>Interaction Details</em>' containment reference.
+     * @see #setInteractionDetails(InteractionDetailsType)
+     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_InteractionDetails()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='interactionClassConfig' namespace='##targetNamespace'"
+     *        extendedMetaData="kind='element' name='interactionDetails' namespace='##targetNamespace'"
      * @generated
      */
-    InteractionClassConfigType getInteractionClassConfig();
+    InteractionDetailsType getInteractionDetails();
 
     /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getInteractionClassConfig <em>Interaction Class Config</em>}' containment reference.
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getInteractionDetails <em>Interaction Details</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Interaction Class Config</em>' containment reference.
-     * @see #getInteractionClassConfig()
+     * @param value the new value of the '<em>Interaction Details</em>' containment reference.
+     * @see #getInteractionDetails()
      * @generated
      */
-    void setInteractionClassConfig(InteractionClassConfigType value);
+    void setInteractionDetails(InteractionDetailsType value);
 
     /**
      * Returns the value of the '<em><b>Linear Conversion</b></em>' containment reference.
@@ -168,82 +196,82 @@ public interface DocumentRoot extends EObject {
     void setLinearConversion(LinearConversionType value);
 
     /**
-     * Returns the value of the '<em><b>Name Conversion</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * A unit conversion rule that declares the HLA federation uses the specified unit name. This rule relies on GridLAB-D's internal unit conversion and only works for attributes and parameters defined as floating point values.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Name Conversion</em>' attribute.
-     * @see #setNameConversion(String)
-     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_NameConversion()
-     * @model unique="false" dataType="gov.nist.pages.ucef.NameConversionType" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='nameConversion' namespace='##targetNamespace'"
-     * @generated
-     */
-    String getNameConversion();
-
-    /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getNameConversion <em>Name Conversion</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name Conversion</em>' attribute.
-     * @see #getNameConversion()
-     * @generated
-     */
-    void setNameConversion(String value);
-
-    /**
-     * Returns the value of the '<em><b>Object Class Config</b></em>' containment reference.
+     * Returns the value of the '<em><b>Object Details</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Custom GridLAB-D configuration options for object classes.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Object Class Config</em>' containment reference.
-     * @see #setObjectClassConfig(ObjectClassConfigType)
-     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_ObjectClassConfig()
+     * @return the value of the '<em>Object Details</em>' containment reference.
+     * @see #setObjectDetails(ObjectDetailsType)
+     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_ObjectDetails()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='objectClassConfig' namespace='##targetNamespace'"
+     *        extendedMetaData="kind='element' name='objectDetails' namespace='##targetNamespace'"
      * @generated
      */
-    ObjectClassConfigType getObjectClassConfig();
+    ObjectDetailsType getObjectDetails();
 
     /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getObjectClassConfig <em>Object Class Config</em>}' containment reference.
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getObjectDetails <em>Object Details</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Object Class Config</em>' containment reference.
-     * @see #getObjectClassConfig()
+     * @param value the new value of the '<em>Object Details</em>' containment reference.
+     * @see #getObjectDetails()
      * @generated
      */
-    void setObjectClassConfig(ObjectClassConfigType value);
+    void setObjectDetails(ObjectDetailsType value);
 
     /**
-     * Returns the value of the '<em><b>Parameter Config</b></em>' containment reference.
+     * Returns the value of the '<em><b>Parameter Details</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Custom GridLAB-D configuration options for interaction parameters.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Parameter Config</em>' containment reference.
-     * @see #setParameterConfig(ParameterConfigType)
-     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_ParameterConfig()
+     * @return the value of the '<em>Parameter Details</em>' containment reference.
+     * @see #setParameterDetails(ParameterDetailsType)
+     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_ParameterDetails()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='parameterConfig' namespace='##targetNamespace'"
+     *        extendedMetaData="kind='element' name='parameterDetails' namespace='##targetNamespace'"
      * @generated
      */
-    ParameterConfigType getParameterConfig();
+    ParameterDetailsType getParameterDetails();
 
     /**
-     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getParameterConfig <em>Parameter Config</em>}' containment reference.
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getParameterDetails <em>Parameter Details</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Parameter Config</em>' containment reference.
-     * @see #getParameterConfig()
+     * @param value the new value of the '<em>Parameter Details</em>' containment reference.
+     * @see #getParameterDetails()
      * @generated
      */
-    void setParameterConfig(ParameterConfigType value);
+    void setParameterDetails(ParameterDetailsType value);
+
+    /**
+     * Returns the value of the '<em><b>Property Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * A substitute name to use for the property in the associated GridLAB-D object instead of the attribute or parameter name.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Property Name</em>' attribute.
+     * @see #setPropertyName(String)
+     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_PropertyName()
+     * @model unique="false" dataType="gov.nist.pages.ucef.PropertyNameType" upper="-2" transient="true" volatile="true" derived="true"
+     *        extendedMetaData="kind='element' name='propertyName' namespace='##targetNamespace'"
+     * @generated
+     */
+    String getPropertyName();
+
+    /**
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getPropertyName <em>Property Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Property Name</em>' attribute.
+     * @see #getPropertyName()
+     * @generated
+     */
+    void setPropertyName(String value);
 
     /**
      * Returns the value of the '<em><b>Published Objects</b></em>' containment reference.
@@ -296,6 +324,32 @@ public interface DocumentRoot extends EObject {
      * @generated
      */
     void setUnitConversion(UnitConversionType value);
+
+    /**
+     * Returns the value of the '<em><b>Unit Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * A unit conversion rule that declares the HLA federation uses the specified unit name. This rule relies on GridLAB-D's internal unit conversion and only works for attributes and parameters defined as floating point values.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Unit Name</em>' attribute.
+     * @see #setUnitName(String)
+     * @see gov.nist.pages.ucef.ucefPackage#getDocumentRoot_UnitName()
+     * @model unique="false" dataType="gov.nist.pages.ucef.UnitNameType" upper="-2" transient="true" volatile="true" derived="true"
+     *        extendedMetaData="kind='element' name='unitName' namespace='##targetNamespace'"
+     * @generated
+     */
+    String getUnitName();
+
+    /**
+     * Sets the value of the '{@link gov.nist.pages.ucef.DocumentRoot#getUnitName <em>Unit Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Unit Name</em>' attribute.
+     * @see #getUnitName()
+     * @generated
+     */
+    void setUnitName(String value);
 
     /**
      * Returns the value of the '<em><b>Update Period</b></em>' attribute.
