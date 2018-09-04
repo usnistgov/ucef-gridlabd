@@ -67,7 +67,7 @@ public class GridLabDFederate implements GatewayCallback {
     
     private Process gridlabd = null;
     
-    private TimeToUpdate publicationManager = null;
+    private TimeToPublish publicationManager = null;
     
     private Set<PropertyUpdate> propertyUpdates = new HashSet<PropertyUpdate>();
     
@@ -114,7 +114,7 @@ public class GridLabDFederate implements GatewayCallback {
         this.objectModel = new ExtendedObjectModel(configuration.getFomFilepath());
         this.gateway = new GatewayFederate(configuration, this, objectModel);
         this.client = new GridLabDClient("localhost", configuration.getServerPortNumber());
-        this.publicationManager = new TimeToUpdate(objectModel);
+        this.publicationManager = new TimeToPublish(objectModel);
         this.isClockPublished = objectModel.isPublished(ExtendedObjectModel.GLD_CLOCK);
     }
     
@@ -186,7 +186,7 @@ public class GridLabDFederate implements GatewayCallback {
             return; // cannot access GridLAB-D after it exits so nothing left to do
         }
         
-        publicationManager.step(timeStep); // has to happen before sendPublications
+        publicationManager.setLogicalTime(timeStep); // has to happen before sendPublications
         sendPublications();
         updateGldProperties();
         
@@ -537,7 +537,7 @@ public class GridLabDFederate implements GatewayCallback {
                 log.trace("skipped interaction {}", objectModel.getClassPath(interaction));
                 continue; // ignore interactions related to gateway infrastructure
             }
-            if (publicationManager.isTimeToUpdate(objectModel.getClassPath(interaction))) {
+            if (publicationManager.isTimeToPublish(objectModel.getClassPath(interaction))) {
                 publish(interaction);
             }
         }
@@ -560,7 +560,11 @@ public class GridLabDFederate implements GatewayCallback {
             clockValues.put("timeStamp", timestamp);
             clockValues.put("unixTime", Long.toString(unixtime));
             
-            gateway.sendInteraction(ExtendedObjectModel.GLD_CLOCK, clockValues, gateway.getTimeStamp());
+            if (isInitialized) {
+                gateway.sendInteraction(ExtendedObjectModel.GLD_CLOCK, clockValues, gateway.getTimeStamp());
+            } else {
+                gateway.sendInteraction(ExtendedObjectModel.GLD_CLOCK, clockValues); // send RO for t=0
+            }
         } catch (IOException | ParseException | FederateNotExecutionMember | NameNotFound
                 | InteractionClassNotPublished | InvalidFederationTime e) {
             log.error("failed to publish clock", e);
@@ -580,7 +584,11 @@ public class GridLabDFederate implements GatewayCallback {
             values.put("name", gldObjectName);
             
             try {
-                gateway.sendInteraction(classPath, values, gateway.getTimeStamp());
+                if (isInitialized) {
+                    gateway.sendInteraction(classPath, values, gateway.getTimeStamp());
+                } else {
+                    gateway.sendInteraction(classPath, values); // send RO for t=0
+                }
             } catch (FederateNotExecutionMember | NameNotFound | InteractionClassNotPublished
                     | InvalidFederationTime e) {
                 throw new RTIAmbassadorException(e);
@@ -639,7 +647,7 @@ public class GridLabDFederate implements GatewayCallback {
                 continue;
             }
             
-            if (!publicationManager.isTimeToUpdate(classPath, attributeName)) {
+            if (!publicationManager.isTimeToPublish(classPath, attributeName)) {
                 continue;
             }
             
@@ -681,7 +689,11 @@ public class GridLabDFederate implements GatewayCallback {
         }
         
         try {
-            gateway.updateObject(instanceName, values, gateway.getTimeStamp());
+            if (isInitialized) {
+                gateway.updateObject(instanceName, values, gateway.getTimeStamp());
+            } else {
+                gateway.updateObject(instanceName, values); // send RO for t=0
+            }
         } catch (FederateNotExecutionMember | ObjectNotKnown | NameNotFound | AttributeNotOwned
                 | InvalidFederationTime e) {
             throw new RTIAmbassadorException(e);
@@ -724,6 +736,7 @@ public class GridLabDFederate implements GatewayCallback {
                 throw new GridLabDException("unreachable code");
             } catch (IOException e) {
                 log.info("GridLAB-D simulation complete");
+                gateway.requestExit();
                 return;
             }
         }
