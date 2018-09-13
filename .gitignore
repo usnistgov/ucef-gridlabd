@@ -1,6 +1,8 @@
 **/target/
 **/logs/
-/model/*.csv
+**/model/*.csv
 .settings
 .classpath
 .project
+dependency-reduced-pom.xml
+

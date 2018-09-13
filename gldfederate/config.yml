@@ -1,4 +1,0 @@
-federation_name: GLDTestFederation
-som_filepath: SOM.xml
-model_filepath: model.glm
-working_directory: ../model
