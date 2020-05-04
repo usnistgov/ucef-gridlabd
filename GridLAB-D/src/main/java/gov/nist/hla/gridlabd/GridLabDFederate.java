@@ -341,7 +341,8 @@ public class GridLabDFederate implements GatewayCallback {
             stopTime = ConversionMethods.toTimeStamp(configuration.getUnixTimeStop());
         }
         
-        builder.command(
+        if (configuration.getExtraProcessCommand().isEmpty()) {
+            builder.command(
                 "gridlabd",
                 configuration.getModelFilePath(),
                 "--server",
@@ -354,6 +355,22 @@ public class GridLabDFederate implements GatewayCallback {
                 "--define",
                 "pauseat=" + startTime
                 );
+        } else {
+            builder.command(
+                "gridlabd",
+                configuration.getModelFilePath(),
+                "--server",
+                "--server_portnum",
+                Integer.toString(configuration.getServerPortNumber()), // no guarantee this port gets used
+                "--define",
+                "starttime=" + startTime,
+                "--define",
+                "stoptime=" + stopTime,
+                "--define",
+                "pauseat=" + startTime,
+                configuration.getExtraProcessCommand()
+                );
+        }
         log.debug("command: {}", Arrays.toString(builder.command().toArray()));
     }
     

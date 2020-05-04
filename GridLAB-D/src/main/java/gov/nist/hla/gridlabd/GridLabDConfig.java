@@ -61,6 +61,11 @@ public class GridLabDConfig extends GatewayFederateConfig {
     private String simulationTimeZone;
     private boolean simulationTimeZoneSet = false;
 
+    /**
+     * An extra (optional) command line argument for the gridlabd process.
+     */
+    private String extraProcessCommand = "";
+
     public void setModelFilePath(String filePath) {
         this.modelFilePath = filePath;
         this.modelFilePathSet = true;
@@ -164,5 +169,13 @@ public class GridLabDConfig extends GatewayFederateConfig {
             throw new ValueNotSet("simulationTimeZone");
         }
         return simulationTimeZone;
+    }
+
+    public void setExtraProcessCommand(String command) {
+        this.extraProcessCommand = command;
+    }
+
+    public String getExtraProcessCommand() {
+        return extraProcessCommand;
     }
 }
