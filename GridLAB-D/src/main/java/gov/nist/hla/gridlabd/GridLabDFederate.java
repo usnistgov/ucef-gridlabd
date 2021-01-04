@@ -411,10 +411,18 @@ public class GridLabDFederate implements GatewayCallback {
             log.warn("received duplicate {}", ExtendedObjectModel.SIM_TIME);
         }
         
+        String timeZone;
+        if (parameters.containsKey("timeZonePosix")) {
+            timeZone = parameters.get("timeZonePosix");
+        } else {
+            // deprecated version of SimTime using one timeZone field
+            timeZone = parameters.get("timeZone");
+        }
+        
         configuration.setUnixTimeStart(Long.valueOf(parameters.get("unixTimeStart")));
         configuration.setUnixTimeStop(Long.valueOf(parameters.get("unixTimeStop")));
         configuration.setSimulationTimeScale(Double.valueOf(parameters.get("timeScale")));
-        configuration.setSimulationTimeZone(parameters.get("timeZone"));
+        configuration.setSimulationTimeZone(timeZone);
         receivedSimTime = true;
     }
     
